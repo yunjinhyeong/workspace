@@ -5,7 +5,7 @@
 }
 .hearderWizard .navWizard .tabs .tab a[data-switcher] {
     display: block;
-    padding: 15px 100px;
+    padding: 15px;
     border: 1px solid #000;
     text-decoration: none;
     cursor: pointer;
@@ -13,7 +13,7 @@
 .pages .page {
     display: none;
     text-align: left;
-    margin: 20px 300px;
+    margin: 20px;
 }
 .pages .page.is-active {
     display: block;

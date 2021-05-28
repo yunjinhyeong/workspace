@@ -1,8 +1,8 @@
-package kr.co.zzimcar.serviceImpl;
+package kr.co.zzimcar.serviceImpl.blog;
 
 import kr.co.zzimcar.dao.BlogDao;
-import kr.co.zzimcar.dto.BlogDto;
-import kr.co.zzimcar.service.BlogService;
+import kr.co.zzimcar.dto.blog.BlogDto;
+import kr.co.zzimcar.service.blog.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ public class BlogServiceImpl implements BlogService {
 
   @Override
   public void review(BlogDto blogDto) {
+    System.out.println("2");
     blogDao.save(blogDto);
   }
 }

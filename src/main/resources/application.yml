@@ -17,6 +17,45 @@ server:
   port: 8888
 ---
 spring:
+  # YAML
+  messages:
+    basename: messages
+    encoding: UTF-8
+  # Encoding
+  servlet:
+    multipart:
+      max-file-size: "10MB"
+      max-request-size: "10MB"
+#server
+server:
+  error:
+    whitelabel:
+      enabled: false
+  # Redis / Session
+  servlet:
+    session:
+      timeout: "30m"
+# Logging
+logging:
+  level:
+    jdbc.sqlonly: OFF
+    jdbc.sqltiming: DEBUG
+    jdbc.audit: OFF
+    jdbc.resultset: OFF
+    jdbc.resultsettable: OFF
+    jdbc.connection: OFF
+    org.hibernate: info
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+      srpingframework:
+        web: error
+        security: debug
+---
+spring:
   thymeleaf:
     cache: false
   devtools:
