@@ -46,4 +46,11 @@ public class TaskAPIController {
                                                      @RequestBody @Valid @ApiParam(value = "수정할 업무 정보", required = true) TaskReqDto taskReqDto) {
     return taskService.updateOne(pid, taskReqDto);
   }
+
+  @DeleteMapping("/{pid}")
+  @ApiOperation("책 삭제 API")
+  public ResponseEntity<ResponseDto<Void>> deleteOne(@PathVariable @ApiParam(value = "삭제할 업무 번호", required = true, example = "1") int pid) {
+    return taskService.deleteOne(pid);
+  }
+
 }

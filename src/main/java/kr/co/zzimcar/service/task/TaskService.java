@@ -11,4 +11,5 @@ public interface TaskService {
   ResponseEntity<ResponseDto<TaskResDto>> retrieveOne(int pid);
   ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll();
   ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto);
+  ResponseEntity<ResponseDto<Void>> deleteOne(int pid);
 }

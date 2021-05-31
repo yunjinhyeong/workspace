@@ -46,4 +46,11 @@
       t.pid = #{pid} AND deleted_at IS NULL;
   </update>
 
+  <delete id="deleteOne" parameterType="int">
+    UPDATE workspace.task t SET
+      t.deleted_at = now()
+    WHERE
+      t.pid = #{pid} AND t.deleted_at IS NULL
+  </delete>
+
 </mapper>

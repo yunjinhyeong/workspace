@@ -62,6 +62,13 @@ public class TaskServiceImpl implements TaskService {
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
 
+  @Override
+  public ResponseEntity<ResponseDto<Void>> deleteOne(int pid) {
+    Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
+    taskDao.deleteOne(pid);
+    return ResponseEntity.ok(new ResponseDto<>(true));
+  }
+
   private void checkCreate(TaskReqDto taskReqDto) {
     boolean check=false;
     for(Priority priority : Priority.values()) {
