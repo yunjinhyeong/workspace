@@ -1,6 +1,7 @@
 package kr.co.zzimcar.exception;
 
 import kr.co.zzimcar.dto.ResponseDto;
+import kr.co.zzimcar.enumeration.ResponseCode;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+
+import static kr.co.zzimcar.enumeration.ResponseCode.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -57,5 +61,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ApiException.class)
   protected ResponseEntity<Object> handleIntApiException(ApiException ex) {
     return buildResponseEntity(new ResponseDto(ex));
+  }
+
+  @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+  protected ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+    return buildResponseEntity(new ResponseDto(SQL_INTERGRITY_CONSTRAINT_VIOLATION_EXCEPTION));
   }
 }

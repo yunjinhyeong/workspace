@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @ToString
 public class TaskListResDto {
-
   private int totalCnt;
   private List<TaskResDto> list;
 }

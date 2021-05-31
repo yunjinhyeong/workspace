@@ -6,6 +6,15 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ResponseCode {
+  SQL_INTERGRITY_CONSTRAINT_VIOLATION_EXCEPTION("SQL_10000", "없는 회원이라서 등록할 수 없습니다."),
+
+  RETRIEVEONE_FAIL("COMM_10000","하나 가져오기 데이터가 존재하지 않습니다."),
+  NOT_EXIST("COMM_10001","데이터가 존재하지 않습니다."),
+
+  TASK_PRIORITY_SAVE_FAILED("TASK_10000","업무 우선순위는 highest, high, low, lowest 로만 저장됩니다."),
+  TASK_STATE_SAVE_FAILED("TASK_10001","업무 상태는 대기중, 진행중, 지연, 완료 로만 저장됩니다."),
+  TASK_TYPE_SAVE_FAILED("TASK_10002","업무 타입은 월간, 주간 으로만 저장됩니다."),
+
   BLOG_SAVE_FAILED("BLOG_10000", "블로그 저장 실패"),
   BLOG_NOT_FOUND("BLOG_10001", "블로그 정보를 찾을 수 없습니다."),
   BLOG_LIST_FAILED("BLOG_10002", "블로그 목록 불러오기 실패"),

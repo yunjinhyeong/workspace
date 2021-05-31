@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,10 +16,10 @@ public class TaskResDto {
   private String type;
   private String title;
   private String content;
-  private String status;
+  private String state;
   private String priority;
-  private LocalDateTime startAt;
-  private LocalDateTime dueAt;
+  private Date startAt;
+  private Date dueAt;
   private LocalDateTime createdAt;
 
   public TaskResDto(TaskDto taskDto) {
@@ -27,7 +28,7 @@ public class TaskResDto {
     this.type = taskDto.getType();
     this.title = taskDto.getTitle();
     this.content = taskDto.getContent();
-    this.status = taskDto.getStatus();
+    this.state = taskDto.getState();
     this.priority = taskDto.getPriority();
     this.startAt = taskDto.getStartAt();
     this.dueAt = taskDto.getDueAt();

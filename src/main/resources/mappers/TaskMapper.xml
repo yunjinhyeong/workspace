@@ -9,4 +9,41 @@
     #{memberPid}, #{type}, #{title}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
     )
   </insert>
+
+  <select id="retrieveOne" parameterType="int" resultType="TaskDto">
+    SELECT
+      t.pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
+    FROM
+      workspace.task t
+    WHERE
+      t.pid = #{pid}
+      AND deleted_at IS NULL
+  </select>
+
+  <select id="retrieveAll" resultType="TaskDto">
+    SELECT
+      t.pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
+    FROM
+      workspace.task t
+    WHERE
+      deleted_at IS NULL AND
+      curdate() between t.start_at and t.due_at order by field(t.priority, 'lowest', 'low', 'high', 'highest') desc
+  </select>
+
+  <select id="totalCnt" resultType="int">
+    SELECT
+      count(*)
+    FROM
+      workspace.task t
+    WHERE
+      deleted_at IS NULL
+  </select>
+
+  <update id="updateOne" parameterType="map">
+    UPDATE workspace.task t SET
+      t.type = #{taskDto.type}, t.title = #{taskDto.title}, t.content = #{taskDto.content}, t.priority = #{taskDto.priority}, t.start_at = #{taskDto.startAt}, t.due_at = #{taskDto.dueAt}
+    WHERE
+      t.pid = #{pid} AND deleted_at IS NULL;
+  </update>
+
 </mapper>

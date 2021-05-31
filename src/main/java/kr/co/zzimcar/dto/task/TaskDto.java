@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,19 +19,20 @@ public class TaskDto {
   private String type;
   private String title;
   private String content;
-  private String status;
+  private String state;
   private String priority;
-  private LocalDateTime startAt;
-  private LocalDateTime dueAt;
+  private Date startAt;
+  private Date dueAt;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;
   
-  public TaskDto(TaskReqDto taskReqDto) { // 맴버 pid는 세션인가 아닌가 고민해야된다 어디서 가져올지
+  public TaskDto(TaskReqDto taskReqDto) { // memberPid 여기서?
+    this.memberPid = taskReqDto.getMemberPid();
     this.type = taskReqDto.getType();
     this.title = taskReqDto.getTitle();
     this.content = taskReqDto.getContent();
-    this.status = taskReqDto.getStatus();
+    this.state = taskReqDto.getState();
     this.priority = taskReqDto.getPriority();
     this.startAt = taskReqDto.getStartAt();
     this.dueAt = taskReqDto.getDueAt();
