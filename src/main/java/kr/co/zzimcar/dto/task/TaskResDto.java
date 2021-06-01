@@ -1,6 +1,7 @@
 package kr.co.zzimcar.dto.task;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class TaskResDto {
   private int pid;
   private int memberPid;

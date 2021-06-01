@@ -53,4 +53,30 @@
       t.pid = #{pid} AND t.deleted_at IS NULL
   </delete>
 
+  <select id="retrieveJoinAll" resultMap="memberAndTask">
+    SELECT m.pid, m.name, m.department, m.role,
+           t.pid as t_pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
+    FROM workspace.member m LEFT OUTER JOIN workspace.task t
+                                            ON m.pid = t.member_pid
+    where m.pid = #{pid}
+  </select>
+  <resultMap id="memberAndTask" type="memberDto">
+    <id column="pid" property="pid"/>
+    <result column="name" property="name"/>
+    <result column="department" property="department"/>
+    <result column="role" property="role"/>
+    <collection property="taskList" ofType="taskResDto" javaType="arraylist">
+      <id column="t_pid" property="pid"/>
+      <result column="member_pid" property="memberPid"/>
+      <result column="type" property="type"/>
+      <result column="title" property="title"/>
+      <result column="content" property="content"/>
+      <result column="state" property="state"/>
+      <result column="priority" property="priority"/>
+      <result column="start_at" property="startAt"/>
+      <result column="due_at" property="dueAt"/>
+      <result column="created_at" property="createdAt"/>
+    </collection>
+  </resultMap>
+
 </mapper>

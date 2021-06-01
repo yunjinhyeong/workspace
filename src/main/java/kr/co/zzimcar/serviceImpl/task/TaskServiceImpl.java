@@ -2,10 +2,8 @@ package kr.co.zzimcar.serviceImpl.task;
 
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.ResponseDto;
-import kr.co.zzimcar.dto.task.TaskDto;
-import kr.co.zzimcar.dto.task.TaskListResDto;
-import kr.co.zzimcar.dto.task.TaskReqDto;
-import kr.co.zzimcar.dto.task.TaskResDto;
+import kr.co.zzimcar.dto.task.MemberDto;
+import kr.co.zzimcar.dto.task.*;
 import kr.co.zzimcar.enumeration.Priority;
 import kr.co.zzimcar.enumeration.State;
 import kr.co.zzimcar.enumeration.Type;
@@ -68,6 +66,19 @@ public class TaskServiceImpl implements TaskService {
     taskDao.deleteOne(pid);
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
+
+  @Override
+  public ResponseEntity<ResponseDto<MemberDto>> retrieveJoinAll(int pid) {
+    System.out.println("서비스1");
+    MemberDto memberDto = Optional.ofNullable(taskDao.retrieveJoinAll(pid)).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
+    System.out.println("서비스2"+memberDto);
+    ResponseDto<MemberDto> responseDto = new ResponseDto<>(true);
+    System.out.println("서비스3"+responseDto);
+    responseDto.setData(memberDto);
+    System.out.println("서비스4"+responseDto);
+    return ResponseEntity.ok(responseDto);
+  }
+
 
   private void checkCreate(TaskReqDto taskReqDto) {
     boolean check=false;
