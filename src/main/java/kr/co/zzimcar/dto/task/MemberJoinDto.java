@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @ToString
 @NoArgsConstructor
-public class MemberDto {
+public class MemberJoinDto {
 
   private int pid;
   private String name;

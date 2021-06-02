@@ -2,7 +2,7 @@ package kr.co.zzimcar.serviceImpl.task;
 
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.ResponseDto;
-import kr.co.zzimcar.dto.task.MemberDto;
+import kr.co.zzimcar.dto.task.MemberJoinDto;
 import kr.co.zzimcar.dto.task.*;
 import kr.co.zzimcar.enumeration.Priority;
 import kr.co.zzimcar.enumeration.State;
@@ -68,13 +68,13 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  public ResponseEntity<ResponseDto<MemberDto>> retrieveJoinAll(int pid) {
+  public ResponseEntity<ResponseDto<MemberJoinDto>> retrieveJoinAll(int pid) {
     System.out.println("서비스1");
-    MemberDto memberDto = Optional.ofNullable(taskDao.retrieveJoinAll(pid)).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
-    System.out.println("서비스2"+memberDto);
-    ResponseDto<MemberDto> responseDto = new ResponseDto<>(true);
+    MemberJoinDto memberJoinDto = Optional.ofNullable(taskDao.retrieveJoinAll(pid)).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
+    System.out.println("서비스2"+memberJoinDto);
+    ResponseDto<MemberJoinDto> responseDto = new ResponseDto<>(true);
     System.out.println("서비스3"+responseDto);
-    responseDto.setData(memberDto);
+    responseDto.setData(memberJoinDto);
     System.out.println("서비스4"+responseDto);
     return ResponseEntity.ok(responseDto);
   }

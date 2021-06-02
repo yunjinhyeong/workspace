@@ -60,7 +60,7 @@
                                             ON m.pid = t.member_pid
     where m.pid = #{pid}
   </select>
-  <resultMap id="memberAndTask" type="memberDto">
+  <resultMap id="memberAndTask" type="memberJoinDto">
     <id column="pid" property="pid"/>
     <result column="name" property="name"/>
     <result column="department" property="department"/>

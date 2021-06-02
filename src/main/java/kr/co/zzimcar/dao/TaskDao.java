@@ -1,6 +1,6 @@
 package kr.co.zzimcar.dao;
 
-import kr.co.zzimcar.dto.task.MemberDto;
+import kr.co.zzimcar.dto.task.MemberJoinDto;
 import kr.co.zzimcar.dto.task.TaskDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -16,5 +16,5 @@ public interface TaskDao {
   int totalCnt();
   void updateOne(int pid, TaskDto taskDto);
   void deleteOne(int pid);
-  MemberDto retrieveJoinAll(int pid);
+  MemberJoinDto retrieveJoinAll(int pid);
 }

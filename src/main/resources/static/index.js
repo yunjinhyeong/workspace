@@ -21,3 +21,32 @@ function SwitchPage (page_id) {
   const next_page = document.querySelector(`.pages .page[data-page="${page_id}"]`);
   next_page.classList.add('is-active');
 }
+if($.cookie('name') == undefined) {
+  $("#loginBox").show();
+}
+$("[name=logout]").click(function () {
+  document.cookie = 'name=; Max-Age=-1;';
+  location.reload();
+});
+
+
+
+$("[name=login]").click(function () {
+  $.ajax({
+    url: '/member/login',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      name: $("[name=name]").val(),
+      pw: $("[name=pw]").val()
+    },
+    success: function (rs) {
+      if (rs.success) {
+        $.cookie('name', rs.data.name, {expires: 1});
+        $("#loginBox").hide();
+        $("#logoutBox").show();
+        $('#username').val($.cookie('name')+' 님 환영합니다.');
+      }
+    }
+  });
+});
