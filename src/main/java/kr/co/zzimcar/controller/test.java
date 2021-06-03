@@ -16,18 +16,18 @@ public class test {
 //    int thisWeek = getWeekOfYear("2021-06-30");
 //    System.out.println(thisWeek);
     int count=0;
-    int month = 1;
-    int year = 2022;
+    int month = 7;
+    int year = 2021;
     Calendar cal = Calendar.getInstance();
-    cal.set(year,month-1,1);
-    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
-    System.out.println("가"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-    for(int i =1 ; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1 ; i++) {
-      System.out.println("나"+getCurrentWeekOfMonth(year,month,i));
-      System.out.println("i의 값"+i);
-      count++;
-    }
-    System.out.println("다"+count);
+//    cal.set(year,month-1,1);
+//    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
+//    System.out.println("가"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+//    for(int i =1 ; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1 ; i++) {
+//      System.out.println("나"+getCurrentWeekOfMonth(year,month,i));
+//      System.out.println("i의 값"+i);
+//      count++;
+//    }
+//    System.out.println("다"+count);
     System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 
 //    getWeekInMonths(year,month);
@@ -117,6 +117,7 @@ public class test {
 
     int dayOfWeekForFirstDayOfMonth = calendar.get(Calendar.WEEK_OF_MONTH) - subtractFirstWeekNumber;
 
+//    return (calendar.get(Calendar.MONTH) + 1) + "," + dayOfWeekForFirstDayOfMonth;
     return (calendar.get(Calendar.MONTH) + 1) + "," + dayOfWeekForFirstDayOfMonth;
   }
 
