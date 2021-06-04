@@ -61,7 +61,7 @@ $('.jump_month_plus').click(function(){
     },
     success: function (rs) {
       console.log(rs.weekcount);
-      drawweek(rs.weekcount);
+      drawweek(rs.weekcount, rs.list);
     }
   });
 });
@@ -85,7 +85,7 @@ $('.jump_month_minus').click(function(){
     },
     success: function (rs) {
       console.log(rs.weekcount);
-      drawweek(rs.weekcount);
+      drawweek(rs.weekcount, rs.list);
     }
   });
 });
@@ -105,21 +105,52 @@ function getWeek() {
     },
     success: function (rs) {
       console.log(rs.weekcount);
-      drawweek(rs.weekcount);
+      drawweek(rs.weekcount, rs.list);
     }
   });
 }
 
-function drawweek(list) {
+function drawweek(count, list) {
   let str = '';
-  for (let num = 1; num <= list; num++){
+  for (let num = 1; num <= count; num++){
     str += `
       <th class="align-middle swich">${num}주차</th>
 			`;
   }
   $('#weekly').append(str);
-}
 
+  // let ttt= 'ttt';
+  // for (let i = 0 ; i<2 ; i++) {
+  //   $('#num'+i).append(ttt);
+  // }
+  for ( var i=0; i<6 ; i++) {
+    for (var j = 0; j < count; j++) {
+      var txt = "(" + i + "," + j + ")";    // 테이블각 셀에 (행,열) 값을 출력하기위해 정의된 String
+      $('#num' + i).append(txt);
+      // document.write("<td>"+ txt +"</td>");     // <td> : 열추가.
+    } //end for j
+  }
+
+  // console.log(list);
+  // let empty = '';
+  // let taskstr = '';
+  // for (let i = 0 ; i<list.length ; i++) {
+  //   console.log('>');
+  //   if (parseInt(list[i].mm)!=mm || parseInt(list[i].yyyy)!=yyyy || list[i].type != '주간') {
+  //     console.log('>>');
+  //     $('#num'+i).append(empty);
+  //     console.log('>>>');
+  //     continue;
+  //   }
+  //   console.log('>>>>');
+  //   taskstr += `
+  //     <td>멍미</td>
+	// 		`;
+  //   console.log('>>>>>');
+  //   $('#num'+i).append(taskstr);
+  //   console.log('>>>>>>');
+  // }
+}
 
 function changeDate()  {
   $('th').remove('.swich');

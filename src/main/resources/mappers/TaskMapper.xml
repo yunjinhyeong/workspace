@@ -79,4 +79,11 @@
     </collection>
   </resultMap>
 
+  <select id="allDateInfo" resultType="drawWeekWorkDto">
+    SELECT m.pid, m.name, m.department, m.role, DATE_FORMAT(start_at, '%Y') yyyy, DATE_FORMAT(start_at, '%m') mm, DATE_FORMAT(start_at, '%d') dd,
+           t.pid as t_pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
+    FROM workspace.member m RIGHt OUTER JOIN workspace.task t
+           ON m.pid = t.member_pid;
+  </select>
+
 </mapper>

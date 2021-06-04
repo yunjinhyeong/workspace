@@ -2,6 +2,8 @@ package kr.co.zzimcar.serviceImpl.task;
 
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.ResponseDto;
+import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
+import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
 import kr.co.zzimcar.dto.task.*;
 import kr.co.zzimcar.enumeration.Priority;
@@ -15,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -77,6 +80,13 @@ public class TaskServiceImpl implements TaskService {
     responseDto.setData(memberJoinDto);
     System.out.println("서비스4"+responseDto);
     return ResponseEntity.ok(responseDto);
+  }
+
+  @Override
+  public List<DrawWeekWorkDto> weekDate() {
+    List<DrawWeekWorkDto> list = taskDao.allDateInfo();
+    System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
+    return list;
   }
 
 
