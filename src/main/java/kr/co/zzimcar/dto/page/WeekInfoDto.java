@@ -1,5 +1,6 @@
 package kr.co.zzimcar.dto.page;
 
+import kr.co.zzimcar.dto.WeeklyTasks;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,4 +17,5 @@ import java.util.List;
 public class WeekInfoDto {
   private int weekcount;
   private List<DrawWeekWorkDto> list;
+  private List<WeeklyTasks> items;
 }

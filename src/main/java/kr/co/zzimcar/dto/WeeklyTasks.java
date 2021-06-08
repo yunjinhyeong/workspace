@@ -1,22 +1,25 @@
 package kr.co.zzimcar.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
-public class WeeklyTasks {
+@Data
+@RequiredArgsConstructor
+public class WeeklyTasks {  // 리스트???
   private String departmentName;
-  private List<MemberTask> memberTasks;
+  private List<MemberTaskDto> memberTasks;
+
+  public WeeklyTasks(String departmentName) {
+    this.departmentName = departmentName;
+  }
 }
 
-class MemberTask {
-  private String name;
-  private List<Task> w1;
-  private List<Task> w2;
-  private List<Task> w3;
-  private List<Task> w4;
-  private List<Task> w5;
-}
-
+@Data
 class Task {
   private LocalDate startAt;
   private LocalDate dueAt;

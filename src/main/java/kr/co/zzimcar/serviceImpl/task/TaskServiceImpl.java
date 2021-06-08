@@ -2,6 +2,7 @@ package kr.co.zzimcar.serviceImpl.task;
 
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.ResponseDto;
+import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
@@ -88,6 +89,21 @@ public class TaskServiceImpl implements TaskService {
     System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
     return list;
   }
+
+  @Override
+  public List<String> department() {
+    List<String> departmentList = taskDao.departmentList();
+    System.out.println(departmentList+"departmentList ///////////////");
+    return departmentList;
+  }
+
+  @Override
+  public List<String> name() {
+    List<String> nameList = taskDao.nameList();
+    System.out.println(nameList+"nameList ///////////////");
+    return nameList;
+  }
+
 
 
   private void checkCreate(TaskReqDto taskReqDto) {

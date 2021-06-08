@@ -1,14 +1,13 @@
-package kr.co.zzimcar.controller;
+  package kr.co.zzimcar.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
-public class test {
+  public class test {
   public static void main(String[] args) {
 //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 //    // int thisWeek = getWeekOfYear(sdf.format(new Date()));
@@ -17,21 +16,55 @@ public class test {
 //    System.out.println(thisWeek);
 
     int count=0;
-    int month = 7;
+    int month = 6;
     int year = 2021;
-    Calendar cal = Calendar.getInstance();
+//    Calendar cal = Calendar.getInstance();
 //    cal.set(year,month-1,1);
-//    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
+////    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
 //    System.out.println("가"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 //    for(int i =1 ; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1 ; i++) {
 //      System.out.println("나"+getCurrentWeekOfMonth(year,month,i));
-//      System.out.println("i의 값"+i);
+////      System.out.println("i의 값"+i);
 //      count++;
 //    }
 //    System.out.println("다"+count);
-    System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
+//    System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 
-//    getWeekInMonths(year,month);
+
+
+
+
+    List<String> result = getWeekInMonths(year,month);    // 일단 1픽
+
+    try {
+      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+      for (int i = 0 ; i<result.size() ; i++) {
+        // String 타입을 Date 타입으로 변환
+        Date formatDate = dtFormat.parse(result.get(i));
+        // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+        String strNewDtFormat = newDtFormat.format(formatDate);
+        System.out.println(strNewDtFormat);
+      }
+    }catch (ParseException e) {
+      e.printStackTrace();
+    }
+
+
+//    try {
+//      String strDate = "20200806";
+//      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+//      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+//      // String 타입을 Date 타입으로 변환
+//      Date formatDate = dtFormat.parse(strDate);
+//      // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+//      String strNewDtFormat = newDtFormat.format(formatDate);
+//      System.out.println("포맷 전 : " + strDate);
+//      System.out.println("포맷 후 : " + strNewDtFormat);
+//    }catch (ParseException e) {
+//      e.printStackTrace();
+//    }
+
   }
 
 
@@ -124,14 +157,9 @@ public class test {
 
 
 
+  public static List<String> getWeekInMonths(int year, int month) {
 
-
-
-
-
-
-
-  public static void getWeekInMonths(int year, int month) {
+    List<String> result = new ArrayList<>();
 
     Calendar cal = Calendar.getInstance();
 
@@ -152,11 +180,24 @@ public class test {
       }
 
       if (week == cal.getMaximum(Calendar.WEEK_OF_MONTH) - 1 && endDay <= 7) {
+        cal.set(Calendar.MONTH, month - 1);
         endDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
       }
 
-      System.out.println(week + "주 : " + startDay + " ~ " + endDay);
+      String monthR = Integer.toString(month);
+      String startDayR = Integer.toString(startDay);
+      String endDayR = Integer.toString(endDay);
+
+      if (month<10) monthR = "0"+monthR;
+      if (startDay<10) startDayR = "0"+startDayR;
+      if (endDay<10) endDayR = "0"+endDayR;
+
+      result.add(year+monthR+startDayR);
+      result.add(year+monthR+endDayR);
+
+//      System.out.println(week + "주 : " + startDay + " ~ " + endDay);
     }
+    return result;
   }
 
   private static int getWeekOfYear(String date) {

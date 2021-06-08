@@ -60,6 +60,29 @@
                                             ON m.pid = t.member_pid
     where m.pid = #{pid}
   </select>
+
+  <resultMap id="tasksMap" type="TaskDto">
+    <id column="pid" property="pid" />
+    <result column="member_pid" property="memberPid" />
+    <result column="type" property="type" />
+    <result column="title" property="title" />
+    <result column="content" property="content" />
+    <result column="state" property="state" />
+    <result column="priority" property="priority" />
+    <result column="start_at" property="startAt" />
+    <result column="due_at" property="dueAt" />
+    <result column="created_at" property="createdAt" />
+    <result column="updated_at" property="updatedAt" />
+    <result column="deleted_at" property="deletedAt" />
+    <association property="member" javaType="MemberDto">
+      <id column="member_pid" property="pid" />
+      <result column="name" property="name" />
+      <result column="department" property="department" />
+      <result column="role" property="role" />
+      <result column="pw" property="pw" />
+    </association>
+  </resultMap>
+
   <resultMap id="memberAndTask" type="memberJoinDto">
     <id column="pid" property="pid"/>
     <result column="name" property="name"/>
@@ -85,5 +108,49 @@
     FROM workspace.member m RIGHt OUTER JOIN workspace.task t
            ON m.pid = t.member_pid;
   </select>
+
+  <select id="departmentList" resultType="String">
+    <![CDATA[
+      SELECT
+      m.department
+      FROM
+      workspace.task t
+      left join workspace.member m on t.member_pid=m.pid
+      where
+      (t.start_at >= '2021-06-01' and t.start_at <= '2021-06-30')
+      or (t.due_at >= '2021-06-01' and t.due_at <= '2021-06-30')
+      or (t.start_at <= '2021-06-01' and t.due_at >= '2021-06-30')
+      and t.type = '주간'
+      group by m.department
+      order by m.department desc, m.pid asc;
+    ]]>
+  </select>
+
+  <select id="nameList" resultType="String">
+    <![CDATA[
+    SELECT
+      m.name
+    FROM
+      workspace.task t
+        left join workspace.member m on t.member_pid=m.pid
+    where
+      ((t.start_at >= '2021-06-01' and t.start_at <= '2021-06-30')
+        or (t.due_at >= '2021-06-01' and t.due_at <= '2021-06-30')
+        or (t.start_at <= '2021-06-01' and t.due_at >= '2021-06-30'))
+      and t.type = '주간' and m.department = '개발'
+    group by m.name
+    order by m.department desc, m.pid asc;
+    ]]>
+  </select>
+
+  <select id="retrieveTasks" resultMap="tasksMap">
+    SELECT
+      t.pid, m.department, m.name, t.start_at, t.due_at, t.content, t.member_pid
+    FROM
+      task t
+      LEFT JOIN member m ON t.member_pid = m.pid;
+  </select>
+
+
 
 </mapper>

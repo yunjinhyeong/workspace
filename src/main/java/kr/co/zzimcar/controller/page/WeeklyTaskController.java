@@ -1,18 +1,23 @@
 package kr.co.zzimcar.controller.page;
 
+import kr.co.zzimcar.dao.TaskDao;
+import kr.co.zzimcar.dto.MemberTaskDto;
+import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
+import kr.co.zzimcar.dto.task.TaskDto;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +25,7 @@ import java.util.Locale;
 public class WeeklyTaskController {
 
   private final TaskService taskService;
+  private final TaskDao taskDao;
 
   @PostMapping("/weekly")
   @ResponseBody
@@ -35,7 +41,6 @@ public class WeeklyTaskController {
     }
 
     List<DrawWeekWorkDto> list = taskService.weekDate();
-    DrawWeekWorkDto oneDate = new DrawWeekWorkDto();
     System.out.println("list>>>> 컨트롤러 111 >>>>>>>"+list);
     for(int i=0; i<list.size() ; i++) {
       int forY = Integer.parseInt(list.get(i).getYyyy());
@@ -49,6 +54,51 @@ public class WeeklyTaskController {
       weekInfoDto.setList(list);
     }
     System.out.println("list >>>>>>>>>>>2222222222222"+list);
+
+
+    List<TaskDto> tasks = taskDao.retrieveTasks();
+    System.out.println(tasks);
+    List<WeeklyTasks> weeklyTasks = new ArrayList<>();
+
+    tasks.forEach(task -> {
+      WeeklyTasks wt = weeklyTasks.stream().filter(t -> task.getMember().getDepartment().contains(t.getDepartmentName())).findFirst().orElse(new WeeklyTasks(task.getMember().getDepartment()));
+
+//      List<MemberTaskDto> memberTasks = wt.getMemberTasks();
+//      if (memberTasks == null) memberTasks = new ArrayList<>();
+//
+//      MemberTaskDto memberTaskDto = memberTasks.stream().filter(m -> task.getMember().getName().contentEquals(m.getName())).findFirst().orElse(new MemberTaskDto(task.getMember().getName()));
+//      memberTaskDto.setW1(memberTaskDto.getW1() + "\n" + task.getContent());
+//
+//      wt.setMemberTasks(memberTasks);
+      weeklyTasks.add(wt);
+    });
+
+    System.out.println(weeklyTasks);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//    List<WeeklyTasks> weeklyTasksList = new ArrayList<>();
+//
+//    List<String> department = taskService.department();
+//    for (int i=0 ; i<department.size() ; i++ ) {
+//      weeklyTasksList.add(new WeeklyTasks(department.get(i)));
+//    }
+//
+//    List<String> name = taskService.name();
+//    for (int i=0 ; i<name.size() ; i++ ) {
+//
+//    }
+//
+//    weekInfoDto.setItems(weeklyTasksList);
+//
+//    System.out.println(weekInfoDto);
 
     return weekInfoDto;
   }

@@ -1,5 +1,6 @@
 package kr.co.zzimcar.dao;
 
+import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
@@ -20,4 +21,8 @@ public interface TaskDao {
   void deleteOne(int pid);
   MemberJoinDto retrieveJoinAll(int pid);
   List<DrawWeekWorkDto> allDateInfo();
+  List<String> departmentList();
+  List<String> nameList();
+
+  List<TaskDto> retrieveTasks();
 }

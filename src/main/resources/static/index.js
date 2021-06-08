@@ -269,6 +269,7 @@ function getWeek() {
 
       // drawweek(rs.weekcount, rs.list);
       drawSample(rs.weekcount, sampleList);
+      console.log(rs.list);
     }
   });
 }

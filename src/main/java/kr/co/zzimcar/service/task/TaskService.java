@@ -1,6 +1,7 @@
 package kr.co.zzimcar.service.task;
 
 import kr.co.zzimcar.dto.ResponseDto;
+import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
@@ -19,4 +20,6 @@ public interface TaskService {
   ResponseEntity<ResponseDto<Void>> deleteOne(int pid);
   ResponseEntity<ResponseDto<MemberJoinDto>> retrieveJoinAll(int pid);
   List<DrawWeekWorkDto> weekDate();
+  List<String> department();
+  List<String> name();
 }

@@ -1,5 +1,6 @@
 package kr.co.zzimcar.dto.task;
 
+import kr.co.zzimcar.dto.member.MemberDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,8 @@ public class TaskDto {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;
+
+  private MemberDto member;
   
   public TaskDto(TaskReqDto taskReqDto) { // memberPid 여기서?
     this.memberPid = taskReqDto.getMemberPid();
