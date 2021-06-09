@@ -10,6 +10,6 @@ import lombok.Setter;
 public class MemberDataDto {
   private int pid;
   private String name;
-  private String department;
+  private int departmentPid;
   private String role;
 }

@@ -54,7 +54,7 @@
   </delete>
 
   <select id="retrieveJoinAll" resultMap="memberAndTask">
-    SELECT m.pid, m.name, m.department, m.role,
+    SELECT m.pid, m.name, m.department_pid, m.role,
            t.pid as t_pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
     FROM workspace.member m LEFT OUTER JOIN workspace.task t
                                             ON m.pid = t.member_pid
@@ -77,7 +77,7 @@
     <association property="member" javaType="MemberDto">
       <id column="member_pid" property="pid" />
       <result column="name" property="name" />
-      <result column="department" property="department" />
+      <result column="department_pid" property="departmentPid" />
       <result column="role" property="role" />
       <result column="pw" property="pw" />
     </association>
@@ -86,7 +86,7 @@
   <resultMap id="memberAndTask" type="memberJoinDto">
     <id column="pid" property="pid"/>
     <result column="name" property="name"/>
-    <result column="department" property="department"/>
+    <result column="department_pid" property="departmentPid"/>
     <result column="role" property="role"/>
     <collection property="taskList" ofType="taskResDto" javaType="arraylist">
       <id column="t_pid" property="pid"/>
@@ -103,7 +103,7 @@
   </resultMap>
 
   <select id="allDateInfo" resultType="drawWeekWorkDto">
-    SELECT m.pid, m.name, m.department, m.role, DATE_FORMAT(start_at, '%Y') yyyy, DATE_FORMAT(start_at, '%m') mm, DATE_FORMAT(start_at, '%d') dd,
+    SELECT m.pid, m.name, m.department_pid, m.role, DATE_FORMAT(start_at, '%Y') yyyy, DATE_FORMAT(start_at, '%m') mm, DATE_FORMAT(start_at, '%d') dd,
            t.pid as t_pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
     FROM workspace.member m RIGHt OUTER JOIN workspace.task t
            ON m.pid = t.member_pid;
@@ -112,7 +112,7 @@
   <select id="departmentList" resultType="String">
     <![CDATA[
       SELECT
-      m.department
+      m.department_pid
       FROM
       workspace.task t
       left join workspace.member m on t.member_pid=m.pid
@@ -121,8 +121,8 @@
       or (t.due_at >= '2021-06-01' and t.due_at <= '2021-06-30')
       or (t.start_at <= '2021-06-01' and t.due_at >= '2021-06-30')
       and t.type = '주간'
-      group by m.department
-      order by m.department desc, m.pid asc;
+      group by m.department_pid
+      order by m.department_pid desc, m.pid asc;
     ]]>
   </select>
 
@@ -137,15 +137,15 @@
       ((t.start_at >= '2021-06-01' and t.start_at <= '2021-06-30')
         or (t.due_at >= '2021-06-01' and t.due_at <= '2021-06-30')
         or (t.start_at <= '2021-06-01' and t.due_at >= '2021-06-30'))
-      and t.type = '주간' and m.department = '개발'
+      and t.type = '주간' and m.department_pid = '2'
     group by m.name
-    order by m.department desc, m.pid asc;
+    order by m.department_pid desc, m.pid asc;
     ]]>
   </select>
 
   <select id="retrieveTasks" resultMap="tasksMap">
     SELECT
-      t.pid, m.department, m.name, t.start_at, t.due_at, t.content, t.member_pid
+      t.pid, m.department_pid, m.name, t.start_at, t.due_at, t.content, t.member_pid
     FROM
       task t
       LEFT JOIN member m ON t.member_pid = m.pid;

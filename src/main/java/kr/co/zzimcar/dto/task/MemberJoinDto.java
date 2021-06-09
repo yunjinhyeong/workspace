@@ -17,7 +17,7 @@ public class MemberJoinDto {
 
   private int pid;
   private String name;
-  private String department;
+  private int departmentPid;
   private String role;
 
   private List<TaskResDto> taskList;

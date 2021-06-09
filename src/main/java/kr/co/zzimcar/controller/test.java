@@ -1,71 +1,197 @@
   package kr.co.zzimcar.controller;
 
+import kr.co.zzimcar.dto.MemberTaskDto;
+import kr.co.zzimcar.dto.WeeklyTasks;
+import kr.co.zzimcar.dto.task.Task;
+
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
   public class test {
   public static void main(String[] args) {
-//    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-//    // int thisWeek = getWeekOfYear(sdf.format(new Date()));
-//
-//    int thisWeek = getWeekOfYear("2021-06-30");
-//    System.out.println(thisWeek);
+    //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+    //    // int thisWeek = getWeekOfYear(sdf.format(new Date()));
+    //
+    //    int thisWeek = getWeekOfYear("2021-06-30");
+    //    System.out.println(thisWeek);
 
-    int count=0;
+    int count = 0;
     int month = 6;
     int year = 2021;
-//    Calendar cal = Calendar.getInstance();
-//    cal.set(year,month-1,1);
-////    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
-//    System.out.println("가"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-//    for(int i =1 ; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1 ; i++) {
-//      System.out.println("나"+getCurrentWeekOfMonth(year,month,i));
-////      System.out.println("i의 값"+i);
-//      count++;
-//    }
-//    System.out.println("다"+count);
-//    System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
+    //    Calendar cal = Calendar.getInstance();
+    //    cal.set(year,month-1,1);
+    ////    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
+    //    System.out.println("가"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+    //    for(int i =1 ; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1 ; i++) {
+    //      System.out.println("나"+getCurrentWeekOfMonth(year,month,i));
+    ////      System.out.println("i의 값"+i);
+    //      count++;
+    //    }
+    //    System.out.println("다"+count);
+    //    System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 
 
+//        List<String> result = getWeekInMonths(year,month);    // 일단 1픽
+//
+//        try {
+//          SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+//          SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+//          for (int i = 0 ; i<result.size() ; i++) {
+//            // String 타입을 Date 타입으로 변환
+//            Date formatDate = dtFormat.parse(result.get(i));
+//            // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+//            String strNewDtFormat = newDtFormat.format(formatDate);
+//            System.out.println(strNewDtFormat);
+//          }
+//        }catch (ParseException e) {
+//          e.printStackTrace();
+//        }
 
 
+    //    try {
+    //      String strDate = "20200806";
+    //      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+    //      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+    //      // String 타입을 Date 타입으로 변환
+    //      Date formatDate = dtFormat.parse(strDate);
+    //      // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+    //      String strNewDtFormat = newDtFormat.format(formatDate);
+    //      System.out.println("포맷 전 : " + strDate);
+    //      System.out.println("포맷 후 : " + strNewDtFormat);
+    //    }catch (ParseException e) {
+    //      e.printStackTrace();
+    //    }
 
-    List<String> result = getWeekInMonths(year,month);    // 일단 1픽
+    //////////////////////////// stream ///////////////////////////////
+    //    List<String> names = Arrays.asList("jeong", "pro", "jdk", "java");
+    //    long iv = 0;
+    //    // 기존의 코딩 방식
+    //    for (String name : names) {
+    //      if (name.contains("o")) {
+    //        iv++;
+    //      }
+    //    }
+    //    System.out.println("iv : " + iv); // 2
+    //
+    //    // 스트림 이용한 방식
+    //    iv = 0;
+    //    iv = names.stream().filter(x -> x.contains("o")).count();
+    //    System.out.println("iv : " + iv);
+    //////////////////////////// map ///////////////////////////////
+    //    Map<String, Object> map = new HashMap<>();
+    //    map.put("Seq", "4");
+    //    map.put("testNumber", "0101");
+    //
+    //    List<Map> list2 = new ArrayList<>();
+    //    list2.add(map);
+    //
+    //    Map<String, Object> list = new HashMap<>();
+    //    list.put("list", list2);
+    //
+    //    System.out.println("list : " + list);
+    //    System.out.println("list.get(list) : " + list.get("list"));
+    //
+    //    List<Map> temp = (List<Map>) list.get("list");
+    //
+    //    System.out.println("temp : " + temp);
+    //    System.out.println("temp.get(0) :" + temp.get(0));
+    //
+    //    Map<String, Object> tMap = temp.get(0);
+    //
+    //    System.out.println("tMap : " + tMap);
+    //    System.out.println("tMap.get(Seq) :" + tMap.get("Seq"));
+//////////////////////////// map note ///////////////////////////////
+    String testDay = "2021-06-09";
+    LocalDate date = LocalDate.parse(testDay, DateTimeFormatter.ISO_DATE);
+    System.out.println("date="+ date+ "입니다. type은 " +date.getClass().getName());
 
-    try {
-      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
-      for (int i = 0 ; i<result.size() ; i++) {
-        // String 타입을 Date 타입으로 변환
-        Date formatDate = dtFormat.parse(result.get(i));
-        // Date타입의 변수를 새롭게 지정한 포맷으로 변환
-        String strNewDtFormat = newDtFormat.format(formatDate);
-        System.out.println(strNewDtFormat);
-      }
-    }catch (ParseException e) {
-      e.printStackTrace();
+    Map<String, List<Object>> map = new HashMap<>();
+    //    2단계
+    //// w 세팅
+    List<Task> w1 = new ArrayList<>();
+    List<Task> w2 = new ArrayList<>();
+    List<Task> w3 = new ArrayList<>();
+    List<Task> w4 = new ArrayList<>();
+    List<Task> w5 = new ArrayList<>();
+
+    List<Task> ww1 = new ArrayList<>();
+    List<Task> ww2 = new ArrayList<>();
+    List<Task> ww3 = new ArrayList<>();
+    List<Task> ww4 = new ArrayList<>();
+    List<Task> ww5 = new ArrayList<>();
+
+    LocalDate test2 = date.minusDays(2);
+    System.out.println("test2="+ test2+ "입니다. type은 " +test2.getClass().getName());
+    if (date.isAfter(test2)) {
+      System.out.println("이후입니다.");
+    }
+    if (date.isEqual(test2)) {
+      System.out.println("같습니다.");
+    }
+    if (date.isBefore(test2)) {
+      System.out.println("과거입니다.");
     }
 
+    w1.add(new Task(date, date,"경영지원 내용1"));
+    w1.add(new Task(date, date,"경영지원 내용2"));
+    w1.add(new Task(date, date,"경영지원 내용3"));
+    w1.add(new Task(date, date,"경영지원 내용4"));
+    w1.add(new Task(date, date,"경영지원 내용5"));
+    w1.add(new Task(date, date,"경영지원 내용6"));
+    w1.add(new Task(date, date,"경영지원 내용7"));
+    w1.add(new Task(date, date,"경영지원 내용8"));
+    w1.add(new Task(date, date,"경영지원 내용9"));
+    w1.add(new Task(date, date,"경영지원 내용10"));
 
-//    try {
-//      String strDate = "20200806";
-//      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-//      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
-//      // String 타입을 Date 타입으로 변환
-//      Date formatDate = dtFormat.parse(strDate);
-//      // Date타입의 변수를 새롭게 지정한 포맷으로 변환
-//      String strNewDtFormat = newDtFormat.format(formatDate);
-//      System.out.println("포맷 전 : " + strDate);
-//      System.out.println("포맷 후 : " + strNewDtFormat);
-//    }catch (ParseException e) {
-//      e.printStackTrace();
-//    }
+    ww1.add(new Task(date, date,"개발팀 내용1"));
+    ww1.add(new Task(date, date,"개발팀 내용2"));
+    ww1.add(new Task(date, date,"개발팀 내용3"));
+    ww1.add(new Task(date, date,"개발팀 내용4"));
+    ww1.add(new Task(date, date,"개발팀 내용5"));
+    ww1.add(new Task(date, date,"개발팀 내용6"));
+    ww1.add(new Task(date, date,"개발팀 내용7"));
+    ww1.add(new Task(date, date,"개발팀 내용8"));
+    ww1.add(new Task(date, date,"개발팀 내용9"));
+    ww1.add(new Task(date, date,"개발팀 내용10"));
+
+
+    //// w 세팅 /
+    List<MemberTaskDto> operationTasksList = new ArrayList<>();
+    operationTasksList.add(new MemberTaskDto("임진숙", w1, w2, w3, w4));
+    operationTasksList.add(new MemberTaskDto("김영범", w1, w2, w3, w4));
+    operationTasksList.add(new MemberTaskDto("유승민", w1, w2, w3, w4));
+
+    List<MemberTaskDto> developTasksList = new ArrayList<>();
+    developTasksList.add(new MemberTaskDto("이욱세", ww1, ww2, ww3, ww4));
+    developTasksList.add(new MemberTaskDto("박혜미", ww1, ww2, ww3, ww4));
+    developTasksList.add(new MemberTaskDto("이정수", ww1, ww2, ww3, ww4));
+
+    List<Object> departmentList = new ArrayList<>();
+    departmentList.add(new WeeklyTasks("경영지원", operationTasksList));
+    departmentList.add(new WeeklyTasks("개발팀", developTasksList));
+
+    map.put("departmentList", departmentList);
+
+    //    map.put("memberTasksList", memberTasksList);
+
+
+    System.out.println(map);
+
+
 
   }
+
+
 
 
   public static int subWeekNumberIsFirstDayAfterThursday(int year, int month, int day)  {

@@ -4,7 +4,7 @@
 <mapper namespace="kr.co.zzimcar.dao.MemberDao">
   <select id="login" parameterType="MemberReqDto" resultType="MemberDto">
     select
-      m.pid, m.name, m.department, m.role
+      m.pid, m.name, m.department_pid, m.role
     from
       workspace.member m
     where

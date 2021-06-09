@@ -10,13 +10,13 @@ import org.springframework.http.HttpStatus;
 public class MemberResDto {
   private int pid;
   private String name;
-  private String department;
+  private int departmentPid;
   private String role;
 
   public MemberResDto(MemberDto memberDto) {
     this.pid = memberDto.getPid();
     this.name = memberDto.getName();
-    this.department = memberDto.getDepartment();
+    this.departmentPid = memberDto.getDepartmentPid();
     this.role = memberDto.getRole();
   }
 }

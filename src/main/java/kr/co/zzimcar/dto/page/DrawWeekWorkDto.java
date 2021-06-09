@@ -18,7 +18,7 @@ public class DrawWeekWorkDto {
   private int realmm;
   private int pid;
   private String name;
-  private String department;
+  private int departmentPid;
   private String role;
   private String yyyy;
   private String mm;

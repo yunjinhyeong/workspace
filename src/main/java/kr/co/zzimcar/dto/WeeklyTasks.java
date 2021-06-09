@@ -14,14 +14,8 @@ public class WeeklyTasks {  // 리스트???
   private String departmentName;
   private List<MemberTaskDto> memberTasks;
 
-  public WeeklyTasks(String departmentName) {
+  public WeeklyTasks(String departmentName, List<MemberTaskDto> memberTasks) {
     this.departmentName = departmentName;
+    this.memberTasks = memberTasks;
   }
-}
-
-@Data
-class Task {
-  private LocalDate startAt;
-  private LocalDate dueAt;
-  private String content;
 }

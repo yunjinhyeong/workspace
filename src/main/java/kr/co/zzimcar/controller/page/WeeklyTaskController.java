@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Supplier;
 
 @Controller
@@ -56,13 +53,21 @@ public class WeeklyTaskController {
     System.out.println("list >>>>>>>>>>>2222222222222"+list);
 
 
-    List<TaskDto> tasks = taskDao.retrieveTasks();
-    System.out.println(tasks);
-    List<WeeklyTasks> weeklyTasks = new ArrayList<>();
 
-    tasks.forEach(task -> {
-      WeeklyTasks wt = weeklyTasks.stream().filter(t -> task.getMember().getDepartment().contains(t.getDepartmentName())).findFirst().orElse(new WeeklyTasks(task.getMember().getDepartment()));
 
+
+
+
+
+
+
+//    List<TaskDto> tasks = taskDao.retrieveTasks();
+//    System.out.println(tasks);
+//    List<WeeklyTasks> weeklyTasks = new ArrayList<>();
+//
+//    tasks.forEach(task -> {
+//      WeeklyTasks wt = weeklyTasks.stream().filter(t -> task.getMember().getDepartment().contains(t.getDepartmentName())).findFirst().orElse(new WeeklyTasks(task.getMember().getDepartment()));
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //      List<MemberTaskDto> memberTasks = wt.getMemberTasks();
 //      if (memberTasks == null) memberTasks = new ArrayList<>();
 //
@@ -70,11 +75,11 @@ public class WeeklyTaskController {
 //      memberTaskDto.setW1(memberTaskDto.getW1() + "\n" + task.getContent());
 //
 //      wt.setMemberTasks(memberTasks);
-      weeklyTasks.add(wt);
-    });
-
-    System.out.println(weeklyTasks);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      weeklyTasks.add(wt);
+//    });
 //
+//    System.out.println(weeklyTasks);
 //
 //
 //

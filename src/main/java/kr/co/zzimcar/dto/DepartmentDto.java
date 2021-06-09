@@ -1,4 +1,4 @@
-package kr.co.zzimcar.dto.member;
+package kr.co.zzimcar.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class MemberDto {
-
+public class DepartmentDto {
   private int pid;
   private String name;
-  private int departmentPid;
-  private String role;
-  private String pw;
-
-
 }
