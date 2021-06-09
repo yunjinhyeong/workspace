@@ -2,6 +2,7 @@ package kr.co.zzimcar.controller.page;
 
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.MemberTaskDto;
+import kr.co.zzimcar.dto.TaskTestForm;
 import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -52,7 +57,27 @@ public class WeeklyTaskController {
     }
     System.out.println("list >>>>>>>>>>>2222222222222"+list);
 
-
+    List<String> dateforsql = getWeekInMonths(yyyy,mm);    // 일단 1픽
+    List<LocalDate> dateconvert = new ArrayList<>();
+    try {
+      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+      for (int i = 0 ; i<dateforsql.size() ; i++) {
+        // String 타입을 Date 타입으로 변환
+        Date formatDate = dtFormat.parse(dateforsql.get(i));
+        // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+        String strNewDtFormat = newDtFormat.format(formatDate);
+        LocalDate date = LocalDate.parse(strNewDtFormat, DateTimeFormatter.ISO_DATE);
+        dateconvert.add(date);
+      }
+    }catch (ParseException e) {
+      e.printStackTrace();
+    }
+    System.out.println(dateconvert);
+    dateconvert.forEach(x -> {
+      System.out.println(x);
+    });
+//    TaskTestForm taskTestForm = taskDao.tasktestretrieve();
 
 
 
@@ -106,6 +131,49 @@ public class WeeklyTaskController {
 //    System.out.println(weekInfoDto);
 
     return weekInfoDto;
+  }
+
+  public static List<String> getWeekInMonths(int year, int month) {
+
+    List<String> result = new ArrayList<>();
+
+    Calendar cal = Calendar.getInstance();
+
+    cal.set(Calendar.YEAR, year);
+    cal.set(Calendar.MONTH, month - 1);
+
+    for (int week = 1; week < cal.getMaximum(Calendar.WEEK_OF_MONTH); week++) {
+      cal.set(Calendar.WEEK_OF_MONTH, week);
+
+      cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+      int startDay = cal.get(Calendar.DAY_OF_MONTH);
+
+      cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+      int endDay = cal.get(Calendar.DAY_OF_MONTH);
+
+      if (week == 1 && startDay >= 7) {
+        startDay = 1;
+      }
+
+      if (week == cal.getMaximum(Calendar.WEEK_OF_MONTH) - 1 && endDay <= 7) {
+        cal.set(Calendar.MONTH, month - 1);
+        endDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+      }
+
+      String monthR = Integer.toString(month);
+      String startDayR = Integer.toString(startDay);
+      String endDayR = Integer.toString(endDay);
+
+      if (month<10) monthR = "0"+monthR;
+      if (startDay<10) startDayR = "0"+startDayR;
+      if (endDay<10) endDayR = "0"+endDayR;
+
+      result.add(year+monthR+startDayR);
+      result.add(year+monthR+endDayR);
+
+      //      System.out.println(week + "주 : " + startDay + " ~ " + endDay);
+    }
+    return result;
   }
 
   public static int subWeekNumberIsFirstDayAfterThursday(int year, int month, int day)  {

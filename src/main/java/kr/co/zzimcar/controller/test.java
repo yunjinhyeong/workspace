@@ -41,21 +41,21 @@ import java.util.stream.Collectors;
     //    System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 
 
-//        List<String> result = getWeekInMonths(year,month);    // 일단 1픽
-//
-//        try {
-//          SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-//          SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
-//          for (int i = 0 ; i<result.size() ; i++) {
-//            // String 타입을 Date 타입으로 변환
-//            Date formatDate = dtFormat.parse(result.get(i));
-//            // Date타입의 변수를 새롭게 지정한 포맷으로 변환
-//            String strNewDtFormat = newDtFormat.format(formatDate);
-//            System.out.println(strNewDtFormat);
-//          }
-//        }catch (ParseException e) {
-//          e.printStackTrace();
-//        }
+        List<String> result = getWeekInMonths(year,month);    // 일단 1픽
+
+        try {
+          SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+          SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+          for (int i = 0 ; i<result.size() ; i++) {
+            // String 타입을 Date 타입으로 변환
+            Date formatDate = dtFormat.parse(result.get(i));
+            // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+            String strNewDtFormat = newDtFormat.format(formatDate);
+            System.out.println(strNewDtFormat);
+          }
+        }catch (ParseException e) {
+          e.printStackTrace();
+        }
 
 
     //    try {
@@ -111,81 +111,81 @@ import java.util.stream.Collectors;
     //    System.out.println("tMap : " + tMap);
     //    System.out.println("tMap.get(Seq) :" + tMap.get("Seq"));
 //////////////////////////// map note ///////////////////////////////
-    String testDay = "2021-06-09";
-    LocalDate date = LocalDate.parse(testDay, DateTimeFormatter.ISO_DATE);
-    System.out.println("date="+ date+ "입니다. type은 " +date.getClass().getName());
-
-    Map<String, List<Object>> map = new HashMap<>();
-    //    2단계
-    //// w 세팅
-    List<Task> w1 = new ArrayList<>();
-    List<Task> w2 = new ArrayList<>();
-    List<Task> w3 = new ArrayList<>();
-    List<Task> w4 = new ArrayList<>();
-    List<Task> w5 = new ArrayList<>();
-
-    List<Task> ww1 = new ArrayList<>();
-    List<Task> ww2 = new ArrayList<>();
-    List<Task> ww3 = new ArrayList<>();
-    List<Task> ww4 = new ArrayList<>();
-    List<Task> ww5 = new ArrayList<>();
-
-    LocalDate test2 = date.minusDays(2);
-    System.out.println("test2="+ test2+ "입니다. type은 " +test2.getClass().getName());
-    if (date.isAfter(test2)) {
-      System.out.println("이후입니다.");
-    }
-    if (date.isEqual(test2)) {
-      System.out.println("같습니다.");
-    }
-    if (date.isBefore(test2)) {
-      System.out.println("과거입니다.");
-    }
-
-    w1.add(new Task(date, date,"경영지원 내용1"));
-    w1.add(new Task(date, date,"경영지원 내용2"));
-    w1.add(new Task(date, date,"경영지원 내용3"));
-    w1.add(new Task(date, date,"경영지원 내용4"));
-    w1.add(new Task(date, date,"경영지원 내용5"));
-    w1.add(new Task(date, date,"경영지원 내용6"));
-    w1.add(new Task(date, date,"경영지원 내용7"));
-    w1.add(new Task(date, date,"경영지원 내용8"));
-    w1.add(new Task(date, date,"경영지원 내용9"));
-    w1.add(new Task(date, date,"경영지원 내용10"));
-
-    ww1.add(new Task(date, date,"개발팀 내용1"));
-    ww1.add(new Task(date, date,"개발팀 내용2"));
-    ww1.add(new Task(date, date,"개발팀 내용3"));
-    ww1.add(new Task(date, date,"개발팀 내용4"));
-    ww1.add(new Task(date, date,"개발팀 내용5"));
-    ww1.add(new Task(date, date,"개발팀 내용6"));
-    ww1.add(new Task(date, date,"개발팀 내용7"));
-    ww1.add(new Task(date, date,"개발팀 내용8"));
-    ww1.add(new Task(date, date,"개발팀 내용9"));
-    ww1.add(new Task(date, date,"개발팀 내용10"));
-
-
-    //// w 세팅 /
-    List<MemberTaskDto> operationTasksList = new ArrayList<>();
-    operationTasksList.add(new MemberTaskDto("임진숙", w1, w2, w3, w4));
-    operationTasksList.add(new MemberTaskDto("김영범", w1, w2, w3, w4));
-    operationTasksList.add(new MemberTaskDto("유승민", w1, w2, w3, w4));
-
-    List<MemberTaskDto> developTasksList = new ArrayList<>();
-    developTasksList.add(new MemberTaskDto("이욱세", ww1, ww2, ww3, ww4));
-    developTasksList.add(new MemberTaskDto("박혜미", ww1, ww2, ww3, ww4));
-    developTasksList.add(new MemberTaskDto("이정수", ww1, ww2, ww3, ww4));
-
-    List<Object> departmentList = new ArrayList<>();
-    departmentList.add(new WeeklyTasks("경영지원", operationTasksList));
-    departmentList.add(new WeeklyTasks("개발팀", developTasksList));
-
-    map.put("departmentList", departmentList);
-
-    //    map.put("memberTasksList", memberTasksList);
-
-
-    System.out.println(map);
+//    String testDay = "2021-06-09";
+//    LocalDate date = LocalDate.parse(testDay, DateTimeFormatter.ISO_DATE);
+//    System.out.println("date="+ date+ "입니다. type은 " +date.getClass().getName());
+//
+//    Map<String, List<WeeklyTasks>> map = new HashMap<>();
+//    //    2단계
+//    //// w 세팅
+//    List<Task> w1 = new ArrayList<>();
+//    List<Task> w2 = new ArrayList<>();
+//    List<Task> w3 = new ArrayList<>();
+//    List<Task> w4 = new ArrayList<>();
+//    List<Task> w5 = new ArrayList<>();
+//
+//    List<Task> ww1 = new ArrayList<>();
+//    List<Task> ww2 = new ArrayList<>();
+//    List<Task> ww3 = new ArrayList<>();
+//    List<Task> ww4 = new ArrayList<>();
+//    List<Task> ww5 = new ArrayList<>();
+//
+//    LocalDate test2 = date.minusDays(2);
+//    System.out.println("test2="+ test2+ "입니다. type은 " +test2.getClass().getName());
+//    if (date.isAfter(test2)) {
+//      System.out.println("이후입니다.");
+//    }
+//    if (date.isEqual(test2)) {
+//      System.out.println("같습니다.");
+//    }
+//    if (date.isBefore(test2)) {
+//      System.out.println("과거입니다.");
+//    }
+//
+//    w1.add(new Task(date, date,"경영지원 내용1"));
+//    w1.add(new Task(date, date,"경영지원 내용2"));
+//    w1.add(new Task(date, date,"경영지원 내용3"));
+//    w1.add(new Task(date, date,"경영지원 내용4"));
+//    w1.add(new Task(date, date,"경영지원 내용5"));
+//    w1.add(new Task(date, date,"경영지원 내용6"));
+//    w1.add(new Task(date, date,"경영지원 내용7"));
+//    w1.add(new Task(date, date,"경영지원 내용8"));
+//    w1.add(new Task(date, date,"경영지원 내용9"));
+//    w1.add(new Task(date, date,"경영지원 내용10"));
+//
+//    ww1.add(new Task(date, date,"개발팀 내용1"));
+//    ww1.add(new Task(date, date,"개발팀 내용2"));
+//    ww1.add(new Task(date, date,"개발팀 내용3"));
+//    ww1.add(new Task(date, date,"개발팀 내용4"));
+//    ww1.add(new Task(date, date,"개발팀 내용5"));
+//    ww1.add(new Task(date, date,"개발팀 내용6"));
+//    ww1.add(new Task(date, date,"개발팀 내용7"));
+//    ww1.add(new Task(date, date,"개발팀 내용8"));
+//    ww1.add(new Task(date, date,"개발팀 내용9"));
+//    ww1.add(new Task(date, date,"개발팀 내용10"));
+//
+//
+//    //// w 세팅 /
+//    List<MemberTaskDto> operationTasksList = new ArrayList<>();
+//    operationTasksList.add(new MemberTaskDto("임진숙", w1, w2, w3, w4));
+//    operationTasksList.add(new MemberTaskDto("김영범", w1, w2, w3, w4));
+//    operationTasksList.add(new MemberTaskDto("유승민", w1, w2, w3, w4));
+//
+//    List<MemberTaskDto> developTasksList = new ArrayList<>();
+//    developTasksList.add(new MemberTaskDto("이욱세", ww1, ww2, ww3, ww4));
+//    developTasksList.add(new MemberTaskDto("박혜미", ww1, ww2, ww3, ww4));
+//    developTasksList.add(new MemberTaskDto("이정수", ww1, ww2, ww3, ww4));
+//
+//    List<WeeklyTasks> departmentList = new ArrayList<>();
+//    departmentList.add(new WeeklyTasks("경영지원", operationTasksList));
+//    departmentList.add(new WeeklyTasks("개발팀", developTasksList));
+//
+//    map.put("departmentList", departmentList);
+//
+//    //    map.put("memberTasksList", memberTasksList);
+//
+//
+//    System.out.println(map);
 
 
 
