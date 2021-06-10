@@ -2,6 +2,8 @@ package kr.co.zzimcar.dao;
 
 import kr.co.zzimcar.dto.TaskTestForm;
 import kr.co.zzimcar.dto.WeeklyTasks;
+import kr.co.zzimcar.dto.department.DepartmentDto;
+import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
@@ -28,5 +30,7 @@ public interface TaskDao {
 
   List<TaskDto> retrieveTasks();
 
-  TaskTestForm tasktestretrieve(LocalDate startday, LocalDate dueday);
+  List<TaskTestForm> tasktestretrieve(String startday, String dueday);
+  List<MemberDto> memberInfo();
+  List<DepartmentDto> departmentInfo();
 }

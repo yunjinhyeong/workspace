@@ -151,14 +151,14 @@
       LEFT JOIN member m ON t.member_pid = m.pid;
   </select>
 
-  <select id="tasktestretrieve" resultType="TaskTestForm">
+  <select id="tasktestretrieve" resultType="TaskTestForm" parameterType="String">
     <![CDATA[
       select t.pid, d.name as department, m.name, t.start_at, t.due_at, t.content
       from workspace.task t left join workspace.member m on t.member_pid = m.pid
         left join workspace.department d on m.department_pid = d.pid
       where
-        (t.start_at >= #{startday} and t.start_at <= #{startday})
-        or (t.due_at >= #{dueday} and t.due_at <= #{dueday})
+        (t.start_at >= #{startday} and t.start_at <= #{dueday})
+        or (t.due_at >= #{startday} and t.due_at <= #{dueday})
         or (t.start_at <= #{startday} and t.due_at >= #{dueday})
         and t.type = '주간'
         and t.deleted_at IS NULL
@@ -166,6 +166,18 @@
     ]]>
   </select>
 
+  <select id="departmentInfo" resultType="departmentDto">
+    SELECT
+      *
+    FROM
+      workspace.department
+  </select>
 
+  <select id="memberInfo" resultType="memberDto">
+    SELECT
+      *
+    FROM
+      workspace.member
+  </select>
 
 </mapper>

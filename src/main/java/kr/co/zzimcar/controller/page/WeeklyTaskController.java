@@ -4,8 +4,11 @@ import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.MemberTaskDto;
 import kr.co.zzimcar.dto.TaskTestForm;
 import kr.co.zzimcar.dto.WeeklyTasks;
+import kr.co.zzimcar.dto.department.DepartmentDto;
+import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
+import kr.co.zzimcar.dto.task.Task;
 import kr.co.zzimcar.dto.task.TaskDto;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -57,14 +60,37 @@ public class WeeklyTaskController {
     }
     System.out.println("list >>>>>>>>>>>2222222222222"+list);
 
-    List<String> dateforsql = getWeekInMonths(yyyy,mm);    // 일단 1픽
+    // 기본 세팅들
+    Map<String, List<WeeklyTasks>> map = new HashMap<>();
+    List<Task> w1 = new ArrayList<>();
+    List<Task> w2 = new ArrayList<>();
+    List<Task> w3 = new ArrayList<>();
+    List<Task> w4 = new ArrayList<>();
+    List<Task> w5 = new ArrayList<>();
+    List<MemberTaskDto> tasksList = new ArrayList<>();
+    List<WeeklyTasks> departmentList = new ArrayList<>();
+
+    // 해당 월에 해당되는 데이터 뽑아오기
+    cal.set(yyyy,mm-1,1);
+    int dd = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    String month = mm<10 ? "0"+Integer.toString(mm) : Integer.toString(mm);
+    String day = dd<10 ? "0"+Integer.toString(dd) : Integer.toString(dd);
+    String startday = yyyy+"-"+month+"-01";
+    String dueday = yyyy+"-"+month+"-"+day;
+//    System.out.println(taskDao.tasktestretrieve(startday,dueday));
+    List<TaskTestForm> taskTestForm = taskDao.tasktestretrieve(startday,dueday);
+//    System.out.println(taskTestForm.get(1).getDueAt().getClass().getName());
+
+    // 각 주차별 시작일 끝일 구해 전체데이터 각 startAt dueAt이 그 범위에 부합하는지 비교후 세팅한다.
+    List<String> weekstartduepoint = getWeekInMonths(yyyy,mm);    // 일단 1픽
     List<LocalDate> dateconvert = new ArrayList<>();
+    SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     try {
-      SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-      SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
-      for (int i = 0 ; i<dateforsql.size() ; i++) {
+      for (int i = 0 ; i<weekstartduepoint.size() ; i++) {
         // String 타입을 Date 타입으로 변환
-        Date formatDate = dtFormat.parse(dateforsql.get(i));
+        Date formatDate = dtFormat.parse(weekstartduepoint.get(i));
         // Date타입의 변수를 새롭게 지정한 포맷으로 변환
         String strNewDtFormat = newDtFormat.format(formatDate);
         LocalDate date = LocalDate.parse(strNewDtFormat, DateTimeFormatter.ISO_DATE);
@@ -73,17 +99,97 @@ public class WeeklyTaskController {
     }catch (ParseException e) {
       e.printStackTrace();
     }
-    System.out.println(dateconvert);
-    dateconvert.forEach(x -> {
-      System.out.println(x);
+//    System.out.println(dateconvert);
+
+//    (startAt >= '2021-06-01' && startAt <= '2021-06-05') || (dueAt >= '2021-06-01' && dueAt <= '2021-06-05') || (startAt <= '2021-06-01' && dueAt >= '2021-06-05')
+
+    List<MemberDto> memberInfo = taskDao.memberInfo();
+    List<DepartmentDto> departmentInfo = taskDao.departmentInfo();
+
+
+
+    taskTestForm.forEach(task -> {
+      // 부서 몇개 체크
+      for (int d = 0; d < departmentInfo.size(); d++) {
+        tasksList.clear();
+        if (departmentInfo.get(d).getName().equals(task.getDepartment())) {
+
+          w1.clear();w2.clear();w3.clear();w4.clear(); w5.clear();
+          // 회원 몇명 체크
+          for (int m = 0; m < memberInfo.size(); m++) {
+            if (memberInfo.get(m).getName().equals(task.getName())) {
+              // 주차별 데이터 조건 비교
+              for (int i = 0; i < dateconvert.size(); i += 2) {
+                if (((task.getStartAt().isAfter(dateconvert.get(i)) || task.getStartAt().isEqual(dateconvert.get(i))) && (task.getStartAt().isBefore(dateconvert.get(i + 1)) || task.getStartAt().isEqual(dateconvert.get(i + 1)))) ||
+                  ((task.getDueAt().isAfter(dateconvert.get(i)) || task.getDueAt().isEqual(dateconvert.get(i))) && (task.getDueAt().isBefore(dateconvert.get(i + 1)) || task.getDueAt().isEqual(dateconvert.get(i + 1)))) ||
+                  ((task.getStartAt().isBefore(dateconvert.get(i)) || task.getStartAt().isEqual(dateconvert.get(i))) && (task.getDueAt().isAfter(dateconvert.get(i + 1)) || task.getDueAt().isEqual(dateconvert.get(i + 1))))) {
+                  if (i == 0) w1.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
+                  if (i == 2) w2.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
+                  if (i == 4) w3.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
+                  if (i == 6) w4.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
+                  if (i == 8) w5.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
+                }
+              }
+              System.out.println("///////// 1111 ///////////");
+              System.out.println(w1);
+              System.out.println(w2);
+              System.out.println(w3);
+              System.out.println(w4);
+              System.out.println(w5);
+              System.out.println(memberInfo.get(m).getName());
+              System.out.println(task.getName());
+              tasksList.add(new MemberTaskDto(memberInfo.get(m).getName(), w1, w2, w3, w4, w5));
+              System.out.println("////////// 1111  //////////");
+              //              departmentList.add(new WeeklyTasks(task.getDepartment(), tasksList));
+            }
+          }
+          System.out.println(tasksList);
+        }
+      }
     });
-//    TaskTestForm taskTestForm = taskDao.tasktestretrieve();
+
+
+//    departmentList.add(new WeeklyTasks(task.getDepartment(), tasksList));
+//    map.put("departmentList", departmentList);
+//    System.out.println(map);
+//
+//
+
+//    int w1c = 0;
+//    for (int i=0 ; i<w1.size() ; i++) {
+//      w1c++;
+//    }
+//    int w2c = 0;
+//    for (int i=0 ; i<w2.size() ; i++) {
+//      w2c++;
+//    }
+//    int w3c = 0;
+//    for (int i=0 ; i<w3.size() ; i++) {
+//      w3c++;
+//    }
+//    int w4c = 0;
+//    for (int i=0 ; i<w4.size() ; i++) {
+//      w4c++;
+//    }
+//    int w5c = 0;
+//    for (int i=0 ; i<w5.size() ; i++) {
+//      w5c++;
+//    }
+//    System.out.println("w1c = "+w1c);
+//    System.out.println("w2c = "+w2c);
+//    System.out.println("w3c = "+w3c);
+//    System.out.println("w4c = "+w4c);
+//    System.out.println("w5c = "+w5c);
 
 
 
 
 
 
+
+
+
+    //    TaskTestForm taskTestForm = taskDao.tasktestretrieve();
 
 
 //    List<TaskDto> tasks = taskDao.retrieveTasks();

@@ -28,6 +28,34 @@ import java.util.stream.Collectors;
     int count = 0;
     int month = 6;
     int year = 2021;
+
+    List<String> test = new ArrayList<>();
+    if (test.size() != 0) {
+      System.out.println("test size가 0이 아닙니다. 뜨면안됩니다.");
+    }
+    test.add("가");
+    test.add("나");
+    if (test.size() != 0) {
+      System.out.println("가와 나를 넣었습니다. 떠야됩니다.");
+    }
+    test.clear();
+    if (test.size() != 0) {
+      System.out.println("test size가 0이 아닙니다. 뜨면안됩니다.");
+    }
+
+//    LocalDate ldt1 = LocalDate.of(2019, 4, 10);
+//    LocalDate ldt2 = LocalDate.of(2019, 4, 9);
+//
+//    if (ldt1.isAfter(ldt2)) {
+//      System.out.println("크다고 성립");
+//    }
+//    if (ldt1.isEqual(ldt2)) {
+//      System.out.println("같다고 성립");
+//    }
+//    if (ldt1.isBefore(ldt2)) {
+//      System.out.println("작다고 성립");
+//    }
+    
     //    Calendar cal = Calendar.getInstance();
     //    cal.set(year,month-1,1);
     ////    System.out.println("디테일"+getCurrentWeekOfMonth(2021,6,20));
@@ -41,21 +69,21 @@ import java.util.stream.Collectors;
     //    System.out.println("라"+getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 
 
-        List<String> result = getWeekInMonths(year,month);    // 일단 1픽
-
-        try {
-          SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-          SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
-          for (int i = 0 ; i<result.size() ; i++) {
-            // String 타입을 Date 타입으로 변환
-            Date formatDate = dtFormat.parse(result.get(i));
-            // Date타입의 변수를 새롭게 지정한 포맷으로 변환
-            String strNewDtFormat = newDtFormat.format(formatDate);
-            System.out.println(strNewDtFormat);
-          }
-        }catch (ParseException e) {
-          e.printStackTrace();
-        }
+//        List<String> result = getWeekInMonths(year,month);    // 일단 1픽
+//
+//        try {
+//          SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+//          SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+//          for (int i = 0 ; i<result.size() ; i++) {
+//            // String 타입을 Date 타입으로 변환
+//            Date formatDate = dtFormat.parse(result.get(i));
+//            // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+//            String strNewDtFormat = newDtFormat.format(formatDate);
+//            System.out.println(strNewDtFormat);
+//          }
+//        }catch (ParseException e) {
+//          e.printStackTrace();
+//        }
 
 
     //    try {
