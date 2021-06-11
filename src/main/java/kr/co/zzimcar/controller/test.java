@@ -29,19 +29,20 @@ import java.util.stream.Collectors;
     int month = 6;
     int year = 2021;
 
-    List<String> test = new ArrayList<>();
-    if (test.size() != 0) {
-      System.out.println("test size가 0이 아닙니다. 뜨면안됩니다.");
-    }
-    test.add("가");
-    test.add("나");
-    if (test.size() != 0) {
-      System.out.println("가와 나를 넣었습니다. 떠야됩니다.");
-    }
-    test.clear();
-    if (test.size() != 0) {
-      System.out.println("test size가 0이 아닙니다. 뜨면안됩니다.");
-    }
+
+//    List<String> test = new ArrayList<>();
+//    if (test.size() != 0) {
+//      System.out.println("test size가 0이 아닙니다. 뜨면안됩니다.");
+//    }
+//    test.add("가");
+//    test.add("나");
+//    if (test.size() != 0) {
+//      System.out.println("가와 나를 넣었습니다. 떠야됩니다.");
+//    }
+//    test.clear();
+//    if (test.size() != 0) {
+//      System.out.println("test size가 0이 아닙니다. 뜨면안됩니다.");
+//    }
 
 //    LocalDate ldt1 = LocalDate.of(2019, 4, 10);
 //    LocalDate ldt2 = LocalDate.of(2019, 4, 9);

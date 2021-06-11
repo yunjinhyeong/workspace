@@ -107,46 +107,52 @@ public class WeeklyTaskController {
     List<DepartmentDto> departmentInfo = taskDao.departmentInfo();
 
 
-
-    taskTestForm.forEach(task -> {
-      // 부서 몇개 체크
-      for (int d = 0; d < departmentInfo.size(); d++) {
-        tasksList.clear();
-        if (departmentInfo.get(d).getName().equals(task.getDepartment())) {
-
-          w1.clear();w2.clear();w3.clear();w4.clear(); w5.clear();
-          // 회원 몇명 체크
-          for (int m = 0; m < memberInfo.size(); m++) {
-            if (memberInfo.get(m).getName().equals(task.getName())) {
-              // 주차별 데이터 조건 비교
-              for (int i = 0; i < dateconvert.size(); i += 2) {
-                if (((task.getStartAt().isAfter(dateconvert.get(i)) || task.getStartAt().isEqual(dateconvert.get(i))) && (task.getStartAt().isBefore(dateconvert.get(i + 1)) || task.getStartAt().isEqual(dateconvert.get(i + 1)))) ||
-                  ((task.getDueAt().isAfter(dateconvert.get(i)) || task.getDueAt().isEqual(dateconvert.get(i))) && (task.getDueAt().isBefore(dateconvert.get(i + 1)) || task.getDueAt().isEqual(dateconvert.get(i + 1)))) ||
-                  ((task.getStartAt().isBefore(dateconvert.get(i)) || task.getStartAt().isEqual(dateconvert.get(i))) && (task.getDueAt().isAfter(dateconvert.get(i + 1)) || task.getDueAt().isEqual(dateconvert.get(i + 1))))) {
-                  if (i == 0) w1.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
-                  if (i == 2) w2.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
-                  if (i == 4) w3.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
-                  if (i == 6) w4.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
-                  if (i == 8) w5.add(new Task(task.getStartAt(), task.getDueAt(), task.getContent()));
-                }
-              }
-              System.out.println("///////// 1111 ///////////");
-              System.out.println(w1);
-              System.out.println(w2);
-              System.out.println(w3);
-              System.out.println(w4);
-              System.out.println(w5);
-              System.out.println(memberInfo.get(m).getName());
-              System.out.println(task.getName());
-              tasksList.add(new MemberTaskDto(memberInfo.get(m).getName(), w1, w2, w3, w4, w5));
-              System.out.println("////////// 1111  //////////");
-              //              departmentList.add(new WeeklyTasks(task.getDepartment(), tasksList));
-            }
-          }
-          System.out.println(tasksList);
+    for (int t=0 ; t<taskTestForm.size()-1 ; t++) {
+      int lastIndex = t+2;
+      int size = taskTestForm.size();
+      for (int i = 0; i < dateconvert.size(); i += 2) {
+        if (((taskTestForm.get(t).getStartAt().isAfter(dateconvert.get(i)) || taskTestForm.get(t).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(t).getStartAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(t).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
+          ((taskTestForm.get(t).getDueAt().isAfter(dateconvert.get(i)) || taskTestForm.get(t).getDueAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(t).getDueAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(t).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
+          ((taskTestForm.get(t).getStartAt().isBefore(dateconvert.get(i)) || taskTestForm.get(t).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(t).getDueAt().isAfter(dateconvert.get(i + 1)) || taskTestForm.get(t).getDueAt().isEqual(dateconvert.get(i + 1))))) {
+          if (i == 0) w1.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
+          if (i == 2) w2.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
+          if (i == 4) w3.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
+          if (i == 6) w4.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
+          if (i == 8) w5.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
         }
       }
-    });
+      if (!taskTestForm.get(t).getName().equals(taskTestForm.get(t+1).getName())) { //  || (t+1) == taskTestForm.size()
+        tasksList.add(new MemberTaskDto(taskTestForm.get(t).getName(), w1, w2, w3, w4, w5));
+        w1=new ArrayList<>();w2=new ArrayList<>();w3=new ArrayList<>();w4=new ArrayList<>();w5=new ArrayList<>();
+        if (!taskTestForm.get(t).getDepartment().equals(taskTestForm.get(t+1).getDepartment())) {
+          departmentList.add(new WeeklyTasks(taskTestForm.get(t).getDepartment(), tasksList));
+          tasksList=new ArrayList<>();
+        }
+      }
+      if (lastIndex==size) {
+        for (int i = 0; i < dateconvert.size(); i += 2) {
+          if (((taskTestForm.get(size-1).getStartAt().isAfter(dateconvert.get(i)) || taskTestForm.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(size-1).getStartAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(size-1).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
+            ((taskTestForm.get(size-1).getDueAt().isAfter(dateconvert.get(i)) || taskTestForm.get(size-1).getDueAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(size-1).getDueAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
+            ((taskTestForm.get(size-1).getStartAt().isBefore(dateconvert.get(i)) || taskTestForm.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(size-1).getDueAt().isAfter(dateconvert.get(i + 1)) || taskTestForm.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1))))) {
+            if (i == 0) w1.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
+            if (i == 2) w2.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
+            if (i == 4) w3.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
+            if (i == 6) w4.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
+            if (i == 8) w5.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
+          }
+        }
+        tasksList.add(new MemberTaskDto(taskTestForm.get(size-1).getName(), w1, w2, w3, w4, w5));
+        w1=new ArrayList<>();w2=new ArrayList<>();w3=new ArrayList<>();w4=new ArrayList<>();w5=new ArrayList<>();
+        departmentList.add(new WeeklyTasks(taskTestForm.get(size-1).getDepartment(), tasksList));
+        tasksList=new ArrayList<>();
+      }
+    }
+    map.put("departmentList", departmentList);
+    System.out.println(departmentList);
+    weekInfoDto.setItems(map);
+
+
+
 
 
 //    departmentList.add(new WeeklyTasks(task.getDepartment(), tasksList));

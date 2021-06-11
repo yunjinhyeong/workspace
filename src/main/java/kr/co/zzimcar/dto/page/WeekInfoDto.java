@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
@@ -17,5 +18,5 @@ import java.util.List;
 public class WeekInfoDto {
   private int weekcount;
   private List<DrawWeekWorkDto> list;
-  private List<WeeklyTasks> items;
+  private Map<String, List<WeeklyTasks>> items;
 }

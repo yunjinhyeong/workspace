@@ -105,6 +105,7 @@ function getWeek() {
       mm: mm
     },
     success: function (rs) {
+      console.log(rs.items);
       console.log('rs.weekcount = '+rs.weekcount);
 
       var sampleList = [{
@@ -268,8 +269,11 @@ function getWeek() {
       }]
 
       // drawweek(rs.weekcount, rs.list);
-      drawSample(rs.weekcount, sampleList);
-      console.log(rs.list);
+      console.log('1');
+      console.log(JSON.stringify(rs.items));
+      console.log('2');
+      console.log(rs.items);
+      drawSample(rs.weekcount, JSON.stringify(rs.items));
     }
   });
 }
@@ -285,168 +289,178 @@ function drawSample(count, list) {
 
   let row = '';
 
-  list.forEach(weeklyTasks => {
+  var list2 = JSON.parse(list);
+  console.log(list2.departmentList);
 
-    let ww = '';
-    // var w1 ='';
-    // var w2 ='';
-    // var w3 ='';
-    // var w4 ='';
-    // var w5 ='';
-
-    // let iterator = Object.keys(weeklyTasks.memberTasks[0]);
-    // iterator.forEach(key => {
-    //   let temp = weeklyTasks.memberTasks[0][key];
-    //   key += `
-    //       <p>
-    //         startAt: ${temp.startAt}<br />
-    //         dueAt: ${temp.dueAt}<br />
-    //         content: ${temp.content}
-    //       </p>
-    //     `;
-    //   });
-
-    for (let i=1 ; i<=count ; i++) {
-      ww += `<td class="align-middle text-center">`
-      weeklyTasks.memberTasks[0]['w'+i].forEach(task => {
-        ww += `
-            <p>
-              startAt: ${task.startAt}<br />
-              dueAt: ${task.dueAt}<br />
-              content: ${task.content}
-            </p>
-        `;
-      });
-      ww += `</td>`
-    }
-
-
-    // weeklyTasks.memberTasks[0].w1.forEach(task => {
-    //   w1 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // });
-    // weeklyTasks.memberTasks[0].w2.forEach(task => {
-    //   w2 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // })
-    // weeklyTasks.memberTasks[0].w3.forEach(task => {
-    //   w3 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // })
-    // weeklyTasks.memberTasks[0].w4.forEach(task => {
-    //   w4 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // })
-    //
-    // row += `
-    //   <tr>
-    //     <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-    //     <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-    //     <td class="align-middle text-center">${w1}</td>
-    //     <td class="align-middle text-center">${w2}</td>
-    //     <td class="align-middle text-center">${w3}</td>
-    //     <td class="align-middle text-center">${w4}</td>
-    //
-    //   </tr>
-    // `;
-
-    row += `
-      <tr>
-        <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-        <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-        ${ww}
-      </tr>
-    `;
-
-    for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
-      let ww = '';
-      var w1 ='';
-      var w2 ='';
-      var w3 ='';
-      var w4 ='';
-
-
-
-      for (let i=1 ; i<=count ; i++) {
-        ww += `<td class="align-middle text-center">`
-        weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
-          ww += `
-            <p>
-              startAt: ${task.startAt}<br />
-              dueAt: ${task.dueAt}<br />
-              content: ${task.content}
-            </p>
-        `;
-        });
-        ww += `</td>`
-      }
-
-
-      // weeklyTasks.memberTasks[idx].w1.forEach(task => {
-      //   w1 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // });
-      // weeklyTasks.memberTasks[idx].w2.forEach(task => {
-      //   w2 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // })
-      // weeklyTasks.memberTasks[idx].w3.forEach(task => {
-      //   w3 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // })
-      // weeklyTasks.memberTasks[idx].w4.forEach(task => {
-      //   w4 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // })
-
-      row += `
-        <tr>
-          <td class="align-middle text-center">${weeklyTasks.memberTasks[idx].name}</td>
-          ${ww}
-        </tr>
-      `;
-    }
+  list2.departmentList.forEach(d => {
+    console.log(d.departmentName);
+    d.memberTasks.forEach(m => {
+      console.log(m.name);
+    });
   });
+
+  // list.forEach(weeklyTasks => {
+  //
+  //   let ww = '';
+  //   // var w1 ='';
+  //   // var w2 ='';
+  //   // var w3 ='';
+  //   // var w4 ='';
+  //   // var w5 ='';
+  //
+  //   // let iterator = Object.keys(weeklyTasks.memberTasks[0]);
+  //   // iterator.forEach(key => {
+  //   //   let temp = weeklyTasks.memberTasks[0][key];
+  //   //   key += `
+  //   //       <p>
+  //   //         startAt: ${temp.startAt}<br />
+  //   //         dueAt: ${temp.dueAt}<br />
+  //   //         content: ${temp.content}
+  //   //       </p>
+  //   //     `;
+  //   //   });
+  //
+  //   for (let i=1 ; i<=count ; i++) {
+  //     ww += `<td class="align-middle text-center">`
+  //     weeklyTasks.memberTasks[0]['w'+i].forEach(task => {
+  //       ww += `
+  //           <p>
+  //             startAt: ${task.startAt}<br />
+  //             dueAt: ${task.dueAt}<br />
+  //             content: ${task.content}
+  //           </p>
+  //       `;
+  //     });
+  //     ww += `</td>`
+  //   }
+  //
+  //
+  //   // weeklyTasks.memberTasks[0].w1.forEach(task => {
+  //   //   w1 += `
+  //   //       <p>
+  //   //         startAt: ${task.startAt}<br />
+  //   //         dueAt: ${task.dueAt}<br />
+  //   //         content: ${task.content}
+  //   //       </p>
+  //   //     `;
+  //   // });
+  //   // weeklyTasks.memberTasks[0].w2.forEach(task => {
+  //   //   w2 += `
+  //   //       <p>
+  //   //         startAt: ${task.startAt}<br />
+  //   //         dueAt: ${task.dueAt}<br />
+  //   //         content: ${task.content}
+  //   //       </p>
+  //   //     `;
+  //   // })
+  //   // weeklyTasks.memberTasks[0].w3.forEach(task => {
+  //   //   w3 += `
+  //   //       <p>
+  //   //         startAt: ${task.startAt}<br />
+  //   //         dueAt: ${task.dueAt}<br />
+  //   //         content: ${task.content}
+  //   //       </p>
+  //   //     `;
+  //   // })
+  //   // weeklyTasks.memberTasks[0].w4.forEach(task => {
+  //   //   w4 += `
+  //   //       <p>
+  //   //         startAt: ${task.startAt}<br />
+  //   //         dueAt: ${task.dueAt}<br />
+  //   //         content: ${task.content}
+  //   //       </p>
+  //   //     `;
+  //   // })
+  //   //
+  //   // row += `
+  //   //   <tr>
+  //   //     <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
+  //   //     <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
+  //   //     <td class="align-middle text-center">${w1}</td>
+  //   //     <td class="align-middle text-center">${w2}</td>
+  //   //     <td class="align-middle text-center">${w3}</td>
+  //   //     <td class="align-middle text-center">${w4}</td>
+  //   //
+  //   //   </tr>
+  //   // `;
+  //
+  //   row += `
+  //     <tr>
+  //       <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
+  //       <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
+  //       ${ww}
+  //     </tr>
+  //   `;
+  //
+  //   for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
+  //     let ww = '';
+  //     var w1 ='';
+  //     var w2 ='';
+  //     var w3 ='';
+  //     var w4 ='';
+  //
+  //
+  //
+  //     for (let i=1 ; i<=count ; i++) {
+  //       ww += `<td class="align-middle text-center">`
+  //       weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
+  //         ww += `
+  //           <p>
+  //             startAt: ${task.startAt}<br />
+  //             dueAt: ${task.dueAt}<br />
+  //             content: ${task.content}
+  //           </p>
+  //       `;
+  //       });
+  //       ww += `</td>`
+  //     }
+  //
+  //
+  //     // weeklyTasks.memberTasks[idx].w1.forEach(task => {
+  //     //   w1 += `
+  //     //     <p>
+  //     //       startAt: ${task.startAt}<br />
+  //     //       dueAt: ${task.dueAt}<br />
+  //     //       content: ${task.content}
+  //     //     </p>
+  //     //   `;
+  //     // });
+  //     // weeklyTasks.memberTasks[idx].w2.forEach(task => {
+  //     //   w2 += `
+  //     //     <p>
+  //     //       startAt: ${task.startAt}<br />
+  //     //       dueAt: ${task.dueAt}<br />
+  //     //       content: ${task.content}
+  //     //     </p>
+  //     //   `;
+  //     // })
+  //     // weeklyTasks.memberTasks[idx].w3.forEach(task => {
+  //     //   w3 += `
+  //     //     <p>
+  //     //       startAt: ${task.startAt}<br />
+  //     //       dueAt: ${task.dueAt}<br />
+  //     //       content: ${task.content}
+  //     //     </p>
+  //     //   `;
+  //     // })
+  //     // weeklyTasks.memberTasks[idx].w4.forEach(task => {
+  //     //   w4 += `
+  //     //     <p>
+  //     //       startAt: ${task.startAt}<br />
+  //     //       dueAt: ${task.dueAt}<br />
+  //     //       content: ${task.content}
+  //     //     </p>
+  //     //   `;
+  //     // })
+  //
+  //     row += `
+  //       <tr>
+  //         <td class="align-middle text-center">${weeklyTasks.memberTasks[idx].name}</td>
+  //         ${ww}
+  //       </tr>
+  //     `;
+  //   }
+  // });
 
   $('#task_body').append(row);
 
