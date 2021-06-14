@@ -269,11 +269,8 @@ function getWeek() {
       }]
 
       // drawweek(rs.weekcount, rs.list);
-      console.log('1');
-      console.log(JSON.stringify(rs.items));
-      console.log('2');
-      console.log(rs.items);
-      drawSample(rs.weekcount, JSON.stringify(rs.items));
+
+      drawSample(rs.weekcount, rs.items);
     }
   });
 }
