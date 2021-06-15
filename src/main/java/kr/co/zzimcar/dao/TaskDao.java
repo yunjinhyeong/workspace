@@ -1,6 +1,7 @@
 package kr.co.zzimcar.dao;
 
 import kr.co.zzimcar.dto.TaskTestForm;
+import kr.co.zzimcar.dto.ViewContentDto;
 import kr.co.zzimcar.dto.department.DepartmentDto;
 import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
@@ -30,4 +31,7 @@ public interface TaskDao {
   List<TaskTestForm> tasktestretrieve(String startday, String dueday);
   List<MemberDto> memberInfo();
   List<DepartmentDto> departmentInfo();
+
+  ViewContentDto viewContent(int pid);
+  void updateTask(ViewContentDto viewContentDto);
 }

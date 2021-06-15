@@ -180,4 +180,23 @@
       workspace.member
   </select>
 
+  <select id="viewContent" resultType="viewContentDto">
+    select t.pid, d.name as department, m.name, t.type, t.state, t.priority, t.title, t.content, t.start_at, t.due_at
+    from workspace.task t left join workspace.member m on t.member_pid = m.pid
+                          left join workspace.department d on m.department_pid = d.pid
+    where
+      t.pid = #{pid}
+      and t.type = '주간'
+      and t.deleted_at IS NULL;
+  </select>
+
+  <update id="updateTask" parameterType="viewContentDto">
+    UPDATE workspace.task t SET
+      t.title = #{title}, t.content = #{content}, t.state = #{state}, t.priority = #{priority}, t.start_at = #{startAt}, t.due_at = #{dueAt}
+    WHERE
+      t.pid = #{pid}
+      AND t.type = #{type}
+      AND deleted_at IS NULL;
+  </update>
+
 </mapper>

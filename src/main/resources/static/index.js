@@ -322,8 +322,7 @@ function drawSample(count, list) {
         ww += `<ul class="main">
                   <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
                     <ul class="sub">
-                      <li><a href="#">수정하러가기</a></li>
-                      <li><a href="#">상세보기</a></li>
+                      <li onclick="window.open('/week/viewContent?pid=${task.pid}', '글 수정하기', 'width=1000,height=1000')";>상세보기</li>
                     </ul>    
                   </li>                
                 </ul>`;
@@ -382,10 +381,18 @@ function drawSample(count, list) {
     // `;
 
     row += `
-      <tr class="swich">
-        <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-        <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-        ${ww}
+      <tr class="swich test1">
+        <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center" style="width: 100px">${weeklyTasks.departmentName}</td>
+        <td class="align-middle" style="width: 100px">
+            <ul class="main" style="margin:auto;">
+              <li style="background-color:#fff;"><div>${weeklyTasks.memberTasks[0].name}</div>
+                <ul class="sub">
+                  <li onclick="window.open('/week/viewContent?pid=2', '글 수정하기', 'width=1000,height=1000')";>업무등록하기</li>                      
+                </ul>    
+              </li>                
+            </ul>
+          </td>
+          ${ww}
       </tr>
     `;
 
@@ -399,8 +406,7 @@ function drawSample(count, list) {
           ww += `<ul class="main">
                   <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
                     <ul class="sub">
-                      <li><a href="#">수정하러가기</a></li>
-                      <li><a href="#">상세보기</a></li>
+                      <li onclick="window.open('/week/viewContent?pid=${task.pid}', '글 수정하기', 'width=1000,height=1000')";>상세보기</li>                      
                     </ul>    
                   </li>                
                 </ul>`;
@@ -446,9 +452,19 @@ function drawSample(count, list) {
       //   `;
       // })
 
+
+
       row += `
         <tr class="swich">
-          <td class="align-middle text-center">${weeklyTasks.memberTasks[idx].name}</td>
+          <td class="align-middle text-center">
+            <ul class="main" style="margin:auto;">
+              <li style="background-color:#fff;"><div>${weeklyTasks.memberTasks[idx].name}</div>
+                <ul class="sub">
+                  <li onclick="window.open('/week/viewContent?pid=2', '글 수정하기', 'width=1000,height=1000')";>업무등록하기</li>                      
+                </ul>    
+              </li>                
+            </ul>
+          </td>
           ${ww}
         </tr>
       `;

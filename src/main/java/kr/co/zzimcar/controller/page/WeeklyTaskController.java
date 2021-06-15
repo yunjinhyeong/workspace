@@ -3,6 +3,7 @@ package kr.co.zzimcar.controller.page;
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.MemberTaskDto;
 import kr.co.zzimcar.dto.TaskTestForm;
+import kr.co.zzimcar.dto.ViewContentDto;
 import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.department.DepartmentDto;
 import kr.co.zzimcar.dto.member.MemberDto;
@@ -12,9 +13,12 @@ import kr.co.zzimcar.dto.task.Task;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -146,9 +150,6 @@ public class WeeklyTaskController {
     map.put("departmentList", departmentList);
     System.out.println("map은"+map);
     weekInfoDto.setItems(map);
-
-
-
 
 
 //    departmentList.add(new WeeklyTasks(task.getDepartment(), tasksList));
@@ -384,5 +385,28 @@ public class WeeklyTaskController {
     int dayOfWeekForFirstDayOfMonth = calendar.get(Calendar.WEEK_OF_MONTH) - subtractFirstWeekNumber;
 
     return calendar.get(Calendar.MONTH) + 1;
+  }
+
+  @GetMapping("viewContent")
+  public String viewContent(Model model, int pid) {
+    ViewContentDto item = taskDao.viewContent(pid);
+    model.addAttribute("item",item);
+    return "viewContent";
+  }
+
+  @GetMapping("updateTask")
+  public String updateTask(Model model, int pid) {
+    ViewContentDto item = taskDao.viewContent(pid);
+    model.addAttribute("item",item);
+    return "updateTask";
+  }
+
+  @PostMapping("updateTask")
+  public ModelAndView updateTask(ViewContentDto viewContentDto) {
+    taskDao.updateTask(viewContentDto);
+    int pid = viewContentDto.getPid();
+    ModelAndView mav = new ModelAndView();
+    mav.setViewName("redirect:/week/viewContent?pid="+pid);
+    return mav;
   }
 }
