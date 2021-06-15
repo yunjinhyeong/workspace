@@ -1,17 +1,14 @@
 package kr.co.zzimcar.dao;
 
 import kr.co.zzimcar.dto.TaskTestForm;
-import kr.co.zzimcar.dto.WeeklyTasks;
 import kr.co.zzimcar.dto.department.DepartmentDto;
 import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
-import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
 import kr.co.zzimcar.dto.task.TaskDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository

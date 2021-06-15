@@ -30,7 +30,7 @@ public class TaskDto {
   private LocalDateTime deletedAt;
 
   private MemberDto member;
-  
+
   public TaskDto(TaskReqDto taskReqDto) { // memberPid 여기서?
     this.memberPid = taskReqDto.getMemberPid();
     this.type = taskReqDto.getType();

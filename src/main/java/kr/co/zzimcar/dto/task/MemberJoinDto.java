@@ -1,7 +1,5 @@
 package kr.co.zzimcar.dto.task;
 
-import kr.co.zzimcar.dto.task.TaskDto;
-import kr.co.zzimcar.dto.task.TaskResDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

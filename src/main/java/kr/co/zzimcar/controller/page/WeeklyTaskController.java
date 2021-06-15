@@ -9,7 +9,6 @@ import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.Task;
-import kr.co.zzimcar.dto.task.TaskDto;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Supplier;
 
 @Controller
 @RequiredArgsConstructor
@@ -79,6 +77,7 @@ public class WeeklyTaskController {
     String dueday = yyyy+"-"+month+"-"+day;
 //    System.out.println(taskDao.tasktestretrieve(startday,dueday));
     List<TaskTestForm> taskTestForm = taskDao.tasktestretrieve(startday,dueday);
+
 //    System.out.println(taskTestForm.get(1).getDueAt().getClass().getName());
 
     // 각 주차별 시작일 끝일 구해 전체데이터 각 startAt dueAt이 그 범위에 부합하는지 비교후 세팅한다.
@@ -103,9 +102,6 @@ public class WeeklyTaskController {
 
 //    (startAt >= '2021-06-01' && startAt <= '2021-06-05') || (dueAt >= '2021-06-01' && dueAt <= '2021-06-05') || (startAt <= '2021-06-01' && dueAt >= '2021-06-05')
 
-    List<MemberDto> memberInfo = taskDao.memberInfo();
-    List<DepartmentDto> departmentInfo = taskDao.departmentInfo();
-
 
     for (int t=0 ; t<taskTestForm.size()-1 ; t++) {
       int lastIndex = t+2;
@@ -114,11 +110,11 @@ public class WeeklyTaskController {
         if (((taskTestForm.get(t).getStartAt().isAfter(dateconvert.get(i)) || taskTestForm.get(t).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(t).getStartAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(t).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
           ((taskTestForm.get(t).getDueAt().isAfter(dateconvert.get(i)) || taskTestForm.get(t).getDueAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(t).getDueAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(t).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
           ((taskTestForm.get(t).getStartAt().isBefore(dateconvert.get(i)) || taskTestForm.get(t).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(t).getDueAt().isAfter(dateconvert.get(i + 1)) || taskTestForm.get(t).getDueAt().isEqual(dateconvert.get(i + 1))))) {
-          if (i == 0) w1.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
-          if (i == 2) w2.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
-          if (i == 4) w3.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
-          if (i == 6) w4.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
-          if (i == 8) w5.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent()));
+          if (i == 0) w1.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent(), taskTestForm.get(t).getPid()));
+          if (i == 2) w2.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent(), taskTestForm.get(t).getPid()));
+          if (i == 4) w3.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent(), taskTestForm.get(t).getPid()));
+          if (i == 6) w4.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent(), taskTestForm.get(t).getPid()));
+          if (i == 8) w5.add(new Task(taskTestForm.get(t).getStartAt(), taskTestForm.get(t).getDueAt(), taskTestForm.get(t).getContent(), taskTestForm.get(t).getPid()));
         }
       }
       if (!taskTestForm.get(t).getName().equals(taskTestForm.get(t+1).getName())) { //  || (t+1) == taskTestForm.size()
@@ -134,11 +130,11 @@ public class WeeklyTaskController {
           if (((taskTestForm.get(size-1).getStartAt().isAfter(dateconvert.get(i)) || taskTestForm.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(size-1).getStartAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(size-1).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
             ((taskTestForm.get(size-1).getDueAt().isAfter(dateconvert.get(i)) || taskTestForm.get(size-1).getDueAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(size-1).getDueAt().isBefore(dateconvert.get(i + 1)) || taskTestForm.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
             ((taskTestForm.get(size-1).getStartAt().isBefore(dateconvert.get(i)) || taskTestForm.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (taskTestForm.get(size-1).getDueAt().isAfter(dateconvert.get(i + 1)) || taskTestForm.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1))))) {
-            if (i == 0) w1.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
-            if (i == 2) w2.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
-            if (i == 4) w3.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
-            if (i == 6) w4.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
-            if (i == 8) w5.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent()));
+            if (i == 0) w1.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent(), taskTestForm.get(size-1).getPid()));
+            if (i == 2) w2.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent(), taskTestForm.get(size-1).getPid()));
+            if (i == 4) w3.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent(), taskTestForm.get(size-1).getPid()));
+            if (i == 6) w4.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent(), taskTestForm.get(size-1).getPid()));
+            if (i == 8) w5.add(new Task(taskTestForm.get(size-1).getStartAt(), taskTestForm.get(size-1).getDueAt(), taskTestForm.get(size-1).getContent(), taskTestForm.get(size-1).getPid()));
           }
         }
         tasksList.add(new MemberTaskDto(taskTestForm.get(size-1).getName(), w1, w2, w3, w4, w5));
@@ -148,7 +144,7 @@ public class WeeklyTaskController {
       }
     }
     map.put("departmentList", departmentList);
-    System.out.println(departmentList);
+    System.out.println("map은"+map);
     weekInfoDto.setItems(map);
 
 

@@ -45,6 +45,7 @@ window.onload = () => {
 $('.jump_month_plus').click(function(){
   $('th').remove('.swich');
   $('td').remove('.swich');
+  $('tr').remove('.swich');
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() + 1);
@@ -62,7 +63,8 @@ $('.jump_month_plus').click(function(){
     },
     success: function (rs) {
       console.log(rs.weekcount);
-      drawweek(rs.weekcount, rs.list);
+      // drawweek(rs.weekcount, rs.list);
+      drawSample(rs.weekcount, rs.items);
     }
   });
 });
@@ -70,6 +72,7 @@ $('.jump_month_plus').click(function(){
 $('.jump_month_minus').click(function(){
   $('th').remove('.swich');
   $('td').remove('.swich');
+  $('tr').remove('.swich');
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() - 1);
@@ -87,7 +90,8 @@ $('.jump_month_minus').click(function(){
     },
     success: function (rs) {
       console.log(rs.weekcount);
-      drawweek(rs.weekcount, rs.list);
+      // drawweek(rs.weekcount, rs.list);
+      drawSample(rs.weekcount, rs.items);
     }
   });
 });
@@ -275,6 +279,8 @@ function getWeek() {
   });
 }
 
+let weekDataList = []
+
 function drawSample(count, list) {
   let str = '';
   for (let num = 1; num <= count; num++){
@@ -286,182 +292,184 @@ function drawSample(count, list) {
 
   let row = '';
 
-  var list2 = JSON.parse(list);
-  console.log(list2.departmentList);
 
-  list2.departmentList.forEach(d => {
-    console.log(d.departmentName);
-    d.memberTasks.forEach(m => {
-      console.log(m.name);
-    });
+  console.log('weekDataList',weekDataList)
+
+  list.departmentList.forEach(weeklyTasks => {
+
+    let ww = '';
+    // var w1 ='';
+    // var w2 ='';
+    // var w3 ='';
+    // var w4 ='';
+    // var w5 ='';
+
+    // let iterator = Object.keys(weeklyTasks.memberTasks[0]);
+    // iterator.forEach(key => {
+    //   let temp = weeklyTasks.memberTasks[0][key];
+    //   key += `
+    //       <p>
+    //         startAt: ${temp.startAt}<br />
+    //         dueAt: ${temp.dueAt}<br />
+    //         content: ${temp.content}
+    //       </p>
+    //     `;
+    //   });
+
+    for (let i=1 ; i<=count ; i++) {
+      ww += `<td>`
+      weeklyTasks.memberTasks[0]['w'+i].forEach(task => {
+        ww += `<ul class="main">
+                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
+                    <ul class="sub">
+                      <li><a href="#">수정하러가기</a></li>
+                      <li><a href="#">상세보기</a></li>
+                    </ul>    
+                  </li>                
+                </ul>`;
+      });
+      ww += `</td>`
+    }
+
+
+    // weeklyTasks.memberTasks[0].w1.forEach(task => {
+    //   w1 += `
+    //       <p>
+    //         startAt: ${task.startAt}<br />
+    //         dueAt: ${task.dueAt}<br />
+    //         content: ${task.content}
+    //       </p>
+    //     `;
+    // });
+    // weeklyTasks.memberTasks[0].w2.forEach(task => {
+    //   w2 += `
+    //       <p>
+    //         startAt: ${task.startAt}<br />
+    //         dueAt: ${task.dueAt}<br />
+    //         content: ${task.content}
+    //       </p>
+    //     `;
+    // })
+    // weeklyTasks.memberTasks[0].w3.forEach(task => {
+    //   w3 += `
+    //       <p>
+    //         startAt: ${task.startAt}<br />
+    //         dueAt: ${task.dueAt}<br />
+    //         content: ${task.content}
+    //       </p>
+    //     `;
+    // })
+    // weeklyTasks.memberTasks[0].w4.forEach(task => {
+    //   w4 += `
+    //       <p>
+    //         startAt: ${task.startAt}<br />
+    //         dueAt: ${task.dueAt}<br />
+    //         content: ${task.content}
+    //       </p>
+    //     `;
+    // })
+    //
+    // row += `
+    //   <tr>
+    //     <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
+    //     <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
+    //     <td class="align-middle text-center">${w1}</td>
+    //     <td class="align-middle text-center">${w2}</td>
+    //     <td class="align-middle text-center">${w3}</td>
+    //     <td class="align-middle text-center">${w4}</td>
+    //
+    //   </tr>
+    // `;
+
+    row += `
+      <tr class="swich">
+        <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
+        <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
+        ${ww}
+      </tr>
+    `;
+
+    for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
+      let ww = '';
+
+
+      for (let i=1 ; i<=count ; i++) {
+        ww += `<td>`
+        weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
+          ww += `<ul class="main">
+                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
+                    <ul class="sub">
+                      <li><a href="#">수정하러가기</a></li>
+                      <li><a href="#">상세보기</a></li>
+                    </ul>    
+                  </li>                
+                </ul>`;
+        });
+        ww += `</td>`
+      }
+
+
+      // weeklyTasks.memberTasks[idx].w1.forEach(task => {
+      //   w1 += `
+      //     <p>
+      //       startAt: ${task.startAt}<br />
+      //       dueAt: ${task.dueAt}<br />
+      //       content: ${task.content}
+      //     </p>
+      //   `;
+      // });
+      // weeklyTasks.memberTasks[idx].w2.forEach(task => {
+      //   w2 += `
+      //     <p>
+      //       startAt: ${task.startAt}<br />
+      //       dueAt: ${task.dueAt}<br />
+      //       content: ${task.content}
+      //     </p>
+      //   `;
+      // })
+      // weeklyTasks.memberTasks[idx].w3.forEach(task => {
+      //   w3 += `
+      //     <p>
+      //       startAt: ${task.startAt}<br />
+      //       dueAt: ${task.dueAt}<br />
+      //       content: ${task.content}
+      //     </p>
+      //   `;
+      // })
+      // weeklyTasks.memberTasks[idx].w4.forEach(task => {
+      //   w4 += `
+      //     <p>
+      //       startAt: ${task.startAt}<br />
+      //       dueAt: ${task.dueAt}<br />
+      //       content: ${task.content}
+      //     </p>
+      //   `;
+      // })
+
+      row += `
+        <tr class="swich">
+          <td class="align-middle text-center">${weeklyTasks.memberTasks[idx].name}</td>
+          ${ww}
+        </tr>
+      `;
+    }
   });
-
-  // list.forEach(weeklyTasks => {
-  //
-  //   let ww = '';
-  //   // var w1 ='';
-  //   // var w2 ='';
-  //   // var w3 ='';
-  //   // var w4 ='';
-  //   // var w5 ='';
-  //
-  //   // let iterator = Object.keys(weeklyTasks.memberTasks[0]);
-  //   // iterator.forEach(key => {
-  //   //   let temp = weeklyTasks.memberTasks[0][key];
-  //   //   key += `
-  //   //       <p>
-  //   //         startAt: ${temp.startAt}<br />
-  //   //         dueAt: ${temp.dueAt}<br />
-  //   //         content: ${temp.content}
-  //   //       </p>
-  //   //     `;
-  //   //   });
-  //
-  //   for (let i=1 ; i<=count ; i++) {
-  //     ww += `<td class="align-middle text-center">`
-  //     weeklyTasks.memberTasks[0]['w'+i].forEach(task => {
-  //       ww += `
-  //           <p>
-  //             startAt: ${task.startAt}<br />
-  //             dueAt: ${task.dueAt}<br />
-  //             content: ${task.content}
-  //           </p>
-  //       `;
-  //     });
-  //     ww += `</td>`
-  //   }
-  //
-  //
-  //   // weeklyTasks.memberTasks[0].w1.forEach(task => {
-  //   //   w1 += `
-  //   //       <p>
-  //   //         startAt: ${task.startAt}<br />
-  //   //         dueAt: ${task.dueAt}<br />
-  //   //         content: ${task.content}
-  //   //       </p>
-  //   //     `;
-  //   // });
-  //   // weeklyTasks.memberTasks[0].w2.forEach(task => {
-  //   //   w2 += `
-  //   //       <p>
-  //   //         startAt: ${task.startAt}<br />
-  //   //         dueAt: ${task.dueAt}<br />
-  //   //         content: ${task.content}
-  //   //       </p>
-  //   //     `;
-  //   // })
-  //   // weeklyTasks.memberTasks[0].w3.forEach(task => {
-  //   //   w3 += `
-  //   //       <p>
-  //   //         startAt: ${task.startAt}<br />
-  //   //         dueAt: ${task.dueAt}<br />
-  //   //         content: ${task.content}
-  //   //       </p>
-  //   //     `;
-  //   // })
-  //   // weeklyTasks.memberTasks[0].w4.forEach(task => {
-  //   //   w4 += `
-  //   //       <p>
-  //   //         startAt: ${task.startAt}<br />
-  //   //         dueAt: ${task.dueAt}<br />
-  //   //         content: ${task.content}
-  //   //       </p>
-  //   //     `;
-  //   // })
-  //   //
-  //   // row += `
-  //   //   <tr>
-  //   //     <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-  //   //     <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-  //   //     <td class="align-middle text-center">${w1}</td>
-  //   //     <td class="align-middle text-center">${w2}</td>
-  //   //     <td class="align-middle text-center">${w3}</td>
-  //   //     <td class="align-middle text-center">${w4}</td>
-  //   //
-  //   //   </tr>
-  //   // `;
-  //
-  //   row += `
-  //     <tr>
-  //       <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-  //       <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-  //       ${ww}
-  //     </tr>
-  //   `;
-  //
-  //   for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
-  //     let ww = '';
-  //     var w1 ='';
-  //     var w2 ='';
-  //     var w3 ='';
-  //     var w4 ='';
-  //
-  //
-  //
-  //     for (let i=1 ; i<=count ; i++) {
-  //       ww += `<td class="align-middle text-center">`
-  //       weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
-  //         ww += `
-  //           <p>
-  //             startAt: ${task.startAt}<br />
-  //             dueAt: ${task.dueAt}<br />
-  //             content: ${task.content}
-  //           </p>
-  //       `;
-  //       });
-  //       ww += `</td>`
-  //     }
-  //
-  //
-  //     // weeklyTasks.memberTasks[idx].w1.forEach(task => {
-  //     //   w1 += `
-  //     //     <p>
-  //     //       startAt: ${task.startAt}<br />
-  //     //       dueAt: ${task.dueAt}<br />
-  //     //       content: ${task.content}
-  //     //     </p>
-  //     //   `;
-  //     // });
-  //     // weeklyTasks.memberTasks[idx].w2.forEach(task => {
-  //     //   w2 += `
-  //     //     <p>
-  //     //       startAt: ${task.startAt}<br />
-  //     //       dueAt: ${task.dueAt}<br />
-  //     //       content: ${task.content}
-  //     //     </p>
-  //     //   `;
-  //     // })
-  //     // weeklyTasks.memberTasks[idx].w3.forEach(task => {
-  //     //   w3 += `
-  //     //     <p>
-  //     //       startAt: ${task.startAt}<br />
-  //     //       dueAt: ${task.dueAt}<br />
-  //     //       content: ${task.content}
-  //     //     </p>
-  //     //   `;
-  //     // })
-  //     // weeklyTasks.memberTasks[idx].w4.forEach(task => {
-  //     //   w4 += `
-  //     //     <p>
-  //     //       startAt: ${task.startAt}<br />
-  //     //       dueAt: ${task.dueAt}<br />
-  //     //       content: ${task.content}
-  //     //     </p>
-  //     //   `;
-  //     // })
-  //
-  //     row += `
-  //       <tr>
-  //         <td class="align-middle text-center">${weeklyTasks.memberTasks[idx].name}</td>
-  //         ${ww}
-  //       </tr>
-  //     `;
-  //   }
-  // });
 
   $('#task_body').append(row);
 
 }
+
+$('tbody#task_body').on('click', '.task-data', function (e) {
+  e.preventDefault();
+  console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'))
+});
+
+$('tbody#task_body').on('click', '.main>li', function () {
+  $(this).children(".sub").stop().slideDown();
+});
+$('tbody#task_body').on('mouseleave', '.main>li', function () {
+  $(this).children(".sub").stop().slideUp();
+});
 
 function drawweek(count, list) {
   let str = '';
@@ -588,6 +596,7 @@ $('#task_body').append(row);
 function changeDate()  {
   $('th').remove('.swich');
   $('td').remove('.swich');
+  $('tr').remove('.swich');
   getWeek();
 }
 
@@ -604,6 +613,7 @@ if($.cookie('name') == undefined) {
 }
 $("[name=logout]").click(function () {
   document.cookie = 'name=; Max-Age=-1;';
+  document.cookie = 'member_pid=; Max-Age=-1;';
   location.reload();
 });
 
@@ -618,6 +628,7 @@ $("[name=login]").click(function () {
     },
     success: function (rs) {
       if (rs.success) {
+        $.cookie('member_pid', rs.data.pid, {expires: 1});
         $.cookie('name', rs.data.name, {expires: 1});
         $("#loginBox").hide();
         $("#logoutBox").show();
@@ -626,3 +637,4 @@ $("[name=login]").click(function () {
     }
   });
 });
+

@@ -1,3 +1,12 @@
+* { margin: 0; padding: 0; }
+a { text-decoration: none; color: #404040; }
+li { list-style: none; }
+.main > li { position: relative; float: left; width: 150px; height: 30px; box-sizing: border-box; line-height: 30px; text-align: center; background: #fafafa; margin:4px 0; display: block; transition: all 0.1s;}
+.main > li a:hover, .sub li:hover { background: #ebebeb; color: #fff;}
+.main > li a:hover {cursor: pointer;}
+.sub { display: none; position: absolute; top: 30px; left: 0; z-index: 1; width: 100%; background: #eee; }
+.main { width: fit-content; font-size: small; cursor: pointer;}
+
 .hearderWizard .navWizard .tabs {
     list-style-type: none;
     display: flex;
@@ -18,3 +27,4 @@
 .pages .page.is-active {
     display: block;
 }
+
