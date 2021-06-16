@@ -199,4 +199,10 @@
       AND deleted_at IS NULL;
   </update>
 
+  <select id="retrieveMemberPid" parameterType="String" resultType="int">
+    select m.pid
+    from workspace.member m
+    where
+      m.name = #{name};
+  </select>
 </mapper>

@@ -34,4 +34,5 @@ public interface TaskDao {
 
   ViewContentDto viewContent(int pid);
   void updateTask(ViewContentDto viewContentDto);
+  int retrieveMemberPid(String name);
 }

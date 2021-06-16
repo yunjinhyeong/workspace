@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.co.zzimcar.dto.ResponseDto;
 import kr.co.zzimcar.dto.task.MemberJoinDto;
-import kr.co.zzimcar.dto.task.TaskListResDto;
+
 import kr.co.zzimcar.dto.task.TaskReqDto;
 import kr.co.zzimcar.dto.task.TaskResDto;
 import kr.co.zzimcar.service.task.TaskService;
@@ -35,11 +35,11 @@ public class TaskAPIController {
     return taskService.retrieveOne(pid);
   }
 
-  @GetMapping("")
-  @ApiOperation("업무목록 조회 API")
-  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
-    return taskService.retrieveAll();
-  }
+//  @GetMapping("")
+//  @ApiOperation("업무목록 조회 API")
+//  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
+//    return taskService.retrieveAll();
+//  }
 
   @PutMapping("/{pid}")
   @ApiOperation("업무 현황 수정 API")

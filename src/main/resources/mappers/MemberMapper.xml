@@ -10,4 +10,5 @@
     where
       m.name = #{name} and m.pw = #{pw}
   </select>
+
 </mapper>

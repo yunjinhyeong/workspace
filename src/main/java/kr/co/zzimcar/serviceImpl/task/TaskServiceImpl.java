@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,15 +47,15 @@ public class TaskServiceImpl implements TaskService {
     return ResponseEntity.ok(responseDto);
   }
 
-  @Override
-  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
-    TaskListResDto taskListResDto = new TaskListResDto();
-    taskListResDto.setTotalCnt(taskDao.totalCnt());
-    taskListResDto.setList(taskDao.retrieveAll().stream().map(TaskResDto::new).collect(Collectors.toList()));
-    ResponseDto<TaskListResDto> responseDto = new ResponseDto<>(true);
-    responseDto.setData(taskListResDto);
-    return ResponseEntity.ok(responseDto);
-  }
+//  @Override
+//  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
+//    TaskListResDto taskListResDto = new TaskListResDto();
+//    taskListResDto.setTotalCnt(taskDao.totalCnt());
+//    taskListResDto.setList(taskDao.retrieveAll().stream().map(TaskResDto::new).collect(Collectors.toList()));
+//    ResponseDto<TaskListResDto> responseDto = new ResponseDto<>(true);
+//    responseDto.setData(taskListResDto);
+//    return ResponseEntity.ok(responseDto);
+//  }
 
   @Override
   public ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto) {
@@ -104,6 +105,17 @@ public class TaskServiceImpl implements TaskService {
     return nameList;
   }
 
+  // 만들어진 API 이용
+  @Override
+  public WriteTaskResDto writeTask(TaskDto taskDto) {
+    return WebClient.create("http://localhost:8888")
+      .post()
+      .uri("/task")
+      .bodyValue(taskDto)
+      .retrieve()
+      .bodyToMono(WriteTaskResDto.class)
+      .block();
+  }
 
 
   private void checkCreate(TaskReqDto taskReqDto) {

@@ -35,9 +35,9 @@ window.onload = () => {
       document.querySelector('.tabs .tab.is-active').classList.remove('is-active');
       tab_switcher.parentNode.classList.add('is-active');
       SwitchPage(page_id);
-
     });
   }
+  iswho();
   getToday();
   getWeek();
 }
@@ -322,7 +322,7 @@ function drawSample(count, list) {
         ww += `<ul class="main">
                   <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
                     <ul class="sub">
-                      <li onclick="window.open('/week/viewContent?pid=${task.pid}', '글 수정하기', 'width=1000,height=1000')";>상세보기</li>
+                      <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="상세보기">                      
                     </ul>    
                   </li>                
                 </ul>`;
@@ -379,17 +379,17 @@ function drawSample(count, list) {
     //
     //   </tr>
     // `;
-
+console.log(weeklyTasks);
     row += `
-      <tr class="swich test1">
+      <tr class="swich">
         <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center" style="width: 100px">${weeklyTasks.departmentName}</td>
         <td class="align-middle" style="width: 100px">
             <ul class="main" style="margin:auto;">
               <li style="background-color:#fff;"><div>${weeklyTasks.memberTasks[0].name}</div>
                 <ul class="sub">
-                  <li onclick="window.open('/week/viewContent?pid=2', '글 수정하기', 'width=1000,height=1000')";>업무등록하기</li>                      
-                </ul>    
-              </li>                
+                  <li onclick="$.cookie('name') != undefined ? window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000') : alert('로그인을 안했자나');";>업무등록하기</li>                      
+                </ul>
+              </li>
             </ul>
           </td>
           ${ww}
@@ -406,7 +406,7 @@ function drawSample(count, list) {
           ww += `<ul class="main">
                   <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
                     <ul class="sub">
-                      <li onclick="window.open('/week/viewContent?pid=${task.pid}', '글 수정하기', 'width=1000,height=1000')";>상세보기</li>                      
+                      <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="업무등록하기" data-pid="${task.pid}">                                            
                     </ul>    
                   </li>                
                 </ul>`;
@@ -460,7 +460,7 @@ function drawSample(count, list) {
             <ul class="main" style="margin:auto;">
               <li style="background-color:#fff;"><div>${weeklyTasks.memberTasks[idx].name}</div>
                 <ul class="sub">
-                  <li onclick="window.open('/week/viewContent?pid=2', '글 수정하기', 'width=1000,height=1000')";>업무등록하기</li>                      
+                  <li onclick="$.cookie('name') != undefined ? window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000') : alert('로그인을 안했자나');";>업무등록하기</li>                      
                 </ul>    
               </li>                
             </ul>
@@ -474,6 +474,11 @@ function drawSample(count, list) {
   $('#task_body').append(row);
 
 }
+
+$('tbody#task_body').on('click', '.task-data', function (e) {
+  e.preventDefault();
+  console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'))
+});
 
 $('tbody#task_body').on('click', '.task-data', function (e) {
   e.preventDefault();
@@ -626,7 +631,24 @@ function SwitchPage (page_id) {
 
 if($.cookie('name') == undefined) {
   $("#loginBox").show();
+  $("#logoutBox").hide();
+  $("[name=writeTask]").hide();
 }
+
+function iswho() {
+  if($.cookie('name') != undefined) {
+    $("#loginBox").hide();
+    $("#logoutBox").show();
+    $("label[name='name_area']").text($.cookie('name')+' 님 환영합니다 ~ ');
+    $("input[name='memberPid']").val(Number($.cookie('member_pid')));
+  }
+}
+
+
+// $("[name=writeTask]").click(function () {
+//   window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000');
+// });
+
 $("[name=logout]").click(function () {
   document.cookie = 'name=; Max-Age=-1;';
   document.cookie = 'member_pid=; Max-Age=-1;';
@@ -646,11 +668,62 @@ $("[name=login]").click(function () {
       if (rs.success) {
         $.cookie('member_pid', rs.data.pid, {expires: 1});
         $.cookie('name', rs.data.name, {expires: 1});
-        $("#loginBox").hide();
-        $("#logoutBox").show();
-        $("label[name='name_area']").text($.cookie('name')+' 님 환영합니다 ~ ');
+        iswho(rs.data.pid);
+      }
+    }
+  });
+});
+document.getElementById('startAt').value = new Date().toISOString().substring(0, 10);
+document.getElementById('dueAt').value = getDueAt();
+function getDueAt() {
+  let writeDueAt = new Date();
+  writeDueAt.setDate(writeDueAt.getDate()+1);
+  writeDueAt = writeDueAt.toISOString().slice(0, 10);
+  return writeDueAt;
+}
+
+$("[name=writeTaskSubmit]").click(function () {
+  let memberPid = Number($.cookie('member_pid'));
+  let type = '주간';
+  let title = $("[name=title]").val();
+  let content = $("[name=content]").val();
+  let startAt = $("[name=startAt]").val();
+  let dueAt = $("[name=dueAt]").val();
+  let state = $("[name=state]").val();
+  let priority = $("[name=priority]").val();
+
+  $.ajax({
+    url: '/week/writeTask',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      memberPid: memberPid,
+      type: type,
+      title: title,
+      content: content,
+      startAt: startAt,
+      dueAt: dueAt,
+      state: state,
+      priority: priority
+    },
+    success: function (rs) {
+      if (!rs.success) {
+        alert(rs.msg);
+        return;
+      }
+      if(rs.success) {
+        alert('업무등록성공!!');
+        $('#writeTaskModal').modal("hide");
+        newdraw();
       }
     }
   });
 });
 
+function newdraw() {
+  $('th').remove('.swich');
+  $('td').remove('.swich');
+  $('tr').remove('.swich');
+  getToday();
+  getWeek();
+}

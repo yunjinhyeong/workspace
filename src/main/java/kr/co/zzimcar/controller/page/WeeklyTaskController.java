@@ -1,5 +1,6 @@
 package kr.co.zzimcar.controller.page;
 
+import kr.co.zzimcar.dao.MemberDao;
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.dto.MemberTaskDto;
 import kr.co.zzimcar.dto.TaskTestForm;
@@ -10,8 +11,11 @@ import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
 import kr.co.zzimcar.dto.task.Task;
+import kr.co.zzimcar.dto.task.TaskDto;
+import kr.co.zzimcar.dto.task.WriteTaskResDto;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -409,4 +413,18 @@ public class WeeklyTaskController {
     mav.setViewName("redirect:/week/viewContent?pid="+pid);
     return mav;
   }
+
+//  @GetMapping("writeTask")
+//  public String writeTask(Model model, String name) {
+//    int pid = taskDao.retrieveMemberPid(name);
+//    model.addAttribute("pid",pid);
+//    return "writeTask";
+//  }
+
+  @ResponseBody
+  @PostMapping("writeTask")
+  public WriteTaskResDto writeTask(TaskDto taskDto){  // 완료
+    return taskService.writeTask(taskDto);
+  }
+
 }
