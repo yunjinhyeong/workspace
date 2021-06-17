@@ -17,15 +17,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class TaskReqDto {
-
-  @NotNull(message = "memberPid를 입력해 주세요")
-  @ApiModelProperty(value = "회원 번호")
-  private int memberPid;
-
-  @NotNull(message = "type를 입력해 주세요")
-  @ApiModelProperty(value = "월간/주간 상태")
-  private String type;
+public class TaskUpdateReqDto {
+  @NotNull(message = "pid를 입력해 주세요")
+  @ApiModelProperty(value = "업무글 번호")
+  private int pid;
 
   @NotNull(message = "title를 입력해 주세요")
   @ApiModelProperty(value = "업무제목")

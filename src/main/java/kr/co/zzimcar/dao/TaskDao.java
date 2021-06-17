@@ -19,7 +19,7 @@ public interface TaskDao {
   TaskDto retrieveOne(int pid);
   List<TaskDto> retrieveAll();
   int totalCnt();
-  void updateOne(int pid, TaskDto taskDto);
+  void updateOne(TaskDto taskDto);
   void deleteOne(int pid);
   MemberJoinDto retrieveJoinAll(int pid);
   List<DrawWeekWorkDto> allDateInfo();

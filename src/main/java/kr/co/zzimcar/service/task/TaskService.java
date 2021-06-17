@@ -14,7 +14,7 @@ public interface TaskService {
   ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto);
   ResponseEntity<ResponseDto<TaskResDto>> retrieveOne(int pid);
 //  ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll();
-  ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto);
+  ResponseEntity<ResponseDto<Void>> updateOne(TaskUpdateReqDto taskUpdateReqDto);
   ResponseEntity<ResponseDto<Void>> deleteOne(int pid);
   ResponseEntity<ResponseDto<MemberJoinDto>> retrieveJoinAll(int pid);
   List<DrawWeekWorkDto> weekDate();
@@ -23,4 +23,7 @@ public interface TaskService {
 
   ///////// 만들어진 API 이용 /////////
   WriteTaskResDto writeTask(TaskDto taskDto);
+  ViewTaskResDto viewTask(int pid);
+  ViewTaskResDto updateTask(TaskDto taskDto);
+  WriteTaskResDto deleteTask(int pid);
 }

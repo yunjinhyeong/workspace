@@ -10,18 +10,13 @@ import kr.co.zzimcar.dto.department.DepartmentDto;
 import kr.co.zzimcar.dto.member.MemberDto;
 import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
 import kr.co.zzimcar.dto.page.WeekInfoDto;
-import kr.co.zzimcar.dto.task.Task;
-import kr.co.zzimcar.dto.task.TaskDto;
-import kr.co.zzimcar.dto.task.WriteTaskResDto;
+import kr.co.zzimcar.dto.task.*;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -44,27 +39,27 @@ public class WeeklyTaskController {
     Calendar cal = Calendar.getInstance();
     WeekInfoDto weekInfoDto = new WeekInfoDto();
     int result = getCurrentWeekOfMonth(yyyy,mm,cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-    System.out.println("result"+result+"yyyy"+yyyy+"mm"+mm);
+
     if(result == 1 || result == 4) {
       weekInfoDto.setWeekcount(4);
     } else {
       weekInfoDto.setWeekcount(5);
     }
-
-    List<DrawWeekWorkDto> list = taskService.weekDate();
-    System.out.println("list>>>> 컨트롤러 111 >>>>>>>"+list);
-    for(int i=0; i<list.size() ; i++) {
-      int forY = Integer.parseInt(list.get(i).getYyyy());
-      int forM = Integer.parseInt(list.get(i).getMm());
-      int forD = Integer.parseInt(list.get(i).getDd());
-      int forR1 = getCurrentWeekOfMonth(forY,forM,forD);
-      int forR2 = getCurrentWeekOfMonth2(forY,forM,forD);
-      System.out.println("forR1 = "+forR1+"    forR2 = "+forR2+"       forY = "+forY+"     forM = "+forM+"      forD = "+forD);
-      list.get(i).setRealweek(forR1);
-      list.get(i).setRealmm(forR2);
-      weekInfoDto.setList(list);
-    }
-    System.out.println("list >>>>>>>>>>>2222222222222"+list);
+//
+//    List<DrawWeekWorkDto> list = taskService.weekDate();
+//    System.out.println("list>>>> 컨트롤러 111 >>>>>>>"+list);
+//    for(int i=0; i<list.size() ; i++) {
+//      int forY = Integer.parseInt(list.get(i).getYyyy());
+//      int forM = Integer.parseInt(list.get(i).getMm());
+//      int forD = Integer.parseInt(list.get(i).getDd());
+//      int forR1 = getCurrentWeekOfMonth(forY,forM,forD);
+//      int forR2 = getCurrentWeekOfMonth2(forY,forM,forD);
+//      System.out.println("forR1 = "+forR1+"    forR2 = "+forR2+"       forY = "+forY+"     forM = "+forM+"      forD = "+forD);
+//      list.get(i).setRealweek(forR1);
+//      list.get(i).setRealmm(forR2);
+//      weekInfoDto.setList(list);
+//    }
+//    System.out.println("list >>>>>>>>>>>2222222222222"+list);
 
     // 기본 세팅들
     Map<String, List<WeeklyTasks>> map = new HashMap<>();
@@ -152,96 +147,7 @@ public class WeeklyTaskController {
       }
     }
     map.put("departmentList", departmentList);
-    System.out.println("map은"+map);
     weekInfoDto.setItems(map);
-
-
-//    departmentList.add(new WeeklyTasks(task.getDepartment(), tasksList));
-//    map.put("departmentList", departmentList);
-//    System.out.println(map);
-//
-//
-
-//    int w1c = 0;
-//    for (int i=0 ; i<w1.size() ; i++) {
-//      w1c++;
-//    }
-//    int w2c = 0;
-//    for (int i=0 ; i<w2.size() ; i++) {
-//      w2c++;
-//    }
-//    int w3c = 0;
-//    for (int i=0 ; i<w3.size() ; i++) {
-//      w3c++;
-//    }
-//    int w4c = 0;
-//    for (int i=0 ; i<w4.size() ; i++) {
-//      w4c++;
-//    }
-//    int w5c = 0;
-//    for (int i=0 ; i<w5.size() ; i++) {
-//      w5c++;
-//    }
-//    System.out.println("w1c = "+w1c);
-//    System.out.println("w2c = "+w2c);
-//    System.out.println("w3c = "+w3c);
-//    System.out.println("w4c = "+w4c);
-//    System.out.println("w5c = "+w5c);
-
-
-
-
-
-
-
-
-
-    //    TaskTestForm taskTestForm = taskDao.tasktestretrieve();
-
-
-//    List<TaskDto> tasks = taskDao.retrieveTasks();
-//    System.out.println(tasks);
-//    List<WeeklyTasks> weeklyTasks = new ArrayList<>();
-//
-//    tasks.forEach(task -> {
-//      WeeklyTasks wt = weeklyTasks.stream().filter(t -> task.getMember().getDepartment().contains(t.getDepartmentName())).findFirst().orElse(new WeeklyTasks(task.getMember().getDepartment()));
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//      List<MemberTaskDto> memberTasks = wt.getMemberTasks();
-//      if (memberTasks == null) memberTasks = new ArrayList<>();
-//
-//      MemberTaskDto memberTaskDto = memberTasks.stream().filter(m -> task.getMember().getName().contentEquals(m.getName())).findFirst().orElse(new MemberTaskDto(task.getMember().getName()));
-//      memberTaskDto.setW1(memberTaskDto.getW1() + "\n" + task.getContent());
-//
-//      wt.setMemberTasks(memberTasks);
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//      weeklyTasks.add(wt);
-//    });
-//
-//    System.out.println(weeklyTasks);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    List<WeeklyTasks> weeklyTasksList = new ArrayList<>();
-//
-//    List<String> department = taskService.department();
-//    for (int i=0 ; i<department.size() ; i++ ) {
-//      weeklyTasksList.add(new WeeklyTasks(department.get(i)));
-//    }
-//
-//    List<String> name = taskService.name();
-//    for (int i=0 ; i<name.size() ; i++ ) {
-//
-//    }
-//
-//    weekInfoDto.setItems(weeklyTasksList);
-//
-//    System.out.println(weekInfoDto);
 
     return weekInfoDto;
   }
@@ -360,59 +266,70 @@ public class WeeklyTaskController {
   }
 
 
-  public static int getCurrentWeekOfMonth2(int year, int month, int day)  {
-    int subtractFirstWeekNumber = subWeekNumberIsFirstDayAfterThursday(year, month, day);
-    int subtractLastWeekNumber = addMonthIsLastDayBeforeThursday(year, month, day);
+//  public static int getCurrentWeekOfMonth2(int year, int month, int day)  {
+//    int subtractFirstWeekNumber = subWeekNumberIsFirstDayAfterThursday(year, month, day);
+//    int subtractLastWeekNumber = addMonthIsLastDayBeforeThursday(year, month, day);
+//
+//    // 마지막 주차에서 다음 달로 넘어갈 경우 다음달의 1일을 기준으로 정해준다.
+//    // 추가로 다음 달 첫째주는 목요일부터 시작하는 과반수의 일자를 포함하기 때문에 한주를 빼지 않는다.
+//    if (subtractLastWeekNumber > 0) {
+//      day = 1;
+//      subtractFirstWeekNumber = 0;
+//    }
+//
+//    if (subtractFirstWeekNumber < 0)  {
+//      Calendar calendar = Calendar.getInstance(Locale.KOREA);
+//      calendar.set(year, month - 1, day);
+//      calendar.add(Calendar.DATE, -1);
+//
+//
+//
+//      return getCurrentWeekOfMonth(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DATE));
+//    }
+//
+//    Calendar calendar = Calendar.getInstance(Locale.KOREA);
+//    calendar.setFirstDayOfWeek(Calendar.MONDAY);
+//    calendar.setMinimalDaysInFirstWeek(1);
+//    calendar.set(year, month - (1 - subtractLastWeekNumber), day);
+//
+//    int dayOfWeekForFirstDayOfMonth = calendar.get(Calendar.WEEK_OF_MONTH) - subtractFirstWeekNumber;
+//
+//    return calendar.get(Calendar.MONTH) + 1;
+//  }
 
-    // 마지막 주차에서 다음 달로 넘어갈 경우 다음달의 1일을 기준으로 정해준다.
-    // 추가로 다음 달 첫째주는 목요일부터 시작하는 과반수의 일자를 포함하기 때문에 한주를 빼지 않는다.
-    if (subtractLastWeekNumber > 0) {
-      day = 1;
-      subtractFirstWeekNumber = 0;
-    }
+//  @GetMapping("viewContent")
+//  public String viewContent(Model model, int pid) {
+//    ViewContentDto item = taskDao.viewContent(pid);
+//    model.addAttribute("item",item);
+//    return "viewContent";
+//  }
 
-    if (subtractFirstWeekNumber < 0)  {
-      Calendar calendar = Calendar.getInstance(Locale.KOREA);
-      calendar.set(year, month - 1, day);
-      calendar.add(Calendar.DATE, -1);
-
-
-
-      return getCurrentWeekOfMonth(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DATE));
-    }
-
-    Calendar calendar = Calendar.getInstance(Locale.KOREA);
-    calendar.setFirstDayOfWeek(Calendar.MONDAY);
-    calendar.setMinimalDaysInFirstWeek(1);
-    calendar.set(year, month - (1 - subtractLastWeekNumber), day);
-
-    int dayOfWeekForFirstDayOfMonth = calendar.get(Calendar.WEEK_OF_MONTH) - subtractFirstWeekNumber;
-
-    return calendar.get(Calendar.MONTH) + 1;
+  @ResponseBody
+  @GetMapping("viewTask")
+  public ViewTaskResDto viewContent(int pid) {
+    return taskService.viewTask(pid);
   }
 
-  @GetMapping("viewContent")
-  public String viewContent(Model model, int pid) {
-    ViewContentDto item = taskDao.viewContent(pid);
-    model.addAttribute("item",item);
-    return "viewContent";
+  @ResponseBody
+  @PutMapping("updateTask")
+  public ViewTaskResDto updateTask(TaskDto taskDto) {
+    return taskService.updateTask(taskDto);
   }
 
-  @GetMapping("updateTask")
-  public String updateTask(Model model, int pid) {
-    ViewContentDto item = taskDao.viewContent(pid);
-    model.addAttribute("item",item);
-    return "updateTask";
+  @ResponseBody
+  @DeleteMapping("deleteTask")
+  public WriteTaskResDto deleteTask(int pid) {
+    return taskService.deleteTask(pid);
   }
 
-  @PostMapping("updateTask")
-  public ModelAndView updateTask(ViewContentDto viewContentDto) {
-    taskDao.updateTask(viewContentDto);
-    int pid = viewContentDto.getPid();
-    ModelAndView mav = new ModelAndView();
-    mav.setViewName("redirect:/week/viewContent?pid="+pid);
-    return mav;
-  }
+//  @PostMapping("updateTask")
+//  public ModelAndView updateTask(ViewContentDto viewContentDto) {
+//    taskDao.updateTask(viewContentDto);
+//    int pid = viewContentDto.getPid();
+//    ModelAndView mav = new ModelAndView();
+//    mav.setViewName("redirect:/week/viewContent?pid="+pid);
+//    return mav;
+//  }
 
 //  @GetMapping("writeTask")
 //  public String writeTask(Model model, String name) {

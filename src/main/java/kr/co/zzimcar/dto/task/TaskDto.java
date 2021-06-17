@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,5 +41,15 @@ public class TaskDto {
     this.priority = taskReqDto.getPriority();
     this.startAt = taskReqDto.getStartAt();
     this.dueAt = taskReqDto.getDueAt();
+  }
+
+  public TaskDto(TaskUpdateReqDto taskUpdateReqDto) {
+    this.pid = taskUpdateReqDto.getPid();
+    this.title = taskUpdateReqDto.getTitle();
+    this.content = taskUpdateReqDto.getContent();
+    this.state = taskUpdateReqDto.getState();
+    this.priority = taskUpdateReqDto.getPriority();
+    this.startAt = taskUpdateReqDto.getStartAt();
+    this.dueAt = taskUpdateReqDto.getDueAt();
   }
 }

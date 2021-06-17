@@ -322,14 +322,14 @@ function drawSample(count, list) {
         ww += `<ul class="main">
                   <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
                     <ul class="sub">
-                      <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="상세보기">                      
+                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="상세보기" data-pid="${task.pid}">  
+                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}">                    
                     </ul>    
                   </li>                
                 </ul>`;
       });
       ww += `</td>`
     }
-
 
     // weeklyTasks.memberTasks[0].w1.forEach(task => {
     //   w1 += `
@@ -385,9 +385,9 @@ console.log(weeklyTasks);
         <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center" style="width: 100px">${weeklyTasks.departmentName}</td>
         <td class="align-middle" style="width: 100px">
             <ul class="main" style="margin:auto;">
-              <li style="background-color:#fff;"><div>${weeklyTasks.memberTasks[0].name}</div>
+              <li style="background-color:#fff;" class="task-data"><div>${weeklyTasks.memberTasks[0].name}</div>
                 <ul class="sub">
-                  <li onclick="$.cookie('name') != undefined ? window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000') : alert('로그인을 안했자나');";>업무등록하기</li>                      
+                  <input name="writeTask" type="button" class="btn" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">                      
                 </ul>
               </li>
             </ul>
@@ -405,10 +405,11 @@ console.log(weeklyTasks);
         weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
           ww += `<ul class="main">
                   <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
-                    <ul class="sub">
-                      <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="업무등록하기" data-pid="${task.pid}">                                            
+                    <ul class="sub">                   
+                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="상세보기" data-pid="${task.pid}">
+                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}">                                            
                     </ul>    
-                  </li>                
+                  </li>
                 </ul>`;
         });
         ww += `</td>`
@@ -458,11 +459,11 @@ console.log(weeklyTasks);
         <tr class="swich">
           <td class="align-middle text-center">
             <ul class="main" style="margin:auto;">
-              <li style="background-color:#fff;"><div>${weeklyTasks.memberTasks[idx].name}</div>
+              <li style="background-color:#fff;" class="task-data"><div>${weeklyTasks.memberTasks[idx].name}</div>
                 <ul class="sub">
-                  <li onclick="$.cookie('name') != undefined ? window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000') : alert('로그인을 안했자나');";>업무등록하기</li>                      
-                </ul>    
-              </li>                
+                  <input name="writeTask" type="button" class="btn" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">
+                </ul>
+              </li>
             </ul>
           </td>
           ${ww}
@@ -470,20 +471,139 @@ console.log(weeklyTasks);
       `;
     }
   });
-
   $('#task_body').append(row);
-
 }
 
-$('tbody#task_body').on('click', '.task-data', function (e) {
+$('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
   e.preventDefault();
-  console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'))
+  // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'));
+  let pid = $(e.target).data('pid');
+
+  $.ajax({
+    url: '/week/deleteTask',
+    type: 'DELETE',
+    dataType: 'json',
+    data: {
+      pid: pid
+    },
+    success: function (rs) {
+      if (!rs.success) {
+        alert(rs.msg);
+        return;
+      }
+      if(rs.success) {
+        alert('삭제되었습니다.');
+        newdraw();
+      }
+    }
+  });
 });
 
-$('tbody#task_body').on('click', '.task-data', function (e) {
+$("[name=deleteTask]").click(function () {
+
+  let pid = $("[name=viewPid]").val();
+
+  $.ajax({
+    url: '/week/deleteTask',
+    type: 'DELETE',
+    dataType: 'json',
+    data: {
+      pid: pid
+    },
+    success: function (rs) {
+      if (!rs.success) {
+        alert(rs.msg);
+        return;
+      }
+      if(rs.success) {
+        alert('삭제되었습니다.');
+        $('#viewTaskModal').modal("hide");
+        newdraw();
+      }
+    }
+  });
+});////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
   e.preventDefault();
-  console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'))
+  // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'));
+  let pid = $(e.target).data('pid');
+  $("[name=viewPid]").val(pid);
+
+  $.ajax({
+    url: '/week/viewTask',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      pid: pid
+    },
+    success: function (rs) {
+      if (!rs.success) {
+        alert(rs.msg);
+        return;
+      }
+      if(rs.success) {
+        $("[name=viewTitle]").val(rs.data.title);
+        $("[name=viewContent]").val(rs.data.content);
+        $("[name=viewStartAt]").val(rs.data.startAt);
+        $("[name=viewDueAt]").val(rs.data.dueAt);
+        $("[name=viewState]").val(rs.data.state);
+        $("[name=viewPriority]").val(rs.data.priority);
+
+      }
+    }
+  });
+
 });
+
+$('tbody#task_body').on('click', '.task-data', function () {///////////////
+  if($.cookie('name') == undefined) {
+    alert('로그인을 안했잖아');
+  }
+});
+
+$("button[name='updateTaskPage']").on("click", function(e){
+  console.log($("[name=viewPid]").val());
+  let pid = $("[name=viewPid]").val();
+  console.log(pid);
+  let title = $("[name=viewTitle]").val();
+  let content = $("[name=viewContent]").val();
+  let startAt = $("[name=viewStartAt]").val();
+  let dueAt = $("[name=viewDueAt]").val();
+  let state = $("[name=viewState]").val();
+  let priority = $("[name=viewPriority]").val();
+
+  $.ajax({
+    url: '/week/updateTask',
+    type: 'PUT',
+    dataType: 'json',
+    data: {
+      pid: pid,
+      title: title,
+      content: content,
+      startAt: startAt,
+      dueAt: dueAt,
+      state: state,
+      priority: priority
+    },
+    success: function (rs) {
+      if (!rs.success) {
+        alert(rs.msg);
+        return;
+      }
+      if(rs.success) {
+        alert('수정성공했습니다.');
+        newdraw();
+      }
+    }
+  });
+
+});
+// $('tbody#task_body').on('click', "input[name=updateTaskPage]", function (e) {
+//   e.preventDefault();
+//   console.log('머냐?');
+//   alert('일단나와');
+// });
 
 $('tbody#task_body').on('click', '.main>li', function () {
   $(this).children(".sub").stop().slideDown();
@@ -633,12 +753,14 @@ if($.cookie('name') == undefined) {
   $("#loginBox").show();
   $("#logoutBox").hide();
   $("[name=writeTask]").hide();
+
 }
 
 function iswho() {
   if($.cookie('name') != undefined) {
     $("#loginBox").hide();
     $("#logoutBox").show();
+    $("[name=writeTask]").show();
     $("label[name='name_area']").text($.cookie('name')+' 님 환영합니다 ~ ');
     $("input[name='memberPid']").val(Number($.cookie('member_pid')));
   }

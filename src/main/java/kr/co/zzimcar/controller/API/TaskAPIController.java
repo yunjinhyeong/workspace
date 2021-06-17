@@ -8,6 +8,7 @@ import kr.co.zzimcar.dto.task.MemberJoinDto;
 
 import kr.co.zzimcar.dto.task.TaskReqDto;
 import kr.co.zzimcar.dto.task.TaskResDto;
+import kr.co.zzimcar.dto.task.TaskUpdateReqDto;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,11 +42,17 @@ public class TaskAPIController {
 //    return taskService.retrieveAll();
 //  }
 
-  @PutMapping("/{pid}")
-  @ApiOperation("업무 현황 수정 API")
-  public ResponseEntity<ResponseDto<Void>> updateOne(@PathVariable @ApiParam(value = "수정할 업무 번호", required = true, example = "1") int pid,
-                                                     @RequestBody @Valid @ApiParam(value = "수정할 업무 정보", required = true) TaskReqDto taskReqDto) {
-    return taskService.updateOne(pid, taskReqDto);
+//  @PutMapping("/{pid}")
+//  @ApiOperation("업무 현황 수정 API")
+//  public ResponseEntity<ResponseDto<Void>> updateOne(@PathVariable @ApiParam(value = "수정할 업무 번호", required = true, example = "1") int pid,
+//                                                     @RequestBody @Valid @ApiParam(value = "수정할 업무 정보", required = true) TaskReqDto taskReqDto) {
+//    return taskService.updateOne(pid, taskReqDto);
+//  }
+
+  @PutMapping("")
+  @ApiOperation("업무 하나 수정 API")
+  public ResponseEntity<ResponseDto<Void>> updateOne(@RequestBody @Valid @ApiParam(value = "수정할 업무 정보", required = true) TaskUpdateReqDto taskUpdateReqDto) {
+    return taskService.updateOne(taskUpdateReqDto);
   }
 
   @DeleteMapping("/{pid}")

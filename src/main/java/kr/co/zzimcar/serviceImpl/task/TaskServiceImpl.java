@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +35,8 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
+    System.out.println("여기여기여기");
+    System.out.println(taskReqDto.getStartAt().getClass().getName());
     checkCreate(taskReqDto);
     taskDao.create(new TaskDto(taskReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
@@ -47,7 +50,14 @@ public class TaskServiceImpl implements TaskService {
     return ResponseEntity.ok(responseDto);
   }
 
-//  @Override
+  @Override
+  public ResponseEntity<ResponseDto<Void>> updateOne(TaskUpdateReqDto taskUpdateReqDto) {
+    checkUpdate(taskUpdateReqDto);
+    taskDao.updateOne(new TaskDto(taskUpdateReqDto));
+    return ResponseEntity.ok(new ResponseDto<>(true));
+  }
+
+  //  @Override
 //  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
 //    TaskListResDto taskListResDto = new TaskListResDto();
 //    taskListResDto.setTotalCnt(taskDao.totalCnt());
@@ -57,13 +67,13 @@ public class TaskServiceImpl implements TaskService {
 //    return ResponseEntity.ok(responseDto);
 //  }
 
-  @Override
-  public ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto) {
-    Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
-    checkCreate(taskReqDto);
-    taskDao.updateOne(pid, new TaskDto(taskReqDto));
-    return ResponseEntity.ok(new ResponseDto<>(true));
-  }
+//  @Override
+//  public ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto) {
+//    Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
+//    checkCreate(taskReqDto);
+//    taskDao.updateOne(pid, new TaskDto(taskReqDto));
+//    return ResponseEntity.ok(new ResponseDto<>(true));
+//  }
 
   @Override
   public ResponseEntity<ResponseDto<Void>> deleteOne(int pid) {
@@ -74,21 +84,17 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<MemberJoinDto>> retrieveJoinAll(int pid) {
-    System.out.println("서비스1");
     MemberJoinDto memberJoinDto = Optional.ofNullable(taskDao.retrieveJoinAll(pid)).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
-    System.out.println("서비스2"+memberJoinDto);
     ResponseDto<MemberJoinDto> responseDto = new ResponseDto<>(true);
-    System.out.println("서비스3"+responseDto);
     responseDto.setData(memberJoinDto);
-    System.out.println("서비스4"+responseDto);
     return ResponseEntity.ok(responseDto);
   }
 
   @Override
   public List<DrawWeekWorkDto> weekDate() {
-    List<DrawWeekWorkDto> list = taskDao.allDateInfo();
-    System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
-    return list;
+    return taskDao.allDateInfo();
+//    System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
+//    return list;
   }
 
   @Override
@@ -117,6 +123,43 @@ public class TaskServiceImpl implements TaskService {
       .block();
   }
 
+  // 만들어진 API 이용
+  @Override
+  public ViewTaskResDto viewTask(int pid) {
+    return WebClient.create("http://localhost:8888")
+      .get()
+      .uri("/task/"+pid)
+      .retrieve()
+      .bodyToMono(ViewTaskResDto.class)
+      .block();
+  }
+
+  // API도 가져와야되고 음 그려
+  @Override
+  public ViewTaskResDto updateTask(TaskDto taskDto) {
+    return WebClient.create("http://localhost:8888")
+      .put()
+      .uri("/task")
+      .bodyValue(taskDto)
+      .retrieve()
+      .bodyToMono(ViewTaskResDto.class)
+      .block();
+  }
+
+  @Override
+  public WriteTaskResDto deleteTask(int pid) {
+    return WebClient.create("http://localhost:8888")
+      .delete()
+      .uri("/task/"+pid)
+      .retrieve()
+      .bodyToMono(WriteTaskResDto.class)
+      .block();
+  }
+
+//  private void checkDate(Date startAt, Date dueAt) {
+//    if (startAt <= dueAt) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
+//
+//  }
 
   private void checkCreate(TaskReqDto taskReqDto) {
     boolean check=false;
@@ -142,7 +185,27 @@ public class TaskServiceImpl implements TaskService {
         break;
       }
     }
+
     if (!check) throw new ApiException(TASK_TYPE_SAVE_FAILED);
+  }
+
+  private void checkUpdate(TaskUpdateReqDto taskUpdateReqDto) {
+    boolean check=false;
+    for(Priority priority : Priority.values()) {
+      if (taskUpdateReqDto.getPriority().equals(priority.toString())) {
+        check=true;
+        break;
+      }
+    }
+    if (!check) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
+    check=false;
+    for(State state : State.values()) {
+      if (taskUpdateReqDto.getState().equals(state.toString())) {
+        check=true;
+        break;
+      }
+    }
+    if (!check) throw new ApiException(TASK_STATE_SAVE_FAILED);
 
   }
 
