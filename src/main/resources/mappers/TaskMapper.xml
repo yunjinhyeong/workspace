@@ -152,15 +152,18 @@
     WHERE t.deleted_at IS NULL;
   </select>
 
-  <select id="tasktestretrieve" resultType="TaskTestForm" parameterType="String">
+  <select id="taskTestRetrieve" resultType="TaskTestForm" parameterType="int">
     <![CDATA[
       select t.pid, d.name as department, m.name, t.start_at, t.due_at, t.content
       from workspace.task t left join workspace.member m on t.member_pid = m.pid
         left join workspace.department d on m.department_pid = d.pid
       where
-        ((t.start_at >= #{startday} and t.start_at <= #{dueday})
-        or (t.due_at >= #{startday} and t.due_at <= #{dueday})
-        or (t.start_at <= #{startday} and t.due_at >= #{dueday}))
+        ((year(start_at)=#{year} and month(start_at)=#{month})
+         or (year(due_at)=#{year} and month(due_at)=#{month}))
+         or (
+                (concat(year(start_at), LPAD(MONTH(start_at), 2, '0')) <= concat(#{year}, LPAD(#{month}, 2, '0')))
+                and (concat(year(due_at), LPAD(MONTH(due_at), 2, '0')) >= concat(#{year}, LPAD(#{month}, 2, '0')))
+              )
         and t.type = '주간'
         and t.deleted_at IS NULL
       order by m.department_pid desc, m.pid asc;

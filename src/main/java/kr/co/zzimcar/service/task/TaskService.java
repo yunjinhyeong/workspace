@@ -1,16 +1,17 @@
 package kr.co.zzimcar.service.task;
 
-import kr.co.zzimcar.dto.ResponseDto;
-import kr.co.zzimcar.dto.WeeklyTasks;
-import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
-import kr.co.zzimcar.dto.page.WeekInfoDto;
-import kr.co.zzimcar.dto.task.*;
+import kr.co.zzimcar.domain.ResponseDto;
+import kr.co.zzimcar.domain.page.DrawWeekWorkDto;
+import kr.co.zzimcar.domain.page.WeekInfoDto;
+import kr.co.zzimcar.domain.task.*;
 
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface TaskService {
+  WeekInfoDto generateMonthlyTaskMap(int year, int month);
+
   ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto);
   ResponseEntity<ResponseDto<TaskResDto>> retrieveOne(int pid);
 //  ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll();

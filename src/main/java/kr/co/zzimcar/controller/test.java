@@ -1,21 +1,7 @@
   package kr.co.zzimcar.controller;
 
-import kr.co.zzimcar.dto.MemberTaskDto;
-import kr.co.zzimcar.dto.WeeklyTasks;
-import kr.co.zzimcar.dto.task.Task;
 
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+  import java.util.*;
 
   public class test {
   public static void main(String[] args) {

@@ -1,12 +1,13 @@
 package kr.co.zzimcar.serviceImpl.task;
 
 import kr.co.zzimcar.dao.TaskDao;
-import kr.co.zzimcar.dto.ResponseDto;
-import kr.co.zzimcar.dto.WeeklyTasks;
-import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
-import kr.co.zzimcar.dto.page.WeekInfoDto;
-import kr.co.zzimcar.dto.task.MemberJoinDto;
-import kr.co.zzimcar.dto.task.*;
+import kr.co.zzimcar.data.MonthlyTaskMap;
+import kr.co.zzimcar.domain.ResponseDto;
+import kr.co.zzimcar.domain.TaskTestForm;
+import kr.co.zzimcar.domain.page.DrawWeekWorkDto;
+import kr.co.zzimcar.domain.page.WeekInfoDto;
+import kr.co.zzimcar.domain.task.MemberJoinDto;
+import kr.co.zzimcar.domain.task.*;
 import kr.co.zzimcar.enumeration.Priority;
 import kr.co.zzimcar.enumeration.State;
 import kr.co.zzimcar.enumeration.Type;
@@ -19,10 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static kr.co.zzimcar.enumeration.ResponseCode.*;
 
@@ -32,6 +31,40 @@ public class TaskServiceImpl implements TaskService {
 
   private final Logger log = LogManager.getLogger(TaskServiceImpl.class);
   private final TaskDao taskDao;
+
+  @Override
+  public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
+    MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
+
+    // 1. 받아온 연월로 총 몇주가 있는지 계산
+    monthlyTaskMap.calcWeeks(); // 한듯?
+
+    // 2. 연월에 맞는 task 데이터 가져오기
+    monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
+
+    // 3. 부서 기준 리스트 생성
+    monthlyTaskMap.generateDepartmentList();
+
+    // 4. 직원 기준 리스트 생성
+    monthlyTaskMap.generateWorkerList();
+
+    // 5. 주차 기준 리스트 생성
+    monthlyTaskMap.generateWeekTaskList();
+
+    // 6. task 데이터를 각 리스트에 삽입
+
+    // 7. 생성된 리스트를 map 으로 변환하여 리턴
+    monthlyTaskMap.generateTaskMap();
+
+    WeekInfoDto weekInfoDto = new WeekInfoDto();
+    weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
+    return weekInfoDto;
+
+  }
+
+  private List<TaskTestForm> retrieveMonthlyTasks(int year, int month) {
+    return taskDao.taskTestRetrieve(year, month);
+  }
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
@@ -58,22 +91,22 @@ public class TaskServiceImpl implements TaskService {
   }
 
   //  @Override
-//  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
-//    TaskListResDto taskListResDto = new TaskListResDto();
-//    taskListResDto.setTotalCnt(taskDao.totalCnt());
-//    taskListResDto.setList(taskDao.retrieveAll().stream().map(TaskResDto::new).collect(Collectors.toList()));
-//    ResponseDto<TaskListResDto> responseDto = new ResponseDto<>(true);
-//    responseDto.setData(taskListResDto);
-//    return ResponseEntity.ok(responseDto);
-//  }
+  //  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
+  //    TaskListResDto taskListResDto = new TaskListResDto();
+  //    taskListResDto.setTotalCnt(taskDao.totalCnt());
+  //    taskListResDto.setList(taskDao.retrieveAll().stream().map(TaskResDto::new).collect(Collectors.toList()));
+  //    ResponseDto<TaskListResDto> responseDto = new ResponseDto<>(true);
+  //    responseDto.setData(taskListResDto);
+  //    return ResponseEntity.ok(responseDto);
+  //  }
 
-//  @Override
-//  public ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto) {
-//    Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
-//    checkCreate(taskReqDto);
-//    taskDao.updateOne(pid, new TaskDto(taskReqDto));
-//    return ResponseEntity.ok(new ResponseDto<>(true));
-//  }
+  //  @Override
+  //  public ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto) {
+  //    Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
+  //    checkCreate(taskReqDto);
+  //    taskDao.updateOne(pid, new TaskDto(taskReqDto));
+  //    return ResponseEntity.ok(new ResponseDto<>(true));
+  //  }
 
   @Override
   public ResponseEntity<ResponseDto<Void>> deleteOne(int pid) {
@@ -93,21 +126,21 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public List<DrawWeekWorkDto> weekDate() {
     return taskDao.allDateInfo();
-//    System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
-//    return list;
+    //    System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
+    //    return list;
   }
 
   @Override
   public List<String> department() {
     List<String> departmentList = taskDao.departmentList();
-    System.out.println(departmentList+"departmentList ///////////////");
+    System.out.println(departmentList + "departmentList ///////////////");
     return departmentList;
   }
 
   @Override
   public List<String> name() {
     List<String> nameList = taskDao.nameList();
-    System.out.println(nameList+"nameList ///////////////");
+    System.out.println(nameList + "nameList ///////////////");
     return nameList;
   }
 
@@ -128,7 +161,7 @@ public class TaskServiceImpl implements TaskService {
   public ViewTaskResDto viewTask(int pid) {
     return WebClient.create("http://localhost:8888")
       .get()
-      .uri("/task/"+pid)
+      .uri("/task/" + pid)
       .retrieve()
       .bodyToMono(ViewTaskResDto.class)
       .block();
@@ -150,38 +183,38 @@ public class TaskServiceImpl implements TaskService {
   public WriteTaskResDto deleteTask(int pid) {
     return WebClient.create("http://localhost:8888")
       .delete()
-      .uri("/task/"+pid)
+      .uri("/task/" + pid)
       .retrieve()
       .bodyToMono(WriteTaskResDto.class)
       .block();
   }
 
-//  private void checkDate(Date startAt, Date dueAt) {
-//    if (startAt <= dueAt) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
-//
-//  }
+  //  private void checkDate(Date startAt, Date dueAt) {
+  //    if (startAt <= dueAt) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
+  //
+  //  }
 
   private void checkCreate(TaskReqDto taskReqDto) {
-    boolean check=false;
-    for(Priority priority : Priority.values()) {
+    boolean check = false;
+    for (Priority priority : Priority.values()) {
       if (taskReqDto.getPriority().equals(priority.toString())) {
-        check=true;
+        check = true;
         break;
       }
     }
     if (!check) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
-    check=false;
-    for(State state : State.values()) {
+    check = false;
+    for (State state : State.values()) {
       if (taskReqDto.getState().equals(state.toString())) {
-        check=true;
+        check = true;
         break;
       }
     }
     if (!check) throw new ApiException(TASK_STATE_SAVE_FAILED);
-    check=false;
-    for(Type type : Type.values()) {
+    check = false;
+    for (Type type : Type.values()) {
       if (taskReqDto.getType().equals(type.toString())) {
-        check=true;
+        check = true;
         break;
       }
     }
@@ -190,18 +223,18 @@ public class TaskServiceImpl implements TaskService {
   }
 
   private void checkUpdate(TaskUpdateReqDto taskUpdateReqDto) {
-    boolean check=false;
-    for(Priority priority : Priority.values()) {
+    boolean check = false;
+    for (Priority priority : Priority.values()) {
       if (taskUpdateReqDto.getPriority().equals(priority.toString())) {
-        check=true;
+        check = true;
         break;
       }
     }
     if (!check) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
-    check=false;
-    for(State state : State.values()) {
+    check = false;
+    for (State state : State.values()) {
       if (taskUpdateReqDto.getState().equals(state.toString())) {
-        check=true;
+        check = true;
         break;
       }
     }

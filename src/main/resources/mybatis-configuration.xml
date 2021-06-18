@@ -6,6 +6,6 @@
 		<setting name="mapUnderscoreToCamelCase" value="True"/>
 	</settings>
 	<typeAliases>
-		<package  name="kr.co.zzimcar.dto" />
+		<package  name="kr.co.zzimcar.domain" />
 	</typeAliases>
 </configuration>

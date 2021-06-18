@@ -1,7 +1,7 @@
 package kr.co.zzimcar.controller.page;
 
-import kr.co.zzimcar.dto.member.MemberLoginDto;
-import kr.co.zzimcar.dto.member.MemberMsgDto;
+import kr.co.zzimcar.domain.member.MemberLoginDto;
+import kr.co.zzimcar.domain.member.MemberMsgDto;
 import kr.co.zzimcar.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

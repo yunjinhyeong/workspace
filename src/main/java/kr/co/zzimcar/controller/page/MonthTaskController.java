@@ -1,6 +1,6 @@
 package kr.co.zzimcar.controller.page;
 
-import kr.co.zzimcar.dto.blog.BlogDto;
+import kr.co.zzimcar.domain.blog.BlogDto;
 import kr.co.zzimcar.service.blog.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

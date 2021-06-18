@@ -1,23 +1,15 @@
 package kr.co.zzimcar.controller.page;
 
-import kr.co.zzimcar.dao.MemberDao;
 import kr.co.zzimcar.dao.TaskDao;
-import kr.co.zzimcar.dto.MemberTaskDto;
-import kr.co.zzimcar.dto.TaskTestForm;
-import kr.co.zzimcar.dto.ViewContentDto;
-import kr.co.zzimcar.dto.WeeklyTasks;
-import kr.co.zzimcar.dto.department.DepartmentDto;
-import kr.co.zzimcar.dto.member.MemberDto;
-import kr.co.zzimcar.dto.page.DrawWeekWorkDto;
-import kr.co.zzimcar.dto.page.WeekInfoDto;
-import kr.co.zzimcar.dto.task.*;
+import kr.co.zzimcar.domain.MemberTaskDto;
+import kr.co.zzimcar.domain.TaskTestForm;
+import kr.co.zzimcar.domain.WeeklyTasks;
+import kr.co.zzimcar.domain.page.WeekInfoDto;
+import kr.co.zzimcar.domain.task.*;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +28,9 @@ public class WeeklyTaskController {
   @PostMapping("/weekly")
   @ResponseBody
   public WeekInfoDto week(int yyyy, int mm) {
+//    return taskService.generateMonthlyTaskMap(yyyy, mm);
+
+
     Calendar cal = Calendar.getInstance();
     WeekInfoDto weekInfoDto = new WeekInfoDto();
     int result = getCurrentWeekOfMonth(yyyy,mm,cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -72,14 +67,13 @@ public class WeeklyTaskController {
     List<WeeklyTasks> departmentList = new ArrayList<>();
 
     // 해당 월에 해당되는 데이터 뽑아오기
-    cal.set(yyyy,mm-1,1);
-    int dd = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-    String month = mm<10 ? "0"+Integer.toString(mm) : Integer.toString(mm);
-    String day = dd<10 ? "0"+Integer.toString(dd) : Integer.toString(dd);
-    String startday = yyyy+"-"+month+"-01";
-    String dueday = yyyy+"-"+month+"-"+day;
-//    System.out.println(taskDao.tasktestretrieve(startday,dueday));
-    List<TaskTestForm> taskTestForm = taskDao.tasktestretrieve(startday,dueday);
+//    cal.set(yyyy,mm-1,1);
+//    int dd = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//    String month = mm<10 ? "0"+Integer.toString(mm) : Integer.toString(mm);
+//    String day = dd<10 ? "0"+Integer.toString(dd) : Integer.toString(dd);
+//    String startday = yyyy+"-"+month+"-01";
+//    String dueday = yyyy+"-"+month+"-"+day;
+    List<TaskTestForm> taskTestForm = taskDao.taskTestRetrieve(yyyy,mm);
 
 //    System.out.println(taskTestForm.get(1).getDueAt().getClass().getName());
 

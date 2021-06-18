@@ -3,12 +3,12 @@ package kr.co.zzimcar.controller.API;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import kr.co.zzimcar.dto.ResponseDto;
-import kr.co.zzimcar.dto.task.MemberJoinDto;
+import kr.co.zzimcar.domain.ResponseDto;
+import kr.co.zzimcar.domain.task.MemberJoinDto;
 
-import kr.co.zzimcar.dto.task.TaskReqDto;
-import kr.co.zzimcar.dto.task.TaskResDto;
-import kr.co.zzimcar.dto.task.TaskUpdateReqDto;
+import kr.co.zzimcar.domain.task.TaskReqDto;
+import kr.co.zzimcar.domain.task.TaskResDto;
+import kr.co.zzimcar.domain.task.TaskUpdateReqDto;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

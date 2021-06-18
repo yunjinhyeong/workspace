@@ -1,7 +1,6 @@
 package kr.co.zzimcar.exception;
 
-import kr.co.zzimcar.dto.ResponseDto;
-import kr.co.zzimcar.enumeration.ResponseCode;
+import kr.co.zzimcar.domain.ResponseDto;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
