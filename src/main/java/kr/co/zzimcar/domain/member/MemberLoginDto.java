@@ -11,6 +11,9 @@ import lombok.ToString;
 @ToString
 public class MemberLoginDto {
 
-  private String name;
-  private String pw;
+//  private String name;
+//  private String pw;
+
+  private String password;
+  private String username;
 }

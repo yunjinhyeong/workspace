@@ -1,11 +1,16 @@
 package kr.co.zzimcar.data;
 
+import kr.co.zzimcar.domain.MemberTaskDto;
 import kr.co.zzimcar.domain.TaskTestForm;
 import kr.co.zzimcar.domain.WeeklyTasks;
 import kr.co.zzimcar.domain.page.WeekInfoDto;
 import kr.co.zzimcar.domain.task.Task;
 import lombok.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Data
@@ -23,12 +28,14 @@ public class MonthlyTaskMap {
   private List<Task> weekly5;
 
   private List<TaskTestForm> tasks;
+  List<MemberTaskDto> tasksList;
   private Map<String, List<WeeklyTasks>> taskMap;
 
   public MonthlyTaskMap(int year, int month) {
     this.year = year;
     this.month = month;
   }
+
 
   public void calcWeeks() {
     Calendar cal = Calendar.getInstance();
@@ -58,6 +65,73 @@ public class MonthlyTaskMap {
     this.weekly3 = new ArrayList<>();
     this.weekly4 = new ArrayList<>();
     this.weekly5 = new ArrayList<>();
+    this.tasksList = new ArrayList<>();
+    this.departmentList = new ArrayList<>();
+    this.taskMap = new HashMap<>();
+
+    List<String> weekstartduepoint = getWeekInMonths(year,month);    // 일단 1픽
+    List<LocalDate> dateconvert = new ArrayList<>();
+    SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    try {
+      for (int i = 0 ; i<weekstartduepoint.size() ; i++) {
+        // String 타입을 Date 타입으로 변환
+        Date formatDate = dtFormat.parse(weekstartduepoint.get(i));
+        // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+        String strNewDtFormat = newDtFormat.format(formatDate);
+        LocalDate date = LocalDate.parse(strNewDtFormat, DateTimeFormatter.ISO_DATE);
+        dateconvert.add(date);
+      }
+    }catch (ParseException e) {
+      e.printStackTrace();
+    }
+    //    System.out.println(dateconvert);
+
+    //    (startAt >= '2021-06-01' && startAt <= '2021-06-05') || (dueAt >= '2021-06-01' && dueAt <= '2021-06-05') || (startAt <= '2021-06-01' && dueAt >= '2021-06-05')
+
+
+    for (int t=0 ; t<tasks.size()-1 ; t++) {
+      int lastIndex = t+2;
+      int size = tasks.size();
+      for (int i = 0; i < dateconvert.size(); i += 2) {
+        if (((tasks.get(t).getStartAt().isAfter(dateconvert.get(i)) || tasks.get(t).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(t).getStartAt().isBefore(dateconvert.get(i + 1)) || tasks.get(t).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
+          ((tasks.get(t).getDueAt().isAfter(dateconvert.get(i)) || tasks.get(t).getDueAt().isEqual(dateconvert.get(i))) && (tasks.get(t).getDueAt().isBefore(dateconvert.get(i + 1)) || tasks.get(t).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
+          ((tasks.get(t).getStartAt().isBefore(dateconvert.get(i)) || tasks.get(t).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(t).getDueAt().isAfter(dateconvert.get(i + 1)) || tasks.get(t).getDueAt().isEqual(dateconvert.get(i + 1))))) {
+          if (i == 0) weekly1.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
+          if (i == 2) weekly2.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
+          if (i == 4) weekly3.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
+          if (i == 6) weekly4.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
+          if (i == 8) weekly5.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
+        }
+      }
+      if (!tasks.get(t).getName().equals(tasks.get(t+1).getName())) { //  || (t+1) == taskTestForm.size()
+        tasksList.add(new MemberTaskDto(tasks.get(t).getName(), weekly1, weekly2, weekly3, weekly4, weekly5));
+        weekly1=new ArrayList<>();weekly2=new ArrayList<>();weekly3=new ArrayList<>();weekly4=new ArrayList<>();weekly5=new ArrayList<>();
+        if (!tasks.get(t).getDepartment().equals(tasks.get(t+1).getDepartment())) {
+          departmentList.add(new WeeklyTasks(tasks.get(t).getDepartment(), tasksList));
+          tasksList=new ArrayList<>();
+        }
+      }
+      if (lastIndex==size) {
+        for (int i = 0; i < dateconvert.size(); i += 2) {
+          if (((tasks.get(size-1).getStartAt().isAfter(dateconvert.get(i)) || tasks.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(size-1).getStartAt().isBefore(dateconvert.get(i + 1)) || tasks.get(size-1).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
+            ((tasks.get(size-1).getDueAt().isAfter(dateconvert.get(i)) || tasks.get(size-1).getDueAt().isEqual(dateconvert.get(i))) && (tasks.get(size-1).getDueAt().isBefore(dateconvert.get(i + 1)) || tasks.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
+            ((tasks.get(size-1).getStartAt().isBefore(dateconvert.get(i)) || tasks.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(size-1).getDueAt().isAfter(dateconvert.get(i + 1)) || tasks.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1))))) {
+            if (i == 0) weekly1.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
+            if (i == 2) weekly2.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
+            if (i == 4) weekly3.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
+            if (i == 6) weekly4.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
+            if (i == 8) weekly5.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
+          }
+        }
+        tasksList.add(new MemberTaskDto(tasks.get(size-1).getName(), weekly1, weekly2, weekly3, weekly4, weekly5));
+        weekly1=new ArrayList<>();weekly2=new ArrayList<>();weekly3=new ArrayList<>();weekly4=new ArrayList<>();weekly5=new ArrayList<>();
+        departmentList.add(new WeeklyTasks(tasks.get(size-1).getDepartment(), tasksList));
+        tasksList=new ArrayList<>();
+      }
+    }
+    taskMap.put("departmentList", departmentList);
   }
 
   public void generateTaskMap() {
@@ -94,7 +168,7 @@ public class MonthlyTaskMap {
 
     return dayOfWeekForFirstDayOfMonth;
   }
-  public static List<String> getWeekInMonths(int year, int month) {
+  public List<String> getWeekInMonths(int year, int month) {
 
     List<String> result = new ArrayList<>();
 

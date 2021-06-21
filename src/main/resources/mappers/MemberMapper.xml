@@ -11,4 +11,21 @@
       m.name = #{name} and m.pw = #{pw}
   </select>
 
+  <insert id="create" parameterType="MemberReqDto">
+    INSERT workspace.member (
+      department_pid, pid, name, role
+    ) VALUES (
+    #{departmentPid}, #{pid}, #{name}, #{role}
+    )
+  </insert>
+
+  <select id="countByPid" parameterType="int" resultType="int">
+    select
+      count(*)
+    from
+      workspace.member m
+    where
+      m.pid = #{pid}
+  </select>
+
 </mapper>

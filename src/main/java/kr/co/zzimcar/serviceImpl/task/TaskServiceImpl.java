@@ -36,28 +36,21 @@ public class TaskServiceImpl implements TaskService {
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
 
+
     // 1. 받아온 연월로 총 몇주가 있는지 계산
     monthlyTaskMap.calcWeeks(); // 한듯?
+
 
     // 2. 연월에 맞는 task 데이터 가져오기
     monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
 
-    // 3. 부서 기준 리스트 생성
-    monthlyTaskMap.generateDepartmentList();
-
-    // 4. 직원 기준 리스트 생성
-    monthlyTaskMap.generateWorkerList();
-
     // 5. 주차 기준 리스트 생성
     monthlyTaskMap.generateWeekTaskList();
 
-    // 6. task 데이터를 각 리스트에 삽입
-
-    // 7. 생성된 리스트를 map 으로 변환하여 리턴
-    monthlyTaskMap.generateTaskMap();
-
     WeekInfoDto weekInfoDto = new WeekInfoDto();
+    weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
     weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
+    System.out.println(weekInfoDto);
     return weekInfoDto;
 
   }

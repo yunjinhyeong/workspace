@@ -793,7 +793,6 @@ function iswho() {
   }
 }
 
-
 // $("[name=writeTask]").click(function () {
 //   window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000');
 // });
@@ -804,26 +803,76 @@ $("[name=logout]").click(function () {
   location.reload();
 });
 
+/////////////////////////////////////////////////////////////////////////////////
+$("[name=submitRoleDepartmentPid]").click(function () {
+  $.ajax({
+    url: '/member/submitRoleDepartmentPid',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pid: $("[name=insertInputMemberPid]").val(),
+      name: $("[name=insertInputName]").val(),
+      role: $("[name=insertInputRole]").val(),
+      departmentPid: $("[name=insertInputDepartMentPid]").val()
+    },
+    success: function (rs) {
+      if (rs.success) {
+
+      }
+    }
+  });
+});
+
 $("[name=login]").click(function () {
   $.ajax({
     url: '/member/login',
     type: 'POST',
     dataType: 'json',
     data: {
-      name: $("[name=name]").val(),
-      pw: $("[name=pw]").val()
+      username: $("[name=name]").val(),
+      password: $("[name=pw]").val()
     },
     success: function (rs) {
       if (rs.success) {
-        $.cookie('member_pid', rs.data.pid, {expires: 1});
-        $.cookie('name', rs.data.name, {expires: 1});
-        iswho(rs.data.pid);
+        console.log('성공');
+        console.log(rs);
+        // $.cookie('member_pid', rs.data.pid, {expires: 1});
+        // $.cookie('name', rs.data.name, {expires: 1});
+        // iswho(rs.data.pid);
+        loginSuccess(rs.data.pid, rs.data.name);
+      }
+      if (!rs.success) {
+        alert('아이디와 페스워드가 틀렸습니다.');
       }
     }
   });
 });
+
+function loginSuccess(pid, name) {
+  $("[name=insertInputMemberPid]").val = pid;
+  $("[name=insertInputName]").val = name;
+  $.ajax({
+    url: '/member/isPid',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pid: pid,
+      name: name
+    },
+    success: function (rs) {
+      if (!rs.isPidDup) {
+        $('#insertInput').modal("show");
+      }
+      if (rs.isPidDup) {
+        alert('로그인성공');
+      }
+    }
+  });
+}
+
 document.getElementById('startAt').value = new Date().toISOString().substring(0, 10);
 document.getElementById('dueAt').value = getDueAt();
+
 function getDueAt() {
   let writeDueAt = new Date();
   writeDueAt.setDate(writeDueAt.getDate()+1);

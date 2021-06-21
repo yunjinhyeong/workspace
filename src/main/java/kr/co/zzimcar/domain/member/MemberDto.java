@@ -15,7 +15,12 @@ public class MemberDto {
   private String name;
   private int departmentPid;
   private String role;
-  private String pw;
 
+  public MemberDto(MemberReqDto memberReqDto){
+    this.pid = memberReqDto.getPid();
+    this.name = memberReqDto.getName();
+    this.departmentPid = memberReqDto.getDepartmentPid();
+    this.role = memberReqDto.getRole();
+  }
 
 }

@@ -20,15 +20,60 @@ public class MemberServiceImpl implements MemberService {
 
   private final MemberDao memberDao;
 
+//  @Override
+//  public MemberMsgDto login(MemberLoginDto memberLoginDto) {
+//    return WebClient.create("http://localhost:8888")
+//      .post()
+//      .uri("/member/retrieve")
+//      .bodyValue(memberLoginDto)
+//      .retrieve()
+//      .bodyToMono(MemberMsgDto.class)
+//      .block();
+//  }
+
   @Override
-  public MemberMsgDto login(MemberLoginDto memberLoginDto) {
+  public MemberMsgDto insertMember(MemberLoginDto memberLoginDto) {
     return WebClient.create("http://localhost:8888")
+          .post()
+          .uri("/member/retrieve")
+          .bodyValue(memberLoginDto)
+          .retrieve()
+          .bodyToMono(MemberMsgDto.class)
+          .block();
+  }
+
+  @Override
+  public TokenResult makeToken(TokenBasicData tokenBasicData) {
+    return WebClient.create("https://int-api.dev.zzimcar.co.kr")
       .post()
-      .uri("/member/retrieve")
+      .uri("/client/token")
+      .bodyValue(tokenBasicData)
+      .retrieve()
+      .bodyToMono(TokenResult.class)
+      .block();
+  }
+
+  @Override
+  public MemberInfoDto login(String token, MemberLoginDto memberLoginDto) {
+    return WebClient.create("https://int-api.dev.zzimcar.co.kr")
+      .post()
+      .uri("/member/login")
+      .header("xClientToken",token)
       .bodyValue(memberLoginDto)
       .retrieve()
-      .bodyToMono(MemberMsgDto.class)
+      .bodyToMono(MemberInfoDto.class)
       .block();
+  }
+
+  @Override
+  public int countByPid(int pid) {
+    return memberDao.countByPid(pid);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto) {
+    memberDao.create(new MemberDto(memberReqDto));
+    return ResponseEntity.ok(new ResponseDto<>(true));
   }
 
   @Override

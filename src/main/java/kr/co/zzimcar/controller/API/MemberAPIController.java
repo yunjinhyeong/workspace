@@ -19,9 +19,9 @@ public class MemberAPIController {
 
   private final MemberService memberService;
 
-  @PostMapping("/retrieve")
-  @ApiOperation("맴버 로그인 API")
-  public ResponseEntity<ResponseDto<MemberResDto>> login(@RequestBody @ApiParam(value = "로그인할 정보", required = true) MemberReqDto memberReqDto){
-    return memberService.loginApi(memberReqDto);
+  @PostMapping("/create")
+  @ApiOperation("맴버 회원가입 API")
+  public ResponseEntity<ResponseDto<Void>> create(@RequestBody @ApiParam(value = "회원가입할 정보", required = true) MemberReqDto memberReqDto){
+    return memberService.create(memberReqDto);
   }
 }
