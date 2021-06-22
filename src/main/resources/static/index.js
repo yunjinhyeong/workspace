@@ -1,30 +1,26 @@
-let yyyy;
-let mm;
-let dd;
-
-let week;
+let year;
+let month;
 
 function getToday() {
+
   let today = new Date();
   today = today.toISOString().slice(0, 7);
-  console.log(today);
   let bir = document.getElementById("focus_date");
   bir.value = today;
 }
 
-function get_date_str(date)
-{
-  var sYear = date.getFullYear();
-  var sMonth = date.getMonth() + 1;
-  // var sDate = date.getDate();
+function get_date_str(date) {
+
+  let sYear = date.getFullYear();
+  let sMonth = date.getMonth() + 1;
 
   sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
-  // sDate  = sDate > 9 ? sDate : "0" + sDate;
   return sYear +'-'+ sMonth;
 }
 
 
 window.onload = () => {
+
   const tab_switchers = document.querySelectorAll('[data-switcher]');
 
   console.log(
@@ -55,6 +51,7 @@ window.onload = () => {
   );
 
   for (let i = 0; i < tab_switchers.length; i++) {
+
     const tab_switcher = tab_switchers[i];
     const page_id = tab_switcher.dataset.tab;
 
@@ -64,251 +61,92 @@ window.onload = () => {
       SwitchPage(page_id);
     });
   }
-  iswho();
+
+  isWho();
   getToday();
   getWeek();
 }
 
 $('.jump_month_plus').click(function(){
+
   $('th').remove('.swich');
   $('td').remove('.swich');
   $('tr').remove('.swich');
+
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() + 1);
   let test =  get_date_str(selectedDate);
-  yyyy = test.substring(0,4);
-  mm = test.substring(5,7);
+
+  year = test.substring(0,4);
+  month = test.substring(5,7);
   document.getElementById("focus_date").value = test;
+
   $.ajax({
     url: '/week/weekly',
     type: 'POST',
     dataType: 'json',
     data: {
-      yyyy: yyyy,
-      mm: mm
+      year: year,
+      month: month
     },
     success: function (rs) {
-      console.log(rs.weekcount);
-      // drawweek(rs.weekcount, rs.list);
-      drawSample(rs.weekcount, rs.items);
+      drawWeekly(rs.weekcount, rs.items);
     }
   });
 });
 
 $('.jump_month_minus').click(function(){
+
   $('th').remove('.swich');
   $('td').remove('.swich');
   $('tr').remove('.swich');
+
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() - 1);
   let test =  get_date_str(selectedDate);
-  yyyy = test.substring(0,4);
-  mm = test.substring(5,7);
+
+  year = test.substring(0,4);
+  month = test.substring(5,7);
   document.getElementById("focus_date").value = test;
+
   $.ajax({
     url: '/week/weekly',
     type: 'POST',
     dataType: 'json',
     data: {
-      yyyy: yyyy,
-      mm: mm
+      year: year,
+      month: month
     },
     success: function (rs) {
-      console.log(rs.weekcount);
-      // drawweek(rs.weekcount, rs.list);
-      drawSample(rs.weekcount, rs.items);
+      drawWeekly(rs.weekcount, rs.items);
     }
   });
 });
 
 function getWeek() {
+
   let value = $('#focus_date').val();
-  yyyy = value.substring(0,4);
-  mm = value.substring(5,7);
+  year = value.substring(0,4);
+  month = value.substring(5,7);
+
   $.ajax({
     url: '/week/weekly',
     type: 'POST',
     dataType: 'json',
     data: {
-      yyyy: yyyy,
-      mm: mm
+      year: year,
+      month: month
     },
     success: function (rs) {
-      console.log(rs.items);
-      console.log('rs.weekcount = '+rs.weekcount);
-
-      var sampleList = [{
-        departmentName: '경영지원',
-        memberTasks: [{
-          name: '임진숙',
-          w1: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w2: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '2주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '2주차 t2'
-          }],
-          w3: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '3주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '3주차 t2'
-          }],
-          w4: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '4주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '4주차 t2'
-          }]
-        },{
-          name: '김영범',
-          w1: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 1주차 t2'
-          }],
-          w2: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 2주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범2주차 t2'
-          }],
-          w3: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 3주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 3주차 t2'
-          }],
-          w4: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 4주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '김영범 4주차 t2'
-          }]
-        }]
-      },{
-        departmentName: '개발팀',
-        memberTasks: [{
-          name: '이욱세',
-          w1: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w2: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w3: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w4: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }]
-        },{
-          name: '박혜미',
-          w1: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w2: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w3: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }],
-          w4: [{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t1'
-          },{
-            startAt: '2021-06-01',
-            dueAt: '2021-06-03',
-            content: '1주차 t2'
-          }]
-        }]
-      }]
-
-      // drawweek(rs.weekcount, rs.list);
-
-      drawSample(rs.weekcount, rs.items);
+      drawWeekly(rs.weekcount, rs.items);
     }
   });
 }
 
-let weekDataList = []
+function drawWeekly(count, list) {
 
-function drawSample(count, list) {
   let str = '';
   for (let num = 1; num <= count; num++){
     str += `
@@ -319,181 +157,71 @@ function drawSample(count, list) {
 
   let row = '';
 
-
-  console.log('weekDataList',weekDataList)
-
   list.departmentList.forEach(weeklyTasks => {
 
-    let ww = '';
-    // var w1 ='';
-    // var w2 ='';
-    // var w3 ='';
-    // var w4 ='';
-    // var w5 ='';
-
-    // let iterator = Object.keys(weeklyTasks.memberTasks[0]);
-    // iterator.forEach(key => {
-    //   let temp = weeklyTasks.memberTasks[0][key];
-    //   key += `
-    //       <p>
-    //         startAt: ${temp.startAt}<br />
-    //         dueAt: ${temp.dueAt}<br />
-    //         content: ${temp.content}
-    //       </p>
-    //     `;
-    //   });
+    let weekly = '';
 
     for (let i=1 ; i<=count ; i++) {
-      ww += `<td>`
-      weeklyTasks.memberTasks[0]['w'+i].forEach(task => {
-        ww += `<ul class="main">
-                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
+      weekly += `<td> <ul class="main">`
+      weeklyTasks.memberTasks[0]['weekly'+i].forEach(task => {
+        weekly += `
+                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}" data-name="${task.name}">${task.content}</div>
                     <ul class="sub">
-                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="상세보기" data-pid="${task.pid}">  
-                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}">                    
+                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}" value="상세보기">  
+                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">                    
                     </ul>    
                   </li>                
-                </ul>`;
+                `;
       });
-      ww += `</td>`
+      weekly += `</ul></td>`
     }
 
-    // weeklyTasks.memberTasks[0].w1.forEach(task => {
-    //   w1 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // });
-    // weeklyTasks.memberTasks[0].w2.forEach(task => {
-    //   w2 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // })
-    // weeklyTasks.memberTasks[0].w3.forEach(task => {
-    //   w3 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // })
-    // weeklyTasks.memberTasks[0].w4.forEach(task => {
-    //   w4 += `
-    //       <p>
-    //         startAt: ${task.startAt}<br />
-    //         dueAt: ${task.dueAt}<br />
-    //         content: ${task.content}
-    //       </p>
-    //     `;
-    // })
-    //
-    // row += `
-    //   <tr>
-    //     <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-    //     <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-    //     <td class="align-middle text-center">${w1}</td>
-    //     <td class="align-middle text-center">${w2}</td>
-    //     <td class="align-middle text-center">${w3}</td>
-    //     <td class="align-middle text-center">${w4}</td>
-    //
-    //   </tr>
-    // `;
-console.log(weeklyTasks);
     row += `
       <tr class="swich">
         <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center" style="width: 100px">${weeklyTasks.departmentName}</td>
         <td class="align-middle" style="width: 100px">
             <ul class="main" style="margin:auto;">
-              <li style="background-color:#fff;" class="task-data"><div>${weeklyTasks.memberTasks[0].name}</div>
+              <li style="background-color:#fff;" class="task-data"><div class="member_name">${weeklyTasks.memberTasks[0].name}</div>
                 <ul class="sub">
                   <input name="writeTask" type="button" class="btn" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">                      
                 </ul>
               </li>
             </ul>
           </td>
-          ${ww}
+          ${weekly}
       </tr>
     `;
 
     for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
-      let ww = '';
-
+      let weekly = '';
 
       for (let i=1 ; i<=count ; i++) {
-        ww += `<td>`
-        weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
-          ww += `<ul class="main">
-                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}">content: ${task.content}</div>
+        weekly += `<td><ul class="main">`
+        weeklyTasks.memberTasks[idx]['weekly'+i].forEach(task => {
+          weekly += `
+                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}" data-name="${task.name}">${task.content}</div>
                     <ul class="sub">                   
-                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" value="상세보기" data-pid="${task.pid}">
-                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}">                                            
+                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}" value="상세보기">
+                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">                                            
                     </ul>    
                   </li>
-                </ul>`;
+                `;
         });
-        ww += `</td>`
+        weekly += `</ul></td>`
       }
-
-
-      // weeklyTasks.memberTasks[idx].w1.forEach(task => {
-      //   w1 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // });
-      // weeklyTasks.memberTasks[idx].w2.forEach(task => {
-      //   w2 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // })
-      // weeklyTasks.memberTasks[idx].w3.forEach(task => {
-      //   w3 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // })
-      // weeklyTasks.memberTasks[idx].w4.forEach(task => {
-      //   w4 += `
-      //     <p>
-      //       startAt: ${task.startAt}<br />
-      //       dueAt: ${task.dueAt}<br />
-      //       content: ${task.content}
-      //     </p>
-      //   `;
-      // })
-
-
 
       row += `
         <tr class="swich">
           <td class="align-middle text-center">
             <ul class="main" style="margin:auto;">
-              <li style="background-color:#fff;" class="task-data"><div>${weeklyTasks.memberTasks[idx].name}</div>
+              <li style="background-color:#fff;" class="task-data"><div class="member_name">${weeklyTasks.memberTasks[idx].name}</div>
                 <ul class="sub">
                   <input name="writeTask" type="button" class="btn" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">
                 </ul>
               </li>
             </ul>
           </td>
-          ${ww}
+          ${weekly}
         </tr>
       `;
     }
@@ -502,9 +230,15 @@ console.log(weeklyTasks);
 }
 
 $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
+
   e.preventDefault();
-  // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'));
+  // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'), $(e.target).data('name'));
   let pid = $(e.target).data('pid');
+  let member_pid = $(e.target).data('member_pid');
+  if (member_pid != $.cookie('member_pid')) {
+    alert('권한이 없습니다.');
+    return;
+  }
 
   $.ajax({
     url: '/week/deleteTask',
@@ -529,6 +263,10 @@ $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
 $("[name=deleteTask]").click(function () {
 
   let pid = $("[name=viewPid]").val();
+  if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
+    alert('권한이 없습니다.');
+    return;
+  }
 
   $.ajax({
     url: '/week/deleteTask',
@@ -549,12 +287,14 @@ $("[name=deleteTask]").click(function () {
       }
     }
   });
-});////////////////////////////////////////////////////////////////////////////////////////////////////
+});
 
 $('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
   e.preventDefault();
   // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'));
+
   let pid = $(e.target).data('pid');
+  let memberPid = $(e.target).data('member_pid');
   $("[name=viewPid]").val(pid);
 
   $.ajax({
@@ -577,28 +317,33 @@ $('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
         $("[name=viewState]").val(rs.data.state);
         $("[name=viewPriority]").val(rs.data.priority);
 
+        $.cookie('member_pid_temporary', memberPid, {expires: 1});
       }
     }
   });
-
 });
 
-$('tbody#task_body').on('click', '.task-data', function () {///////////////
+$('tbody#task_body').on('click', '.task-data', function () {
+
   if($.cookie('name') == undefined) {
     alert('로그인을 안했잖아');
   }
 });
 
 $("button[name='updateTaskPage']").on("click", function(e){
-  console.log($("[name=viewPid]").val());
+
   let pid = $("[name=viewPid]").val();
-  console.log(pid);
   let title = $("[name=viewTitle]").val();
   let content = $("[name=viewContent]").val();
   let startAt = $("[name=viewStartAt]").val();
   let dueAt = $("[name=viewDueAt]").val();
   let state = $("[name=viewState]").val();
   let priority = $("[name=viewPriority]").val();
+
+  if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
+    alert('권한이 없습니다.');
+    return;
+  }
 
   $.ajax({
     url: '/week/updateTask',
@@ -626,140 +371,12 @@ $("button[name='updateTaskPage']").on("click", function(e){
   });
 
 });
-// $('tbody#task_body').on('click', "input[name=updateTaskPage]", function (e) {
-//   e.preventDefault();
-//   console.log('머냐?');
-//   alert('일단나와');
-// });
-
 $('tbody#task_body').on('click', '.main>li', function () {
   $(this).children(".sub").stop().slideDown();
 });
 $('tbody#task_body').on('mouseleave', '.main>li', function () {
   $(this).children(".sub").stop().slideUp();
 });
-
-function drawweek(count, list) {
-  let str = '';
-  for (let num = 1; num <= count; num++){
-    str += `
-      <th class="align-middle swich">${num}주차</th>
-			`;
-  }
-  $('#weekly').append(str);
-
-  let row = '';
-
-  list.forEach(weeklyTasks => {
-
-  let ww ='';
-
-  for (let i=1 ; i<=count ; i++) {
-    ww += `<td class="align-middle text-center">`
-    weeklyTasks.memberTasks[0]['w'+i].forEach(task => {
-      ww += `
-            <p>
-              startAt: ${task.startAt}<br />
-              dueAt: ${task.dueAt}<br />
-              content: ${task.content}
-            </p>
-        `;
-    });
-    ww += `</td>`
-  }
-
-  row += `
-      <tr>
-        <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center">${weeklyTasks.departmentName}</td>
-        <td class="align-middle text-center">${weeklyTasks.memberTasks[0].name}</td>
-        ${ww}
-      </tr>
-    `;
-
-  for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
-    let ww = '';
-    var w1 ='';
-    var w2 ='';
-    var w3 ='';
-    var w4 ='';
-
-
-
-    for (let i=1 ; i<=count ; i++) {
-      ww += `<td class="align-middle text-center">`
-      weeklyTasks.memberTasks[idx]['w'+i].forEach(task => {
-        ww += `
-            <p>
-              startAt: ${task.startAt}<br />
-              dueAt: ${task.dueAt}<br />
-              content: ${task.content}
-            </p>
-        `;
-      });
-      ww += `</td>`
-    }
-
-  row += `
-        <tr>
-          <td class="align-middle text-center">${weeklyTasks.memberTasks[idx].name}</td>
-          ${ww}
-        </tr>
-      `;
-}
-});
-
-$('#task_body').append(row);
-
-  // let ttt= 'ttt';
-  // for (let i = 0 ; i<2 ; i++) {
-  //   $('#num'+i).append(ttt);
-  // }
-  // for ( var i=0; i < 16 ; i++) {
-  //   for (var j = 1; j <= count; j++) {
-  //     for (let l = 0 ; l<list.length ; l++) {
-  //       console.log(list.length);
-  //       if (parseInt(list[l].mm)==mm && parseInt(list[l].yyyy)==yyyy && list[l].type == '주간' && j == list[l].realweek && $('#name' + i).text() == list[l].name) {
-  //         let txt = `<td class="swich">들어간다</td>`;    // 테이블각 셀에 (행,열) 값을 출력하기위해 정의된 String
-  //         $('#num' + i).append(txt);
-  //       }
-  //       if (parseInt(list[l].mm)!=mm || parseInt(list[l].yyyy)!=yyyy || list[l].type != '주간' || j != list[l].realweek || $('#name' + i).text() != list[l].name) {
-  //         let txt = `<td class="swich"></td>`;    // 테이블각 셀에 (행,열) 값을 출력하기위해 정의된 String
-  //         $('#num' + i).append(txt);
-  //       }
-  //     }
-
-      // if (parseInt(list[i].mm)==mm && parseInt(list[i].yyyy)==yyyy && list[i].type == '주간' && j == list[i].realweek) {
-      //   var txt = `<td class="swich">들어간다</td>`;    // 테이블각 셀에 (행,열) 값을 출력하기위해 정의된 String
-      //   $('#num' + i).append(txt);
-      // }
-      // if (parseInt(list[i].mm)!=mm || parseInt(list[i].yyyy)!=yyyy || list[i].type != '주간' || j != list[i].realweek) {
-      //   var txt = `<td class="swich"></td>`;    // 테이블각 셀에 (행,열) 값을 출력하기위해 정의된 String
-      //   $('#num' + i).append(txt);
-      // }
-      // document.write("<td>"+ txt +"</td>");     // <td> : 열추가.
-  //   } //end for j
-  // }
-
-  // console.log(list);
-  // let empty = '';
-  // let taskstr = '';
-  // for (let i = 0 ; i<list.length ; i++) {
-  //   console.log('>');
-  //   if (parseInt(list[i].mm)!=mm || parseInt(list[i].yyyy)!=yyyy || list[i].type != '주간') {
-  //     console.log('>>');
-  //     $('#num'+i).append(empty);
-  //     console.log('>>>');
-  //     continue;
-  //   }
-  //   console.log('>>>>');
-  //   taskstr += `
-  //     <td>멍미</td>
-	// 		`;
-  //   console.log('>>>>>');
-  //   $('#num'+i).append(taskstr);
-  //   console.log('>>>>>>');
-  // }
-}
 
 function changeDate()  {
   $('th').remove('.swich');
@@ -780,10 +397,9 @@ if($.cookie('name') == undefined) {
   $("#loginBox").show();
   $("#logoutBox").hide();
   $("[name=writeTask]").hide();
-
 }
 
-function iswho() {
+function isWho() {
   if($.cookie('name') != undefined) {
     $("#loginBox").hide();
     $("#logoutBox").show();
@@ -793,31 +409,30 @@ function iswho() {
   }
 }
 
-// $("[name=writeTask]").click(function () {
-//   window.open('/week/writeTask?name='+$.cookie('name'), '업무등록하기', 'width=1000,height=1000');
-// });
-
 $("[name=logout]").click(function () {
   document.cookie = 'name=; Max-Age=-1;';
   document.cookie = 'member_pid=; Max-Age=-1;';
   location.reload();
 });
 
-/////////////////////////////////////////////////////////////////////////////////
 $("[name=submitRoleDepartmentPid]").click(function () {
   $.ajax({
     url: '/member/submitRoleDepartmentPid',
     type: 'POST',
     dataType: 'json',
     data: {
-      pid: $("[name=insertInputMemberPid]").val(),
+      pid: Number($("[name=insertInputMemberPid]").val()),
       name: $("[name=insertInputName]").val(),
       role: $("[name=insertInputRole]").val(),
       departmentPid: $("[name=insertInputDepartMentPid]").val()
     },
     success: function (rs) {
       if (rs.success) {
-
+        alert('성공! 다시 로그인 하십시오');
+        $('#insertInput').modal("hide");
+      }
+      if (!rs.success) {
+        alert('실패!');
       }
     }
   });
@@ -834,11 +449,6 @@ $("[name=login]").click(function () {
     },
     success: function (rs) {
       if (rs.success) {
-        console.log('성공');
-        console.log(rs);
-        // $.cookie('member_pid', rs.data.pid, {expires: 1});
-        // $.cookie('name', rs.data.name, {expires: 1});
-        // iswho(rs.data.pid);
         loginSuccess(rs.data.pid, rs.data.name);
       }
       if (!rs.success) {
@@ -849,8 +459,10 @@ $("[name=login]").click(function () {
 });
 
 function loginSuccess(pid, name) {
-  $("[name=insertInputMemberPid]").val = pid;
-  $("[name=insertInputName]").val = name;
+
+  $("[name=insertInputMemberPid]").val(pid);
+  $("[name=insertInputName]").val(name);
+
   $.ajax({
     url: '/member/isPid',
     type: 'POST',
@@ -864,7 +476,9 @@ function loginSuccess(pid, name) {
         $('#insertInput').modal("show");
       }
       if (rs.isPidDup) {
-        alert('로그인성공');
+        $.cookie('member_pid', $("[name=insertInputMemberPid]").val(), {expires: 1});
+        $.cookie('name', $("[name=insertInputName]").val(), {expires: 1});
+        isWho($("[name=insertInputMemberPid]").val());
       }
     }
   });
@@ -889,6 +503,11 @@ $("[name=writeTaskSubmit]").click(function () {
   let dueAt = $("[name=dueAt]").val();
   let state = $("[name=state]").val();
   let priority = $("[name=priority]").val();
+
+  if (startAt > dueAt) {
+    alert('시작일이 종료일보다 큽니다.');
+    return;
+  }
 
   $.ajax({
     url: '/week/writeTask',

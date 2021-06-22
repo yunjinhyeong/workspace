@@ -1,5 +1,6 @@
-package kr.co.zzimcar.domain;
+package kr.co.zzimcar.domain.task;
 
+import kr.co.zzimcar.domain.task.MemberTaskDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +8,8 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class WeeklyTasks {  // 리스트???
+public class WeeklyTasks {
+
   private String departmentName;
   private List<MemberTaskDto> memberTasks;
 

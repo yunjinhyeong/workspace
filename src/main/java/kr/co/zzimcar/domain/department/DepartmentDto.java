@@ -10,6 +10,8 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 public class DepartmentDto {
+
   private int pid;
   private String name;
+
 }

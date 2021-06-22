@@ -1,9 +1,8 @@
 package kr.co.zzimcar.data;
 
-import kr.co.zzimcar.domain.MemberTaskDto;
-import kr.co.zzimcar.domain.TaskTestForm;
-import kr.co.zzimcar.domain.WeeklyTasks;
-import kr.co.zzimcar.domain.page.WeekInfoDto;
+import kr.co.zzimcar.domain.task.MemberTaskDto;
+import kr.co.zzimcar.domain.task.TaskFormDto;
+import kr.co.zzimcar.domain.task.WeeklyTasks;
 import kr.co.zzimcar.domain.task.Task;
 import lombok.Data;
 
@@ -27,36 +26,27 @@ public class MonthlyTaskMap {
   private List<Task> weekly4;
   private List<Task> weekly5;
 
-  private List<TaskTestForm> tasks;
+  private List<TaskFormDto> tasks;
   List<MemberTaskDto> tasksList;
   private Map<String, List<WeeklyTasks>> taskMap;
 
   public MonthlyTaskMap(int year, int month) {
+
     this.year = year;
     this.month = month;
-  }
 
+  }
 
   public void calcWeeks() {
     Calendar cal = Calendar.getInstance();
-//    WeekInfoDto weekInfoDto = new WeekInfoDto();
+
     int result = getCurrentWeekOfMonth(year,month,cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
     if(result == 1 || result == 4) {
-//      weekInfoDto.setWeekcount(4);
       this.weeksCnt = 4;
     } else {
-//      weekInfoDto.setWeekcount(5);
       this.weeksCnt = 5;
     }
-  }
-
-  public void generateDepartmentList() {
-    this.departmentList = new ArrayList<>();
-  }
-
-  public void generateWorkerList() {
-
   }
 
   public void generateWeekTaskList() {
@@ -86,10 +76,6 @@ public class MonthlyTaskMap {
     }catch (ParseException e) {
       e.printStackTrace();
     }
-    //    System.out.println(dateconvert);
-
-    //    (startAt >= '2021-06-01' && startAt <= '2021-06-05') || (dueAt >= '2021-06-01' && dueAt <= '2021-06-05') || (startAt <= '2021-06-01' && dueAt >= '2021-06-05')
-
 
     for (int t=0 ; t<tasks.size()-1 ; t++) {
       int lastIndex = t+2;
@@ -105,8 +91,8 @@ public class MonthlyTaskMap {
           if (i == 8) weekly5.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
         }
       }
-      if (!tasks.get(t).getName().equals(tasks.get(t+1).getName())) { //  || (t+1) == taskTestForm.size()
-        tasksList.add(new MemberTaskDto(tasks.get(t).getName(), weekly1, weekly2, weekly3, weekly4, weekly5));
+      if (tasks.get(t).getMemberPid() != tasks.get(t+1).getMemberPid()) { //  || (t+1) == taskTestForm.size()
+        tasksList.add(new MemberTaskDto(tasks.get(t).getName(), tasks.get(t).getMemberPid(), weekly1, weekly2, weekly3, weekly4, weekly5));
         weekly1=new ArrayList<>();weekly2=new ArrayList<>();weekly3=new ArrayList<>();weekly4=new ArrayList<>();weekly5=new ArrayList<>();
         if (!tasks.get(t).getDepartment().equals(tasks.get(t+1).getDepartment())) {
           departmentList.add(new WeeklyTasks(tasks.get(t).getDepartment(), tasksList));
@@ -125,7 +111,7 @@ public class MonthlyTaskMap {
             if (i == 8) weekly5.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
           }
         }
-        tasksList.add(new MemberTaskDto(tasks.get(size-1).getName(), weekly1, weekly2, weekly3, weekly4, weekly5));
+        tasksList.add(new MemberTaskDto(tasks.get(size-1).getName(), tasks.get(size-1).getMemberPid(), weekly1, weekly2, weekly3, weekly4, weekly5));
         weekly1=new ArrayList<>();weekly2=new ArrayList<>();weekly3=new ArrayList<>();weekly4=new ArrayList<>();weekly5=new ArrayList<>();
         departmentList.add(new WeeklyTasks(tasks.get(size-1).getDepartment(), tasksList));
         tasksList=new ArrayList<>();
@@ -134,11 +120,8 @@ public class MonthlyTaskMap {
     taskMap.put("departmentList", departmentList);
   }
 
-  public void generateTaskMap() {
-
-  }
-
   public static int getCurrentWeekOfMonth(int year, int month, int day)  {
+
     int subtractFirstWeekNumber = subWeekNumberIsFirstDayAfterThursday(year, month, day);
     int subtractLastWeekNumber = addMonthIsLastDayBeforeThursday(year, month, day);
 
@@ -154,8 +137,6 @@ public class MonthlyTaskMap {
       calendar.set(year, month - 1, day);
       calendar.add(Calendar.DATE, -1);
 
-
-
       return getCurrentWeekOfMonth(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DATE));
     }
 
@@ -168,10 +149,10 @@ public class MonthlyTaskMap {
 
     return dayOfWeekForFirstDayOfMonth;
   }
+
   public List<String> getWeekInMonths(int year, int month) {
 
     List<String> result = new ArrayList<>();
-
     Calendar cal = Calendar.getInstance();
 
     cal.set(Calendar.YEAR, year);
@@ -212,7 +193,9 @@ public class MonthlyTaskMap {
   }
 
   public static int subWeekNumberIsFirstDayAfterThursday(int year, int month, int day)  {
+
     Calendar calendar = Calendar.getInstance(Locale.KOREA);
+
     calendar.set(year, month - 1, day);
     calendar.set(Calendar.DAY_OF_MONTH, 1);
     calendar.setFirstDayOfWeek(Calendar.MONDAY);

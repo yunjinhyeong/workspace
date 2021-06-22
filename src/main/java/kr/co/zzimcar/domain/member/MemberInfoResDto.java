@@ -1,18 +1,20 @@
 package kr.co.zzimcar.domain.member;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberInfoDto {
+public class MemberInfoResDto {
+
   private boolean success;
-  private MemberInfoDataDto data;
+  private MemberInfoDataResDto data;
   private String message;
   private String code;
   private String list[];
   private HttpStatus status;
+
 }

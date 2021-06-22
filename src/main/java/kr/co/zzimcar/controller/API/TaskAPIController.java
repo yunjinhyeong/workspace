@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.co.zzimcar.domain.ResponseDto;
-import kr.co.zzimcar.domain.task.MemberJoinDto;
 
 import kr.co.zzimcar.domain.task.TaskReqDto;
 import kr.co.zzimcar.domain.task.TaskResDto;
@@ -36,19 +35,6 @@ public class TaskAPIController {
     return taskService.retrieveOne(pid);
   }
 
-//  @GetMapping("")
-//  @ApiOperation("업무목록 조회 API")
-//  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
-//    return taskService.retrieveAll();
-//  }
-
-//  @PutMapping("/{pid}")
-//  @ApiOperation("업무 현황 수정 API")
-//  public ResponseEntity<ResponseDto<Void>> updateOne(@PathVariable @ApiParam(value = "수정할 업무 번호", required = true, example = "1") int pid,
-//                                                     @RequestBody @Valid @ApiParam(value = "수정할 업무 정보", required = true) TaskReqDto taskReqDto) {
-//    return taskService.updateOne(pid, taskReqDto);
-//  }
-
   @PutMapping("")
   @ApiOperation("업무 하나 수정 API")
   public ResponseEntity<ResponseDto<Void>> updateOne(@RequestBody @Valid @ApiParam(value = "수정할 업무 정보", required = true) TaskUpdateReqDto taskUpdateReqDto) {
@@ -61,10 +47,4 @@ public class TaskAPIController {
     return taskService.deleteOne(pid);
   }
 
-  @GetMapping("/memberjoin/{pid}")
-  @ApiOperation("조인한 정보 가져오기")
-  public ResponseEntity<ResponseDto<MemberJoinDto>> retrieveJoinAll(@PathVariable @Valid @ApiParam(value = "회원 번호", required = true, example = "1") int pid) {
-    System.out.println("컨트롤");
-    return taskService.retrieveJoinAll(pid);
-  }
 }

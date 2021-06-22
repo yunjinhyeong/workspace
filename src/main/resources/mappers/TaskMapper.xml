@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.zzimcar.dao.TaskDao">
+
   <insert id="create" parameterType="TaskDto">
     INSERT workspace.task (
       member_pid, type , title, content, state, priority, start_at, due_at
@@ -18,16 +19,6 @@
     WHERE
       t.pid = #{pid}
       AND deleted_at IS NULL
-  </select>
-
-  <select id="retrieveAll" resultType="TaskDto">
-    SELECT
-      t.pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
-    FROM
-      workspace.task t
-    WHERE
-      deleted_at IS NULL AND
-      curdate() between t.start_at and t.due_at order by field(t.priority, 'lowest', 'low', 'high', 'highest') desc
   </select>
 
   <select id="totalCnt" resultType="int">
@@ -53,160 +44,22 @@
       t.pid = #{pid} AND t.deleted_at IS NULL
   </delete>
 
-  <select id="retrieveJoinAll" resultMap="memberAndTask">
-    SELECT m.pid, m.name, m.department_pid, m.role,
-           t.pid as t_pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
-    FROM workspace.member m LEFT OUTER JOIN workspace.task t
-                                            ON m.pid = t.member_pid
-    where m.pid = #{pid}
-  </select>
-
-  <resultMap id="tasksMap" type="TaskDto">
-    <id column="pid" property="pid" />
-    <result column="member_pid" property="memberPid" />
-    <result column="type" property="type" />
-    <result column="title" property="title" />
-    <result column="content" property="content" />
-    <result column="state" property="state" />
-    <result column="priority" property="priority" />
-    <result column="start_at" property="startAt" />
-    <result column="due_at" property="dueAt" />
-    <result column="created_at" property="createdAt" />
-    <result column="updated_at" property="updatedAt" />
-    <result column="deleted_at" property="deletedAt" />
-    <association property="member" javaType="MemberDto">
-      <id column="member_pid" property="pid" />
-      <result column="name" property="name" />
-      <result column="department_pid" property="departmentPid" />
-      <result column="role" property="role" />
-      <result column="pw" property="pw" />
-    </association>
-  </resultMap>
-
-  <resultMap id="memberAndTask" type="memberJoinDto">
-    <id column="pid" property="pid"/>
-    <result column="name" property="name"/>
-    <result column="department_pid" property="departmentPid"/>
-    <result column="role" property="role"/>
-    <collection property="taskList" ofType="taskResDto" javaType="arraylist">
-      <id column="t_pid" property="pid"/>
-      <result column="member_pid" property="memberPid"/>
-      <result column="type" property="type"/>
-      <result column="title" property="title"/>
-      <result column="content" property="content"/>
-      <result column="state" property="state"/>
-      <result column="priority" property="priority"/>
-      <result column="start_at" property="startAt"/>
-      <result column="due_at" property="dueAt"/>
-      <result column="created_at" property="createdAt"/>
-    </collection>
-  </resultMap>
-
-  <select id="allDateInfo" resultType="drawWeekWorkDto">
-    SELECT m.pid, m.name, m.department_pid, m.role, DATE_FORMAT(start_at, '%Y') yyyy, DATE_FORMAT(start_at, '%m') mm, DATE_FORMAT(start_at, '%d') dd,
-           t.pid as t_pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
-    FROM workspace.member m RIGHt OUTER JOIN workspace.task t
-           ON m.pid = t.member_pid;
-  </select>
-
-  <select id="departmentList" resultType="String">
+  <select id="taskTestRetrieve" resultType="TaskFormDto" parameterType="int">
     <![CDATA[
-      SELECT
-      m.department_pid
-      FROM
-      workspace.task t
-      left join workspace.member m on t.member_pid=m.pid
-      where
-      (t.start_at >= '2021-06-01' and t.start_at <= '2021-06-30')
-      or (t.due_at >= '2021-06-01' and t.due_at <= '2021-06-30')
-      or (t.start_at <= '2021-06-01' and t.due_at >= '2021-06-30')
-      and t.type = '주간'
-      group by m.department_pid
-      order by m.department_pid desc, m.pid asc;
-    ]]>
-  </select>
-
-  <select id="nameList" resultType="String">
-    <![CDATA[
-    SELECT
-      m.name
-    FROM
-      workspace.task t
-        left join workspace.member m on t.member_pid=m.pid
-    where
-      ((t.start_at >= '2021-06-01' and t.start_at <= '2021-06-30')
-        or (t.due_at >= '2021-06-01' and t.due_at <= '2021-06-30')
-        or (t.start_at <= '2021-06-01' and t.due_at >= '2021-06-30'))
-      and t.type = '주간' and m.department_pid = '2'
-    group by m.name
-    order by m.department_pid desc, m.pid asc;
-    ]]>
-  </select>
-
-  <select id="retrieveTasks" resultMap="tasksMap">
-    SELECT
-      t.pid, m.department_pid, m.name, t.start_at, t.due_at, t.content, t.member_pid
-    FROM
-      task t
-      LEFT JOIN member m ON t.member_pid = m.pid;
-    WHERE t.deleted_at IS NULL;
-  </select>
-
-  <select id="taskTestRetrieve" resultType="TaskTestForm" parameterType="int">
-    <![CDATA[
-      select t.pid, d.name as department, m.name, t.start_at, t.due_at, t.content
+      select t.pid, t.member_pid, d.name as department, m.name, t.start_at, t.due_at, t.content
       from workspace.task t left join workspace.member m on t.member_pid = m.pid
         left join workspace.department d on m.department_pid = d.pid
       where
-        ((year(start_at)=#{year} and month(start_at)=#{month})
+        (((year(start_at)=#{year} and month(start_at)=#{month})
          or (year(due_at)=#{year} and month(due_at)=#{month}))
          or (
                 (concat(year(start_at), LPAD(MONTH(start_at), 2, '0')) <= concat(#{year}, LPAD(#{month}, 2, '0')))
                 and (concat(year(due_at), LPAD(MONTH(due_at), 2, '0')) >= concat(#{year}, LPAD(#{month}, 2, '0')))
-              )
+              ))
         and t.type = '주간'
         and t.deleted_at IS NULL
-      order by m.department_pid desc, m.pid asc;
+      order by m.department_pid desc, m.pid asc, FIELD(t.priority, 'HIGHEST', 'HIGH', 'LOW', 'LOWEST') ASC;
     ]]>
   </select>
 
-  <select id="departmentInfo" resultType="departmentDto">
-    SELECT
-      *
-    FROM
-      workspace.department
-  </select>
-
-  <select id="memberInfo" resultType="memberDto">
-    SELECT
-      *
-    FROM
-      workspace.member
-  </select>
-
-  <select id="viewContent" resultType="viewContentDto">
-    select t.pid, d.name as department, m.name, t.type, t.state, t.priority, t.title, t.content, t.start_at, t.due_at
-    from workspace.task t left join workspace.member m on t.member_pid = m.pid
-                          left join workspace.department d on m.department_pid = d.pid
-    where
-      t.pid = #{pid}
-      and t.type = '주간'
-      and t.deleted_at IS NULL;
-  </select>
-
-  <update id="updateTask" parameterType="viewContentDto">
-    UPDATE workspace.task t SET
-      t.title = #{title}, t.content = #{content}, t.state = #{state}, t.priority = #{priority}, t.start_at = #{startAt}, t.due_at = #{dueAt}
-    WHERE
-      t.pid = #{pid}
-      AND t.type = #{type}
-      AND deleted_at IS NULL;
-  </update>
-
-  <select id="retrieveMemberPid" parameterType="String" resultType="int">
-    select m.pid
-    from workspace.member m
-    where
-      m.name = #{name};
-  </select>
 </mapper>

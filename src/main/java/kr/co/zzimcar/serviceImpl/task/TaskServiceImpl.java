@@ -3,10 +3,8 @@ package kr.co.zzimcar.serviceImpl.task;
 import kr.co.zzimcar.dao.TaskDao;
 import kr.co.zzimcar.data.MonthlyTaskMap;
 import kr.co.zzimcar.domain.ResponseDto;
-import kr.co.zzimcar.domain.TaskTestForm;
-import kr.co.zzimcar.domain.page.DrawWeekWorkDto;
-import kr.co.zzimcar.domain.page.WeekInfoDto;
-import kr.co.zzimcar.domain.task.MemberJoinDto;
+import kr.co.zzimcar.domain.task.TaskFormDto;
+import kr.co.zzimcar.domain.task.WeekInfoDto;
 import kr.co.zzimcar.domain.task.*;
 import kr.co.zzimcar.enumeration.Priority;
 import kr.co.zzimcar.enumeration.State;
@@ -35,34 +33,26 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
-
-
     // 1. 받아온 연월로 총 몇주가 있는지 계산
-    monthlyTaskMap.calcWeeks(); // 한듯?
-
-
+    monthlyTaskMap.calcWeeks();
     // 2. 연월에 맞는 task 데이터 가져오기
     monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
-
     // 5. 주차 기준 리스트 생성
     monthlyTaskMap.generateWeekTaskList();
 
     WeekInfoDto weekInfoDto = new WeekInfoDto();
     weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
     weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
-    System.out.println(weekInfoDto);
-    return weekInfoDto;
 
+    return weekInfoDto;
   }
 
-  private List<TaskTestForm> retrieveMonthlyTasks(int year, int month) {
+  private List<TaskFormDto> retrieveMonthlyTasks(int year, int month) {
     return taskDao.taskTestRetrieve(year, month);
   }
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
-    System.out.println("여기여기여기");
-    System.out.println(taskReqDto.getStartAt().getClass().getName());
     checkCreate(taskReqDto);
     taskDao.create(new TaskDto(taskReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
@@ -83,58 +73,11 @@ public class TaskServiceImpl implements TaskService {
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
 
-  //  @Override
-  //  public ResponseEntity<ResponseDto<TaskListResDto>> retrieveAll() {
-  //    TaskListResDto taskListResDto = new TaskListResDto();
-  //    taskListResDto.setTotalCnt(taskDao.totalCnt());
-  //    taskListResDto.setList(taskDao.retrieveAll().stream().map(TaskResDto::new).collect(Collectors.toList()));
-  //    ResponseDto<TaskListResDto> responseDto = new ResponseDto<>(true);
-  //    responseDto.setData(taskListResDto);
-  //    return ResponseEntity.ok(responseDto);
-  //  }
-
-  //  @Override
-  //  public ResponseEntity<ResponseDto<Void>> updateOne(int pid, TaskReqDto taskReqDto) {
-  //    Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
-  //    checkCreate(taskReqDto);
-  //    taskDao.updateOne(pid, new TaskDto(taskReqDto));
-  //    return ResponseEntity.ok(new ResponseDto<>(true));
-  //  }
-
   @Override
   public ResponseEntity<ResponseDto<Void>> deleteOne(int pid) {
     Optional.ofNullable(taskDao.retrieveOne(pid)).orElseThrow(() -> new ApiException(NOT_EXIST));
     taskDao.deleteOne(pid);
     return ResponseEntity.ok(new ResponseDto<>(true));
-  }
-
-  @Override
-  public ResponseEntity<ResponseDto<MemberJoinDto>> retrieveJoinAll(int pid) {
-    MemberJoinDto memberJoinDto = Optional.ofNullable(taskDao.retrieveJoinAll(pid)).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
-    ResponseDto<MemberJoinDto> responseDto = new ResponseDto<>(true);
-    responseDto.setData(memberJoinDto);
-    return ResponseEntity.ok(responseDto);
-  }
-
-  @Override
-  public List<DrawWeekWorkDto> weekDate() {
-    return taskDao.allDateInfo();
-    //    System.out.println("weekInfoDto>>>>> 서비스인플 >>>>>>"+list);
-    //    return list;
-  }
-
-  @Override
-  public List<String> department() {
-    List<String> departmentList = taskDao.departmentList();
-    System.out.println(departmentList + "departmentList ///////////////");
-    return departmentList;
-  }
-
-  @Override
-  public List<String> name() {
-    List<String> nameList = taskDao.nameList();
-    System.out.println(nameList + "nameList ///////////////");
-    return nameList;
   }
 
   // 만들어진 API 이용
@@ -181,11 +124,6 @@ public class TaskServiceImpl implements TaskService {
       .bodyToMono(WriteTaskResDto.class)
       .block();
   }
-
-  //  private void checkDate(Date startAt, Date dueAt) {
-  //    if (startAt <= dueAt) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
-  //
-  //  }
 
   private void checkCreate(TaskReqDto taskReqDto) {
     boolean check = false;

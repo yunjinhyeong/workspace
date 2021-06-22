@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @RequiredArgsConstructor
 public class TaskResDto {
+
   private int pid;
   private int memberPid;
   private String type;

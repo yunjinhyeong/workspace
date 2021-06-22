@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenResult {
+public class TokenResultResDto {
   private boolean success;
   private TokenDataDto data;
   private String message;

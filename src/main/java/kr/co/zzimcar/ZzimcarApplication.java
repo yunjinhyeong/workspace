@@ -10,5 +10,4 @@ public class ZzimcarApplication {
     SpringApplication.run(ZzimcarApplication.class, args);
   }
 
-
 }

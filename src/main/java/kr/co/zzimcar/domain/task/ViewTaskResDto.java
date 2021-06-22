@@ -8,7 +8,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ViewTaskResDto {
+
   private String msg;
   private TaskResDto data;
   private boolean success;
+
 }

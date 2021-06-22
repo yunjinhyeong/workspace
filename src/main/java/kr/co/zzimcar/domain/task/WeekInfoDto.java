@@ -1,6 +1,5 @@
-package kr.co.zzimcar.domain.page;
+package kr.co.zzimcar.domain.task;
 
-import kr.co.zzimcar.domain.WeeklyTasks;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

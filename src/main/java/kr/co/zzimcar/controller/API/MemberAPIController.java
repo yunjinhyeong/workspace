@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.co.zzimcar.domain.ResponseDto;
 import kr.co.zzimcar.domain.member.MemberReqDto;
-import kr.co.zzimcar.domain.member.MemberResDto;
 import kr.co.zzimcar.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

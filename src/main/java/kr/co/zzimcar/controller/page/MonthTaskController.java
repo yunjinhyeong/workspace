@@ -1,7 +1,5 @@
 package kr.co.zzimcar.controller.page;
 
-import kr.co.zzimcar.domain.blog.BlogDto;
-import kr.co.zzimcar.service.blog.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class MonthTaskController {
 
-  private final BlogService blogService;
-
   @PostMapping("/write")
-  public String writeReview(BlogDto wr) {
-    System.out.println("1");
-    blogService.review(wr);
-    System.out.println("3");
-
+  public String writeReview() {
     return "redirect:/";
   }
 

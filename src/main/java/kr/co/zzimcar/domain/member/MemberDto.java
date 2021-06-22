@@ -12,8 +12,8 @@ import lombok.ToString;
 public class MemberDto {
 
   private int pid;
-  private String name;
   private int departmentPid;
+  private String name;
   private String role;
 
   public MemberDto(MemberReqDto memberReqDto){

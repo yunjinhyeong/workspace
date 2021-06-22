@@ -8,6 +8,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class WriteTaskResDto {
+
   private String msg;
   private boolean success;
+
 }

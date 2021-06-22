@@ -1,4 +1,4 @@
-package kr.co.zzimcar.domain.page;
+package kr.co.zzimcar.domain.task;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +33,5 @@ public class DrawWeekWorkDto {
   private Date startAt;
   private Date dueAt;
   private LocalDateTime createdAt;
+
 }

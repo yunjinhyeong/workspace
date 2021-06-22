@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberInfoDataDto {
+public class MemberInfoDataResDto {
+
   private int pid;
   private String userId;
   private String name;
@@ -27,4 +28,5 @@ public class MemberInfoDataDto {
   private String accessToken;
   private String refreshToken;
   private boolean activated;
+
 }

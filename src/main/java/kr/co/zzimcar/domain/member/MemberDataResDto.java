@@ -1,15 +1,16 @@
 package kr.co.zzimcar.domain.member;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@RequiredArgsConstructor
 @Getter
 @Setter
-public class MemberDataDto {
+@RequiredArgsConstructor
+@ToString
+public class MemberDataResDto {
+
   private int pid;
   private String name;
   private int departmentPid;
   private String role;
+
 }

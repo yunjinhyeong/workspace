@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Data
 @RequiredArgsConstructor
 public class Task {
+
   private LocalDate startAt;
   private LocalDate dueAt;
   private String content;

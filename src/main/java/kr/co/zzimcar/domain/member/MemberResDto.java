@@ -1,21 +1,19 @@
 package kr.co.zzimcar.domain.member;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
 @ToString
 public class MemberResDto {
-  private int pid;
-  private String name;
-  private int departmentPid;
-  private String role;
 
-  public MemberResDto(MemberDto memberDto) {
-    this.pid = memberDto.getPid();
-    this.name = memberDto.getName();
-    this.departmentPid = memberDto.getDepartmentPid();
-    this.role = memberDto.getRole();
-  }
+  private boolean success;
+  private MemberDataResDto data;
+  private String message;
+  private String code;
+
 }
