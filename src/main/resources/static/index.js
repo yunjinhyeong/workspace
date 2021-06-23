@@ -157,7 +157,7 @@ function drawWeekly(count, list) {
       weeklyTasks.memberTasks[0]['weekly'+i].forEach(task => {
         var bgColor = selectBgColor(task.state);
         weekly += `
-                  <li><div class="task-data" style="background-color: ${bgColor}" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.title}</div>
+                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.title}</div>
                     <ul class="sub">
                       <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}" value="상세보기">  
                       <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">                    
@@ -192,7 +192,7 @@ function drawWeekly(count, list) {
         weeklyTasks.memberTasks[idx]['weekly'+i].forEach(task => {
           var bgColor = selectBgColor(task.state);
           weekly += `
-                  <li><div class="task-data" style="background-color: ${bgColor}" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.title}</div>
+                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.title}</div>
                     <ul class="sub">                   
                       <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}" value="상세보기">
                       <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">                                            
@@ -415,7 +415,7 @@ function isWho() {
     $("#loginBox").hide();
     $("#logoutBox").show();
     $("[name=writeTask]").show();
-    $("label[name='name_area']").text($.cookie('name'));
+    $("span[name='name_area']").text($.cookie('name'));
     $("input[name='memberPid']").val(Number($.cookie('member_pid')));
   }
 }
@@ -460,7 +460,7 @@ $("[name=login]").click(function () {
     },
     success: function (rs) {
       if (rs.success) {
-        loginSuccess(rs.data.pid, rs.data.name);
+        loginSuccess(rs.data.member.pid, rs.data.member.name);
       }
       if (!rs.success) {
         alert('아이디와 페스워드가 틀렸습니다.');

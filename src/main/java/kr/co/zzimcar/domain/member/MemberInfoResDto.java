@@ -14,7 +14,7 @@ public class MemberInfoResDto {
   private MemberInfoDataResDto data;
   private String message;
   private String code;
-  private String list[];
-  private HttpStatus status;
+//  private String list[];
+//  private HttpStatus status;
 
 }
