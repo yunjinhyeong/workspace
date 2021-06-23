@@ -30,7 +30,7 @@ public class TaskDto {
 
   private MemberDto member;
 
-  public TaskDto(TaskReqDto taskReqDto) { // memberPid 여기서?
+  public TaskDto(TaskReqDto taskReqDto) {
     this.memberPid = taskReqDto.getMemberPid();
     this.type = taskReqDto.getType();
     this.title = taskReqDto.getTitle();

@@ -28,11 +28,7 @@ public class MemberController {
   @PostMapping("/isPid")
   @ResponseBody
   public Map<String, Boolean> isPid(int pid) {
-    int count = memberService.countByPid(pid);
-    Map<String, Boolean> map = new HashMap<>();
-    if (count == 0) map.put("isPidDup", false);
-    if (count > 0) map.put("isPidDup", true);
-    return map;
+    return memberService.countByPid(pid);
   }
 
   @PostMapping("/submitRoleDepartmentPid")

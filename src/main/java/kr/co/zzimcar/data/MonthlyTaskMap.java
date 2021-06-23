@@ -59,16 +59,14 @@ public class MonthlyTaskMap {
     this.departmentList = new ArrayList<>();
     this.taskMap = new HashMap<>();
 
-    List<String> weekstartduepoint = getWeekInMonths(year,month);    // 일단 1픽
+    List<String> weekstartduepoint = getWeekInMonths(year,month);
     List<LocalDate> dateconvert = new ArrayList<>();
     SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     try {
       for (int i = 0 ; i<weekstartduepoint.size() ; i++) {
-        // String 타입을 Date 타입으로 변환
         Date formatDate = dtFormat.parse(weekstartduepoint.get(i));
-        // Date타입의 변수를 새롭게 지정한 포맷으로 변환
         String strNewDtFormat = newDtFormat.format(formatDate);
         LocalDate date = LocalDate.parse(strNewDtFormat, DateTimeFormatter.ISO_DATE);
         dateconvert.add(date);
@@ -84,14 +82,14 @@ public class MonthlyTaskMap {
         if (((tasks.get(t).getStartAt().isAfter(dateconvert.get(i)) || tasks.get(t).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(t).getStartAt().isBefore(dateconvert.get(i + 1)) || tasks.get(t).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
           ((tasks.get(t).getDueAt().isAfter(dateconvert.get(i)) || tasks.get(t).getDueAt().isEqual(dateconvert.get(i))) && (tasks.get(t).getDueAt().isBefore(dateconvert.get(i + 1)) || tasks.get(t).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
           ((tasks.get(t).getStartAt().isBefore(dateconvert.get(i)) || tasks.get(t).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(t).getDueAt().isAfter(dateconvert.get(i + 1)) || tasks.get(t).getDueAt().isEqual(dateconvert.get(i + 1))))) {
-          if (i == 0) weekly1.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
-          if (i == 2) weekly2.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
-          if (i == 4) weekly3.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
-          if (i == 6) weekly4.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
-          if (i == 8) weekly5.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid()));
+          if (i == 0) weekly1.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
+          if (i == 2) weekly2.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
+          if (i == 4) weekly3.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
+          if (i == 6) weekly4.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
+          if (i == 8) weekly5.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
         }
       }
-      if (tasks.get(t).getMemberPid() != tasks.get(t+1).getMemberPid()) { //  || (t+1) == taskTestForm.size()
+      if (tasks.get(t).getMemberPid() != tasks.get(t+1).getMemberPid()) {
         tasksList.add(new MemberTaskDto(tasks.get(t).getName(), tasks.get(t).getMemberPid(), weekly1, weekly2, weekly3, weekly4, weekly5));
         weekly1=new ArrayList<>();weekly2=new ArrayList<>();weekly3=new ArrayList<>();weekly4=new ArrayList<>();weekly5=new ArrayList<>();
         if (!tasks.get(t).getDepartment().equals(tasks.get(t+1).getDepartment())) {
@@ -104,11 +102,11 @@ public class MonthlyTaskMap {
           if (((tasks.get(size-1).getStartAt().isAfter(dateconvert.get(i)) || tasks.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(size-1).getStartAt().isBefore(dateconvert.get(i + 1)) || tasks.get(size-1).getStartAt().isEqual(dateconvert.get(i + 1)))) ||
             ((tasks.get(size-1).getDueAt().isAfter(dateconvert.get(i)) || tasks.get(size-1).getDueAt().isEqual(dateconvert.get(i))) && (tasks.get(size-1).getDueAt().isBefore(dateconvert.get(i + 1)) || tasks.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1)))) ||
             ((tasks.get(size-1).getStartAt().isBefore(dateconvert.get(i)) || tasks.get(size-1).getStartAt().isEqual(dateconvert.get(i))) && (tasks.get(size-1).getDueAt().isAfter(dateconvert.get(i + 1)) || tasks.get(size-1).getDueAt().isEqual(dateconvert.get(i + 1))))) {
-            if (i == 0) weekly1.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
-            if (i == 2) weekly2.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
-            if (i == 4) weekly3.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
-            if (i == 6) weekly4.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
-            if (i == 8) weekly5.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid()));
+            if (i == 0) weekly1.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid(), tasks.get(size-1).getState(), tasks.get(size-1).getTitle()));
+            if (i == 2) weekly2.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid(), tasks.get(size-1).getState(), tasks.get(size-1).getTitle()));
+            if (i == 4) weekly3.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid(), tasks.get(size-1).getState(), tasks.get(size-1).getTitle()));
+            if (i == 6) weekly4.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid(), tasks.get(size-1).getState(), tasks.get(size-1).getTitle()));
+            if (i == 8) weekly5.add(new Task(tasks.get(size-1).getStartAt(), tasks.get(size-1).getDueAt(), tasks.get(size-1).getContent(), tasks.get(size-1).getPid(), tasks.get(size-1).getState(), tasks.get(size-1).getTitle()));
           }
         }
         tasksList.add(new MemberTaskDto(tasks.get(size-1).getName(), tasks.get(size-1).getMemberPid(), weekly1, weekly2, weekly3, weekly4, weekly5));
@@ -125,8 +123,6 @@ public class MonthlyTaskMap {
     int subtractFirstWeekNumber = subWeekNumberIsFirstDayAfterThursday(year, month, day);
     int subtractLastWeekNumber = addMonthIsLastDayBeforeThursday(year, month, day);
 
-    // 마지막 주차에서 다음 달로 넘어갈 경우 다음달의 1일을 기준으로 정해준다.
-    // 추가로 다음 달 첫째주는 목요일부터 시작하는 과반수의 일자를 포함하기 때문에 한주를 빼지 않는다.
     if (subtractLastWeekNumber > 0) {
       day = 1;
       subtractFirstWeekNumber = 0;
@@ -187,7 +183,6 @@ public class MonthlyTaskMap {
       result.add(year+monthR+startDayR);
       result.add(year+monthR+endDayR);
 
-      //      System.out.println(week + "주 : " + startDay + " ~ " + endDay);
     }
     return result;
   }

@@ -155,8 +155,9 @@ function drawWeekly(count, list) {
     for (let i=1 ; i<=count ; i++) {
       weekly += `<td> <ul class="main">`
       weeklyTasks.memberTasks[0]['weekly'+i].forEach(task => {
+        var bgColor = selectBgColor(task.state);
         weekly += `
-                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}" data-name="${task.name}">${task.content}</div>
+                  <li><div class="task-data" style="background-color: ${bgColor}" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.title}</div>
                     <ul class="sub">
                       <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}" value="상세보기">  
                       <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">                    
@@ -189,8 +190,9 @@ function drawWeekly(count, list) {
       for (let i=1 ; i<=count ; i++) {
         weekly += `<td><ul class="main">`
         weeklyTasks.memberTasks[idx]['weekly'+i].forEach(task => {
+          var bgColor = selectBgColor(task.state);
           weekly += `
-                  <li><div class="task-data" data-pid="${task.pid}" data-start_at="${task.startAt}" data-name="${task.name}">${task.content}</div>
+                  <li><div class="task-data" style="background-color: ${bgColor}" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.title}</div>
                     <ul class="sub">                   
                       <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}" value="상세보기">
                       <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">                                            
@@ -221,13 +223,17 @@ function drawWeekly(count, list) {
 }
 
 $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
-
   e.preventDefault();
-  // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'), $(e.target).data('name'));
+
   let pid = $(e.target).data('pid');
   let member_pid = $(e.target).data('member_pid');
   if (member_pid != $.cookie('member_pid')) {
     alert('권한이 없습니다.');
+    return;
+  }
+
+  let confirmAlert = confirm("정말 삭제하시겠습니까?");
+  if (!confirmAlert) {
     return;
   }
 
@@ -251,11 +257,18 @@ $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
   });
 });
 
+
+
 $("[name=deleteTask]").click(function () {
 
   let pid = $("[name=viewPid]").val();
   if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
     alert('권한이 없습니다.');
+    return;
+  }
+
+  let confirmAlert = confirm("정말 삭제하시겠습니까?");
+  if (!confirmAlert) {
     return;
   }
 
@@ -282,7 +295,6 @@ $("[name=deleteTask]").click(function () {
 
 $('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
   e.preventDefault();
-  // console.log('e.target',e.target, $(e.target).data('pid'), $(e.target).data('start_at'));
 
   let pid = $(e.target).data('pid');
   let memberPid = $(e.target).data('member_pid');
@@ -323,6 +335,11 @@ $('tbody#task_body').on('click', '.task-data', function () {
 
 $("button[name='updateTaskPage']").on("click", function(e){
 
+  if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
+    alert('권한이 없습니다.');
+    return;
+  }
+
   let pid = $("[name=viewPid]").val();
   let title = $("[name=viewTitle]").val();
   let content = $("[name=viewContent]").val();
@@ -330,11 +347,6 @@ $("button[name='updateTaskPage']").on("click", function(e){
   let dueAt = $("[name=viewDueAt]").val();
   let state = $("[name=viewState]").val();
   let priority = $("[name=viewPriority]").val();
-
-  if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
-    alert('권한이 없습니다.');
-    return;
-  }
 
   $.ajax({
     url: '/week/updateTask',
@@ -376,12 +388,20 @@ function changeDate()  {
   getWeek();
 }
 
-function SwitchPage (page_id) {
-  const current_page = document.querySelector('.pages .page.is-active');
-  current_page.classList.remove('is-active');
+function selectBgColor(state) {
 
-  const next_page = document.querySelector(`.pages .page[data-page="${page_id}"]`);
-  next_page.classList.add('is-active');
+  if (state == '대기중') {
+    return '#ffffcc';
+  }
+  if (state == '진행중') {
+    return '#ccccff';
+  }
+  if (state == '지연') {
+    return '#ffc6b3';
+  }
+  if (state == '완료') {
+    return '#ccffdc';
+  }
 }
 
 if($.cookie('name') == undefined) {
@@ -395,7 +415,7 @@ function isWho() {
     $("#loginBox").hide();
     $("#logoutBox").show();
     $("[name=writeTask]").show();
-    $("label[name='name_area']").text($.cookie('name')+' 님 환영합니다 ~ ');
+    $("label[name='name_area']").text($.cookie('name'));
     $("input[name='memberPid']").val(Number($.cookie('member_pid')));
   }
 }

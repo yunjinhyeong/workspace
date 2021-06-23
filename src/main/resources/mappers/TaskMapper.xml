@@ -32,7 +32,7 @@
 
   <update id="updateOne" parameterType="taskReqDto">
     UPDATE workspace.task t SET
-      t.title = #{title}, t.content = #{content}, t.priority = #{priority}, t.start_at = #{startAt}, t.due_at = #{dueAt}
+      t.title = #{title}, t.content = #{content}, t.priority = #{priority}, t.state = #{state}, t.start_at = #{startAt}, t.due_at = #{dueAt}
     WHERE
       t.pid = #{pid} AND deleted_at IS NULL;
   </update>
@@ -46,7 +46,7 @@
 
   <select id="taskTestRetrieve" resultType="TaskFormDto" parameterType="int">
     <![CDATA[
-      select t.pid, t.member_pid, d.name as department, m.name, t.start_at, t.due_at, t.content
+      select t.pid, t.member_pid, d.name as department, m.name, t.start_at, t.due_at, t.content, t.state, t.title
       from workspace.task t left join workspace.member m on t.member_pid = m.pid
         left join workspace.department d on m.department_pid = d.pid
       where

@@ -5,12 +5,14 @@
     <div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
+
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">업무 상세보기</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+
             <div class="modal-body">
               <input type="hidden" name="viewPid">
               <div class="form-group">
@@ -29,7 +31,6 @@
                 <label class="col-form-label">업무종료일</label>
                 <input type="date" name="viewDueAt" class="form-control">
               </div>
-
               <div class="form-group">
                 <label class="col-form-label">업무상태</label>
                 <select name="viewState" class="form-control">
@@ -48,13 +49,16 @@
                   <option value="LOWEST">LOWEST</option>
                 </select>
               </div>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="button" name="updateTaskPage" class="btn btn-primary">수정하기</button>
               <input name="deleteTask" type="button" class="btn" value="삭제하기">
             </div>
+
         </div>
       </div>
     </div>
   </div>
+
 </html>

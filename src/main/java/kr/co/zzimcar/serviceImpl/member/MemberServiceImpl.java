@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -16,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
   private final MemberDao memberDao;
 
   @Override
-  public MemberResDto insertMember(MemberDto memberDto) { // WebClient 회원가입
+  public MemberResDto insertMember(MemberDto memberDto) {
     return WebClient.create("http://localhost:8888")
           .post()
           .uri("/member/create")
@@ -27,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public TokenResultResDto makeToken(TokenData tokenData) { // 토큰발급
+  public TokenResultResDto makeToken(TokenData tokenData) {
     return WebClient.create("https://int-api.dev.zzimcar.co.kr")
       .post()
       .uri("/client/token")
@@ -38,7 +41,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public MemberInfoResDto login(String token, MemberLoginDto memberLoginDto) { // 로그인하기
+  public MemberInfoResDto login(String token, MemberLoginDto memberLoginDto) {
     return WebClient.create("https://int-api.dev.zzimcar.co.kr")
       .post()
       .uri("/member/login")
@@ -50,12 +53,16 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public int countByPid(int pid) {
-    return memberDao.countByPid(pid); // 회원으로 존재하냐 안하냐
+  public Map<String, Boolean> countByPid(int pid) {
+    int count = memberDao.countByPid(pid);
+    Map<String, Boolean> map = new HashMap<>();
+    if (count == 0) map.put("isPidDup", false);
+    if (count > 0) map.put("isPidDup", true);
+    return map;
   }
 
   @Override
-  public ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto) {  // 회원가입 API
+  public ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto) {
     memberDao.create(new MemberDto(memberReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
   }

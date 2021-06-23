@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/week")
-public class WeeklyTaskController {
+public class TaskController {
 
   private final TaskService taskService;
 

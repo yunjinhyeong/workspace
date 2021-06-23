@@ -16,5 +16,7 @@ public class TaskFormDto {
   private LocalDate startAt;
   private LocalDate dueAt;
   private String content;
+  private String title;
+  private String state;
 
 }

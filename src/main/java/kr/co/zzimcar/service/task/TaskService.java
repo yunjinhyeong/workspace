@@ -14,7 +14,6 @@ public interface TaskService {
   ResponseEntity<ResponseDto<Void>> updateOne(TaskUpdateReqDto taskUpdateReqDto);
   ResponseEntity<ResponseDto<Void>> deleteOne(int pid);
 
-  ///////// 만들어진 API 이용 /////////
   WriteTaskResDto writeTask(TaskDto taskDto);
   ViewTaskResDto viewTask(int pid);
   ViewTaskResDto updateTask(TaskDto taskDto);

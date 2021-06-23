@@ -33,13 +33,9 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
-    // 1. 받아온 연월로 총 몇주가 있는지 계산
     monthlyTaskMap.calcWeeks();
-    // 2. 연월에 맞는 task 데이터 가져오기
     monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
-    // 5. 주차 기준 리스트 생성
     monthlyTaskMap.generateWeekTaskList();
-
     WeekInfoDto weekInfoDto = new WeekInfoDto();
     weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
     weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
@@ -80,7 +76,6 @@ public class TaskServiceImpl implements TaskService {
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
 
-  // 만들어진 API 이용
   @Override
   public WriteTaskResDto writeTask(TaskDto taskDto) {
     return WebClient.create("http://localhost:8888")
@@ -92,7 +87,6 @@ public class TaskServiceImpl implements TaskService {
       .block();
   }
 
-  // 만들어진 API 이용
   @Override
   public ViewTaskResDto viewTask(int pid) {
     return WebClient.create("http://localhost:8888")
@@ -103,7 +97,6 @@ public class TaskServiceImpl implements TaskService {
       .block();
   }
 
-  // API도 가져와야되고 음 그려
   @Override
   public ViewTaskResDto updateTask(TaskDto taskDto) {
     return WebClient.create("http://localhost:8888")
