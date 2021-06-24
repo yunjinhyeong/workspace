@@ -76,7 +76,7 @@ dependencies {
     // redis
     compile group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
     // lettuce
-    compile ('org.springframework.boot:spring-boot-starter-data-redis')
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.4.3'
 }

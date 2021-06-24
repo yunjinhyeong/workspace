@@ -5,7 +5,7 @@ function getToday() {
 
   let today = new Date();
   today = today.toISOString().slice(0, 7);
-  let bir = document.getElementById("focus_date");
+  let bir = document.getElementById('focus_date');
   bir.value = today;
 }
 
@@ -14,8 +14,8 @@ function get_date_str(date) {
   let sYear = date.getFullYear();
   let sMonth = date.getMonth() + 1;
 
-  sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
-  return sYear +'-'+ sMonth;
+  sMonth = sMonth > 9 ? sMonth : '0' + sMonth;
+  return sYear + '-' + sMonth;
 }
 
 window.onload = () => {
@@ -58,7 +58,7 @@ window.onload = () => {
   getWeek();
 }
 
-$('.jump_month_plus').click(function(){
+$('.jump_month_plus').click(function () {
 
   $('th').remove('.swich');
   $('td').remove('.swich');
@@ -67,11 +67,11 @@ $('.jump_month_plus').click(function(){
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() + 1);
-  let test =  get_date_str(selectedDate);
+  let test = get_date_str(selectedDate);
 
-  year = test.substring(0,4);
-  month = test.substring(5,7);
-  document.getElementById("focus_date").value = test;
+  year = test.substring(0, 4);
+  month = test.substring(5, 7);
+  document.getElementById('focus_date').value = test;
 
   $.ajax({
     url: '/week/weekly',
@@ -87,7 +87,7 @@ $('.jump_month_plus').click(function(){
   });
 });
 
-$('.jump_month_minus').click(function(){
+$('.jump_month_minus').click(function () {
 
   $('th').remove('.swich');
   $('td').remove('.swich');
@@ -96,11 +96,11 @@ $('.jump_month_minus').click(function(){
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() - 1);
-  let test =  get_date_str(selectedDate);
+  let test = get_date_str(selectedDate);
 
-  year = test.substring(0,4);
-  month = test.substring(5,7);
-  document.getElementById("focus_date").value = test;
+  year = test.substring(0, 4);
+  month = test.substring(5, 7);
+  document.getElementById('focus_date').value = test;
 
   $.ajax({
     url: '/week/weekly',
@@ -119,8 +119,8 @@ $('.jump_month_minus').click(function(){
 function getWeek() {
 
   let value = $('#focus_date').val();
-  year = value.substring(0,4);
-  month = value.substring(5,7);
+  year = value.substring(0, 4);
+  month = value.substring(5, 7);
 
   $.ajax({
     url: '/week/weekly',
@@ -139,7 +139,7 @@ function getWeek() {
 function drawWeekly(count, list) {
 
   let str = '';
-  for (let num = 1; num <= count; num++){
+  for (let num = 1; num <= count; num++) {
     str += `
       <th class="align-middle swich">${num}주차</th>
 			`;
@@ -152,9 +152,9 @@ function drawWeekly(count, list) {
 
     let weekly = '';
 
-    for (let i=1 ; i<=count ; i++) {
+    for (let i = 1; i <= count; i++) {
       weekly += `<td> <ul class="main">`
-      weeklyTasks.memberTasks[0]['weekly'+i].forEach(task => {
+      weeklyTasks.memberTasks[0]['weekly' + i].forEach(task => {
         var bgColor = selectBgColor(task.state);
         weekly += `
                   <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.title}</div>
@@ -184,12 +184,12 @@ function drawWeekly(count, list) {
       </tr>
     `;
 
-    for(let idx=1; idx < weeklyTasks.memberTasks.length; idx++) {
+    for (let idx = 1; idx < weeklyTasks.memberTasks.length; idx++) {
       let weekly = '';
 
-      for (let i=1 ; i<=count ; i++) {
+      for (let i = 1; i <= count; i++) {
         weekly += `<td><ul class="main">`
-        weeklyTasks.memberTasks[idx]['weekly'+i].forEach(task => {
+        weeklyTasks.memberTasks[idx]['weekly' + i].forEach(task => {
           var bgColor = selectBgColor(task.state);
           weekly += `
                   <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.title}</div>
@@ -222,7 +222,7 @@ function drawWeekly(count, list) {
   $('#task_body').append(row);
 }
 
-$('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
+$('tbody#task_body').on('click', 'input[name=deleteTask]', function (e) {
   e.preventDefault();
 
   let pid = $(e.target).data('pid');
@@ -232,7 +232,7 @@ $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
     return;
   }
 
-  let confirmAlert = confirm("정말 삭제하시겠습니까?");
+  let confirmAlert = confirm('정말 삭제하시겠습니까?');
   if (!confirmAlert) {
     return;
   }
@@ -249,7 +249,7 @@ $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
         alert(rs.msg);
         return;
       }
-      if(rs.success) {
+      if (rs.success) {
         alert('삭제되었습니다.');
         newdraw();
       }
@@ -258,16 +258,15 @@ $('tbody#task_body').on('click', "input[name=deleteTask]", function (e) {
 });
 
 
+$('[name=deleteTask]').click(function () {
 
-$("[name=deleteTask]").click(function () {
-
-  let pid = $("[name=viewPid]").val();
+  let pid = $('[name=viewPid]').val();
   if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
     alert('권한이 없습니다.');
     return;
   }
 
-  let confirmAlert = confirm("정말 삭제하시겠습니까?");
+  let confirmAlert = confirm('정말 삭제하시겠습니까?');
   if (!confirmAlert) {
     return;
   }
@@ -284,21 +283,21 @@ $("[name=deleteTask]").click(function () {
         alert(rs.msg);
         return;
       }
-      if(rs.success) {
+      if (rs.success) {
         alert('삭제되었습니다.');
-        $('#viewTaskModal').modal("hide");
+        $('#viewTaskModal').modal('hide');
         newdraw();
       }
     }
   });
 });
 
-$('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
+$('tbody#task_body').on('click', 'input[name=viewTask]', function (e) {
   e.preventDefault();
 
   let pid = $(e.target).data('pid');
   let memberPid = $(e.target).data('member_pid');
-  $("[name=viewPid]").val(pid);
+  $('[name=viewPid]').val(pid);
 
   $.ajax({
     url: '/week/viewTask',
@@ -312,13 +311,13 @@ $('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
         alert(rs.msg);
         return;
       }
-      if(rs.success) {
-        $("[name=viewTitle]").val(rs.data.title);
-        $("[name=viewContent]").val(rs.data.content);
-        $("[name=viewStartAt]").val(rs.data.startAt);
-        $("[name=viewDueAt]").val(rs.data.dueAt);
-        $("[name=viewState]").val(rs.data.state);
-        $("[name=viewPriority]").val(rs.data.priority);
+      if (rs.success) {
+        $('[name=viewTitle]').val(rs.data.title);
+        $('[name=viewContent]').val(rs.data.content);
+        $('[name=viewStartAt]').val(rs.data.startAt);
+        $('[name=viewDueAt]').val(rs.data.dueAt);
+        $('[name=viewState]').val(rs.data.state);
+        $('[name=viewPriority]').val(rs.data.priority);
 
         $.cookie('member_pid_temporary', memberPid, {expires: 1});
       }
@@ -328,25 +327,25 @@ $('tbody#task_body').on('click', "input[name=viewTask]", function (e) {
 
 $('tbody#task_body').on('click', '.task-data', function () {
 
-  if($.cookie('name') == undefined) {
+  if ($.cookie('name') == undefined) {
     alert('로그인을 안했잖아');
   }
 });
 
-$("button[name='updateTaskPage']").on("click", function(e){
+$('button[name=\'updateTaskPage\']').on('click', function (e) {
 
   if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
     alert('권한이 없습니다.');
     return;
   }
 
-  let pid = $("[name=viewPid]").val();
-  let title = $("[name=viewTitle]").val();
-  let content = $("[name=viewContent]").val();
-  let startAt = $("[name=viewStartAt]").val();
-  let dueAt = $("[name=viewDueAt]").val();
-  let state = $("[name=viewState]").val();
-  let priority = $("[name=viewPriority]").val();
+  let pid = $('[name=viewPid]').val();
+  let title = $('[name=viewTitle]').val();
+  let content = $('[name=viewContent]').val();
+  let startAt = $('[name=viewStartAt]').val();
+  let dueAt = $('[name=viewDueAt]').val();
+  let state = $('[name=viewState]').val();
+  let priority = $('[name=viewPriority]').val();
 
   $.ajax({
     url: '/week/updateTask',
@@ -366,7 +365,7 @@ $("button[name='updateTaskPage']").on("click", function(e){
         alert(rs.msg);
         return;
       }
-      if(rs.success) {
+      if (rs.success) {
         alert('수정성공했습니다.');
         newdraw();
       }
@@ -375,13 +374,13 @@ $("button[name='updateTaskPage']").on("click", function(e){
 
 });
 $('tbody#task_body').on('click', '.main>li', function () {
-  $(this).children(".sub").stop().slideDown();
+  $(this).children('.sub').stop().slideDown();
 });
 $('tbody#task_body').on('mouseleave', '.main>li', function () {
-  $(this).children(".sub").stop().slideUp();
+  $(this).children('.sub').stop().slideUp();
 });
 
-function changeDate()  {
+function changeDate() {
   $('th').remove('.swich');
   $('td').remove('.swich');
   $('tr').remove('.swich');
@@ -396,43 +395,43 @@ function selectBgColor(state) {
   if (state == '완료') return '#ccffdc';
 }
 
-if($.cookie('name') == undefined) {
-  $("#loginBox").show();
-  $("#logoutBox").hide();
-  $("[name=writeTask]").hide();
+if ($.cookie('name') == undefined) {
+  $('#loginBox').show();
+  $('#logoutBox').hide();
+  $('[name=writeTask]').hide();
 }
 
 function isWho() {
-  if($.cookie('name') != undefined) {
-    $("#loginBox").hide();
-    $("#logoutBox").show();
-    $("[name=writeTask]").show();
-    $("span[name='name_area']").text($.cookie('name'));
-    $("input[name='memberPid']").val(Number($.cookie('member_pid')));
+  if ($.cookie('name') != undefined) {
+    $('#loginBox').hide();
+    $('#logoutBox').show();
+    $('[name=writeTask]').show();
+    $('span[name=\'name_area\']').text($.cookie('name'));
+    $('input[name=\'memberPid\']').val(Number($.cookie('member_pid')));
   }
 }
 
-$("[name=logout]").click(function () {
+$('[name=logout]').click(function () {
   document.cookie = 'name=; Max-Age=-1;';
   document.cookie = 'member_pid=; Max-Age=-1;';
   location.reload();
 });
 
-$("[name=submitRoleDepartmentPid]").click(function () {
+$('[name=submitRoleDepartmentPid]').click(function () {
   $.ajax({
     url: '/member/submitRoleDepartmentPid',
     type: 'POST',
     dataType: 'json',
     data: {
-      pid: Number($("[name=insertInputMemberPid]").val()),
-      name: $("[name=insertInputName]").val(),
-      role: $("[name=insertInputRole]").val(),
-      departmentPid: $("[name=insertInputDepartMentPid]").val()
+      pid: Number($('[name=insertInputMemberPid]').val()),
+      name: $('[name=insertInputName]').val(),
+      role: $('[name=insertInputRole]').val(),
+      departmentPid: $('[name=insertInputDepartMentPid]').val()
     },
     success: function (rs) {
       if (rs.success) {
         alert('성공! 다시 로그인 하십시오');
-        $('#insertInput').modal("hide");
+        $('#insertInput').modal('hide');
       }
       if (!rs.success) {
         alert('실패!');
@@ -441,18 +440,21 @@ $("[name=submitRoleDepartmentPid]").click(function () {
   });
 });
 
-$("[name=login]").click(function () {
+$('[name=login]').click(function () {
+  let username = $('[name=name]').val();
+  let password = $('[name=pw]').val();
+
   $.ajax({
     url: '/member/login',
     type: 'POST',
     dataType: 'json',
     data: {
-      username: $("[name=name]").val(),
-      password: $("[name=pw]").val()
+      username: username,
+      password: password
     },
     success: function (rs) {
       if (rs.success) {
-        loginSuccess(rs.data.member.pid, rs.data.member.name);
+        loginSuccess(rs.data.member.pid, rs.data.accessToken);
       }
       if (!rs.success) {
         alert('아이디와 페스워드가 틀렸습니다.');
@@ -461,27 +463,42 @@ $("[name=login]").click(function () {
   });
 });
 
-function loginSuccess(pid, name) {
-
-  $("[name=insertInputMemberPid]").val(pid);
-  $("[name=insertInputName]").val(name);
+function loginSuccess(pid, token) {
 
   $.ajax({
     url: '/member/isPid',
     type: 'POST',
     dataType: 'json',
     data: {
-      pid: pid,
-      name: name
+      pid: pid
     },
     success: function (rs) {
       if (!rs.isPidDup) {
-        $('#insertInput').modal("show");
+        $('#insertInput').modal('show');
       }
       if (rs.isPidDup) {
-        $.cookie('member_pid', $("[name=insertInputMemberPid]").val(), {expires: 1});
-        $.cookie('name', $("[name=insertInputName]").val(), {expires: 1});
-        isWho($("[name=insertInputMemberPid]").val());
+        loginUseDev(token);
+      }
+    }
+  });
+}
+
+function loginUseDev(token) {
+  $.ajax({
+    url: '/member/loginUseDev',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      token: token
+    },
+    success: function (rs) {
+      if (!rs.success) {
+        alert('로그인 실패!');
+      }
+      if (rs.success) {
+        $.cookie('member_pid', rs.data.pid, {expires: 1});
+        $.cookie('name', rs.data.name, {expires: 1});
+        isWho(rs.data.pid);
       }
     }
   });
@@ -492,20 +509,20 @@ document.getElementById('dueAt').value = getDueAt();
 
 function getDueAt() {
   let writeDueAt = new Date();
-  writeDueAt.setDate(writeDueAt.getDate()+1);
+  writeDueAt.setDate(writeDueAt.getDate() + 1);
   writeDueAt = writeDueAt.toISOString().slice(0, 10);
   return writeDueAt;
 }
 
-$("[name=writeTaskSubmit]").click(function () {
+$('[name=writeTaskSubmit]').click(function () {
   let memberPid = Number($.cookie('member_pid'));
   let type = '주간';
-  let title = $("[name=title]").val();
-  let content = $("[name=content]").val();
-  let startAt = $("[name=startAt]").val();
-  let dueAt = $("[name=dueAt]").val();
-  let state = $("[name=state]").val();
-  let priority = $("[name=priority]").val();
+  let title = $('[name=title]').val();
+  let content = $('[name=content]').val();
+  let startAt = $('[name=startAt]').val();
+  let dueAt = $('[name=dueAt]').val();
+  let state = $('[name=state]').val();
+  let priority = $('[name=priority]').val();
 
   if (startAt > dueAt) {
     alert('시작일이 종료일보다 큽니다.');
@@ -531,9 +548,9 @@ $("[name=writeTaskSubmit]").click(function () {
         alert(rs.msg);
         return;
       }
-      if(rs.success) {
+      if (rs.success) {
         alert('업무등록성공!!');
-        $('#writeTaskModal').modal("hide");
+        $('#writeTaskModal').modal('hide');
         newdraw();
       }
     }

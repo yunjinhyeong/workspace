@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface MemberDao {
 
   void create(MemberDto memberDto);
+
   int countByPid(int pid);
 
 }

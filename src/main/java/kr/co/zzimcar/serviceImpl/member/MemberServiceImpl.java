@@ -21,16 +21,16 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public MemberResDto insertMember(MemberDto memberDto) {
     return WebClient.create("http://localhost:8888")
-          .post()
-          .uri("/member/create")
-          .bodyValue(memberDto)
-          .retrieve()
-          .bodyToMono(MemberResDto.class)
-          .block();
+      .post()
+      .uri("/member/create")
+      .bodyValue(memberDto)
+      .retrieve()
+      .bodyToMono(MemberResDto.class)
+      .block();
   }
 
   @Override
-  public TokenResultResDto makeToken(TokenData tokenData) {
+  public TokenResultResDto makeToken(TokenReqData tokenData) {
     return WebClient.create("https://int-api.dev.zzimcar.co.kr")
       .post()
       .uri("/client/token")
@@ -41,11 +41,11 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public MemberInfoResDto login(String token, MemberLoginDto memberLoginDto) {
+  public MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto) {
     return WebClient.create("https://int-api.dev.zzimcar.co.kr")
       .post()
       .uri("/member/login")
-      .header("xClientToken",token)
+      .header("xClientToken", token)
       .bodyValue(memberLoginDto)
       .retrieve()
       .bodyToMono(MemberInfoResDto.class)
@@ -59,6 +59,18 @@ public class MemberServiceImpl implements MemberService {
     if (count == 0) map.put("isPidDup", false);
     if (count > 0) map.put("isPidDup", true);
     return map;
+  }
+
+  @Override
+  public MemberInfoDevResDto loginUseDev(String xClientToken, String xMemberToken) {
+    return WebClient.create("https://int-api.dev.zzimcar.co.kr")
+      .get()
+      .uri("/member")
+      .header("xMemberToken", xMemberToken)
+      .header("xClientToken", xClientToken)
+      .retrieve()
+      .bodyToMono(MemberInfoDevResDto.class)
+      .block();
   }
 
   @Override

@@ -1,6 +1,5 @@
 package kr.co.zzimcar.domain.task;
 
-import kr.co.zzimcar.domain.task.MemberTaskDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -11,9 +10,9 @@ import java.util.List;
 public class WeeklyTasks {
 
   private String departmentName;
-  private List<MemberTaskDto> memberTasks;
+  private List<MemberTask> memberTasks;
 
-  public WeeklyTasks(String departmentName, List<MemberTaskDto> memberTasks) {
+  public WeeklyTasks(String departmentName, List<MemberTask> memberTasks) {
     this.departmentName = departmentName;
     this.memberTasks = memberTasks;
   }

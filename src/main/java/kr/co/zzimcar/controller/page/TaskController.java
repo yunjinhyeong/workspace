@@ -40,7 +40,7 @@ public class TaskController {
 
   @ResponseBody
   @PostMapping("writeTask")
-  public WriteTaskResDto writeOne(TaskDto taskDto){
+  public WriteTaskResDto writeOne(TaskDto taskDto) {
     return taskService.writeTask(taskDto);
   }
 

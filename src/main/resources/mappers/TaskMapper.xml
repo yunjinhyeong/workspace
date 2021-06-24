@@ -5,7 +5,7 @@
 
   <insert id="create" parameterType="TaskDto">
     INSERT workspace.task (
-      member_pid, type , title, content, state, priority, start_at, due_at
+    member_pid, type , title, content, state, priority, start_at, due_at
     ) VALUES (
     #{memberPid}, #{type}, #{title}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
     )
@@ -13,35 +13,35 @@
 
   <select id="retrieveOne" parameterType="int" resultType="TaskDto">
     SELECT
-      t.pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
+    t.pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
     FROM
-      workspace.task t
+    workspace.task t
     WHERE
-      t.pid = #{pid}
-      AND deleted_at IS NULL
+    t.pid = #{pid}
+    AND deleted_at IS NULL
   </select>
 
   <select id="totalCnt" resultType="int">
     SELECT
-      count(*)
+    count(*)
     FROM
-      workspace.task t
+    workspace.task t
     WHERE
-      deleted_at IS NULL
+    deleted_at IS NULL
   </select>
 
   <update id="updateOne" parameterType="taskReqDto">
     UPDATE workspace.task t SET
-      t.title = #{title}, t.content = #{content}, t.priority = #{priority}, t.state = #{state}, t.start_at = #{startAt}, t.due_at = #{dueAt}
+    t.title = #{title}, t.content = #{content}, t.priority = #{priority}, t.state = #{state}, t.start_at = #{startAt}, t.due_at = #{dueAt}
     WHERE
-      t.pid = #{pid} AND deleted_at IS NULL;
+    t.pid = #{pid} AND deleted_at IS NULL;
   </update>
 
   <delete id="deleteOne" parameterType="int">
     UPDATE workspace.task t SET
-      t.deleted_at = now()
+    t.deleted_at = now()
     WHERE
-      t.pid = #{pid} AND t.deleted_at IS NULL
+    t.pid = #{pid} AND t.deleted_at IS NULL
   </delete>
 
   <select id="taskTestRetrieve" resultType="TaskFormDto" parameterType="int">

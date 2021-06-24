@@ -4,11 +4,11 @@ import kr.co.zzimcar.domain.member.*;
 import kr.co.zzimcar.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -20,8 +20,8 @@ public class MemberController {
 
   @PostMapping("/login")
   @ResponseBody
-  public MemberInfoResDto login(MemberLoginDto memberLoginDto) {
-    TokenResultResDto tokenResult = memberService.makeToken(new TokenData("apitest","access_token"));
+  public MemberInfoResDto login(MemberLoginReqDto memberLoginDto) {
+    TokenResultResDto tokenResult = memberService.makeToken(new TokenReqData("apitest", "access_token"));
     return memberService.login(tokenResult.getToken(), memberLoginDto);
   }
 
@@ -35,6 +35,13 @@ public class MemberController {
   @ResponseBody
   public MemberResDto submitRoleDepartmentPid(MemberDto memberDto) {
     return memberService.insertMember(memberDto);
+  }
+
+  @GetMapping("/loginUseDev")
+  @ResponseBody
+  public MemberInfoDevResDto loginUseDev(String token) {
+    TokenResultResDto tokenResult = memberService.makeToken(new TokenReqData("apitest", "access_token"));
+    return memberService.loginUseDev(tokenResult.getToken(), token);
   }
 
 }

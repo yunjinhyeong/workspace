@@ -10,12 +10,18 @@ public interface TaskService {
   WeekInfoDto generateMonthlyTaskMap(int year, int month);
 
   ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto);
+
   ResponseEntity<ResponseDto<TaskResDto>> retrieveOne(int pid);
+
   ResponseEntity<ResponseDto<Void>> updateOne(TaskUpdateReqDto taskUpdateReqDto);
+
   ResponseEntity<ResponseDto<Void>> deleteOne(int pid);
 
   WriteTaskResDto writeTask(TaskDto taskDto);
+
   ViewTaskResDto viewTask(int pid);
+
   ViewTaskResDto updateTask(TaskDto taskDto);
+
   WriteTaskResDto deleteTask(int pid);
 }

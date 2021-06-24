@@ -12,9 +12,13 @@ import java.util.List;
 public interface TaskDao {
 
   void create(TaskDto taskDto);
+
   TaskDto retrieveOne(int pid);
+
   void updateOne(TaskDto taskDto);
+
   void deleteOne(int pid);
+
   List<TaskFormDto> taskTestRetrieve(int year, int month);
 
 }

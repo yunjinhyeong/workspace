@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenData {
+public class TokenReqData {
 
   private String apiKey;
   private String grantType;

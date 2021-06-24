@@ -16,7 +16,7 @@ public class MemberDto {
   private String name;
   private String role;
 
-  public MemberDto(MemberReqDto memberReqDto){
+  public MemberDto(MemberReqDto memberReqDto) {
     this.pid = memberReqDto.getPid();
     this.name = memberReqDto.getName();
     this.departmentPid = memberReqDto.getDepartmentPid();

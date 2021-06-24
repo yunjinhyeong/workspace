@@ -37,11 +37,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     List<FieldError> BF = ex.getBindingResult().getFieldErrors();
     List<ObjectError> BG = ex.getBindingResult().getGlobalErrors();
 
-    if(!BF.isEmpty()) {
-      for(FieldError i : BF) {
-        message += i.getDefaultMessage()+". ";
+    if (!BF.isEmpty()) {
+      for (FieldError i : BF) {
+        message += i.getDefaultMessage() + ". ";
       }
-    } else if(!BG.isEmpty()) {
+    } else if (!BG.isEmpty()) {
       message = BG.get(0).getDefaultMessage() + ". ";
     } else {
       message = "데이터 형식 오류 오류";

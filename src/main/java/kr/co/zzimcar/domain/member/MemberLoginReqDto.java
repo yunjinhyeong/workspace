@@ -9,9 +9,8 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString
-public class MemberLoginDto {
+public class MemberLoginReqDto {
 
   private String password;
   private String username;
-
 }
