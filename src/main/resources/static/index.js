@@ -390,18 +390,10 @@ function changeDate()  {
 
 function selectBgColor(state) {
 
-  if (state == '대기중') {
-    return '#ffffcc';
-  }
-  if (state == '진행중') {
-    return '#ccccff';
-  }
-  if (state == '지연') {
-    return '#ffc6b3';
-  }
-  if (state == '완료') {
-    return '#ccffdc';
-  }
+  if (state == '대기중') return '#ffffcc';
+  if (state == '진행중') return '#ccccff';
+  if (state == '지연') return '#ffc6b3';
+  if (state == '완료') return '#ccffdc';
 }
 
 if($.cookie('name') == undefined) {
