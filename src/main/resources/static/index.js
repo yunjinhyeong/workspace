@@ -516,7 +516,6 @@ function getDueAt() {
 
 $('[name=writeTaskSubmit]').click(function () {
   let memberPid = Number($.cookie('member_pid'));
-  let type = '주간';
   let title = $('[name=title]').val();
   let content = $('[name=content]').val();
   let startAt = $('[name=startAt]').val();
@@ -535,7 +534,6 @@ $('[name=writeTaskSubmit]').click(function () {
     dataType: 'json',
     data: {
       memberPid: memberPid,
-      type: type,
       title: title,
       content: content,
       startAt: startAt,

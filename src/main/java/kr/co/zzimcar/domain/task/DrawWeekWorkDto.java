@@ -25,7 +25,6 @@ public class DrawWeekWorkDto {
   private String dd;
   private int tPid;
   private int memberPid;
-  private String type;
   private String title;
   private String content;
   private String state;

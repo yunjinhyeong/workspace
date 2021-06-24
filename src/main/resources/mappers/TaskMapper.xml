@@ -5,15 +5,15 @@
 
   <insert id="create" parameterType="TaskDto">
     INSERT workspace.task (
-    member_pid, type , title, content, state, priority, start_at, due_at
+    member_pid, title, content, state, priority, start_at, due_at
     ) VALUES (
-    #{memberPid}, #{type}, #{title}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
+    #{memberPid}, #{title}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
     )
   </insert>
 
   <select id="retrieveOne" parameterType="int" resultType="TaskDto">
     SELECT
-    t.pid, t.member_pid, t.type, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
+    t.pid, t.member_pid, t.title, t.content, t.state, t.priority, t.start_at, t.due_at, t.created_at
     FROM
     workspace.task t
     WHERE
@@ -56,7 +56,6 @@
                 (concat(year(start_at), LPAD(MONTH(start_at), 2, '0')) <= concat(#{year}, LPAD(#{month}, 2, '0')))
                 and (concat(year(due_at), LPAD(MONTH(due_at), 2, '0')) >= concat(#{year}, LPAD(#{month}, 2, '0')))
               ))
-        and t.type = '주간'
         and t.deleted_at IS NULL
       order by m.department_pid desc, m.pid asc, FIELD(t.priority, 'HIGHEST', 'HIGH', 'LOW', 'LOWEST') ASC;
     ]]>

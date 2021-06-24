@@ -42,7 +42,7 @@ public class TaskAPIController {
   }
 
   @DeleteMapping("/{pid}")
-  @ApiOperation("업무 삭제 API")
+  @ApiOperation("업무 하나 삭제 API")
   public ResponseEntity<ResponseDto<Void>> deleteOne(@PathVariable @ApiParam(value = "삭제할 업무 번호", required = true, example = "1") int pid) {
     return taskService.deleteOne(pid);
   }

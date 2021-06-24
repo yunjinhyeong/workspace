@@ -16,7 +16,6 @@ public class TaskResDto {
 
   private int pid;
   private int memberPid;
-  private String type;
   private String title;
   private String content;
   private String state;
@@ -28,7 +27,6 @@ public class TaskResDto {
   public TaskResDto(TaskDto taskDto) {
     this.pid = taskDto.getPid();
     this.memberPid = taskDto.getMemberPid();
-    this.type = taskDto.getType();
     this.title = taskDto.getTitle();
     this.content = taskDto.getContent();
     this.state = taskDto.getState();

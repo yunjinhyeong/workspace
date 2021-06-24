@@ -17,7 +17,6 @@ public class TaskDto {
 
   private int pid;
   private int memberPid;
-  private String type;
   private String title;
   private String content;
   private String state;
@@ -32,7 +31,6 @@ public class TaskDto {
 
   public TaskDto(TaskReqDto taskReqDto) {
     this.memberPid = taskReqDto.getMemberPid();
-    this.type = taskReqDto.getType();
     this.title = taskReqDto.getTitle();
     this.content = taskReqDto.getContent();
     this.state = taskReqDto.getState();

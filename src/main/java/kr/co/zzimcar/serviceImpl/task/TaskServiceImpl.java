@@ -8,7 +8,6 @@ import kr.co.zzimcar.domain.task.WeekInfoDto;
 import kr.co.zzimcar.domain.task.*;
 import kr.co.zzimcar.enumeration.Priority;
 import kr.co.zzimcar.enumeration.State;
-import kr.co.zzimcar.enumeration.Type;
 import kr.co.zzimcar.exception.ApiException;
 import kr.co.zzimcar.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -119,6 +118,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   private void checkCreate(TaskReqDto taskReqDto) {
+
     boolean check = false;
     for (Priority priority : Priority.values()) {
       if (taskReqDto.getPriority().equals(priority.toString())) {
@@ -135,15 +135,6 @@ public class TaskServiceImpl implements TaskService {
       }
     }
     if (!check) throw new ApiException(TASK_STATE_SAVE_FAILED);
-    check = false;
-    for (Type type : Type.values()) {
-      if (taskReqDto.getType().equals(type.toString())) {
-        check = true;
-        break;
-      }
-    }
-
-    if (!check) throw new ApiException(TASK_TYPE_SAVE_FAILED);
   }
 
   private void checkUpdate(TaskUpdateReqDto taskUpdateReqDto) {
@@ -163,7 +154,6 @@ public class TaskServiceImpl implements TaskService {
       }
     }
     if (!check) throw new ApiException(TASK_STATE_SAVE_FAILED);
-
   }
 
 }
