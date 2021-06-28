@@ -6,10 +6,9 @@ import kr.co.zzimcar.domain.ResponseDto;
 import kr.co.zzimcar.domain.task.TaskFormDto;
 import kr.co.zzimcar.domain.task.WeekInfoDto;
 import kr.co.zzimcar.domain.task.*;
-import kr.co.zzimcar.enumeration.Priority;
-import kr.co.zzimcar.enumeration.State;
 import kr.co.zzimcar.exception.ApiException;
 import kr.co.zzimcar.service.task.TaskService;
+import kr.co.zzimcar.util.CheckStatePriority;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +47,15 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
-    checkCreate(taskReqDto);
+    System.out.println(taskReqDto);
+    CheckStatePriority<TaskReqDto> checkClass = new CheckStatePriority<>();
+    TaskReqDto checkBowl = new TaskReqDto();
+    checkBowl.setPriority(taskReqDto.getPriority());
+    checkBowl.setState(taskReqDto.getState());
+    checkBowl.setStartAt(taskReqDto.getStartAt());
+    checkBowl.setDueAt(taskReqDto.getDueAt());
+
+    checkClass.check(checkBowl);
     taskDao.create(new TaskDto(taskReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
@@ -63,7 +70,14 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> updateOne(TaskUpdateReqDto taskUpdateReqDto) {
-    checkUpdate(taskUpdateReqDto);
+    System.out.println(taskUpdateReqDto);
+    CheckStatePriority<TaskUpdateReqDto> checkClass = new CheckStatePriority<>();
+    TaskUpdateReqDto checkBowl = new TaskUpdateReqDto();
+    checkBowl.setPriority(taskUpdateReqDto.getPriority());
+    checkBowl.setState(taskUpdateReqDto.getState());
+    checkBowl.setStartAt(taskUpdateReqDto.getStartAt());
+    checkBowl.setDueAt(taskUpdateReqDto.getDueAt());
+    checkClass.check(checkBowl);
     taskDao.updateOne(new TaskDto(taskUpdateReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
@@ -115,45 +129,6 @@ public class TaskServiceImpl implements TaskService {
       .retrieve()
       .bodyToMono(WriteTaskResDto.class)
       .block();
-  }
-
-  private void checkCreate(TaskReqDto taskReqDto) {
-
-    boolean check = false;
-    for (Priority priority : Priority.values()) {
-      if (taskReqDto.getPriority().equals(priority.toString())) {
-        check = true;
-        break;
-      }
-    }
-    if (!check) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
-    check = false;
-    for (State state : State.values()) {
-      if (taskReqDto.getState().equals(state.toString())) {
-        check = true;
-        break;
-      }
-    }
-    if (!check) throw new ApiException(TASK_STATE_SAVE_FAILED);
-  }
-
-  private void checkUpdate(TaskUpdateReqDto taskUpdateReqDto) {
-    boolean check = false;
-    for (Priority priority : Priority.values()) {
-      if (taskUpdateReqDto.getPriority().equals(priority.toString())) {
-        check = true;
-        break;
-      }
-    }
-    if (!check) throw new ApiException(TASK_PRIORITY_SAVE_FAILED);
-    check = false;
-    for (State state : State.values()) {
-      if (taskUpdateReqDto.getState().equals(state.toString())) {
-        check = true;
-        break;
-      }
-    }
-    if (!check) throw new ApiException(TASK_STATE_SAVE_FAILED);
   }
 
 }

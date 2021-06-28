@@ -1,6 +1,7 @@
 package kr.co.zzimcar.domain.task;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.zzimcar.domain.CheckBowl;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +13,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class TaskUpdateReqDto {
+public class TaskUpdateReqDto extends CheckBowl {
   @NotNull(message = "pid(업무글 번호)를 입력해 주세요")
   @ApiModelProperty(value = "업무글 번호")
   private int pid;

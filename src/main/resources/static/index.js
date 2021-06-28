@@ -454,7 +454,7 @@ $('[name=login]').click(function () {
     },
     success: function (rs) {
       if (rs.success) {
-        loginSuccess(rs.data.member.pid, rs.data.accessToken);
+        loginSuccess(rs.data.member.pid, rs.data.accessToken, rs.data.member);
       }
       if (!rs.success) {
         alert('아이디와 페스워드가 틀렸습니다.');
@@ -463,7 +463,7 @@ $('[name=login]').click(function () {
   });
 });
 
-function loginSuccess(pid, token) {
+function loginSuccess(pid, token, member) {
 
   $.ajax({
     url: '/member/isPid',
@@ -475,6 +475,8 @@ function loginSuccess(pid, token) {
     success: function (rs) {
       if (!rs.isPidDup) {
         $('#insertInput').modal('show');
+        $('[name=insertInputMemberPid]').val(member.pid);
+        $('[name=insertInputName]').val(member.name);
       }
       if (rs.isPidDup) {
         loginUseDev(token);
@@ -528,6 +530,11 @@ $('[name=writeTaskSubmit]').click(function () {
     return;
   }
 
+  if (title.length >= 30) {
+    alert('제목은 30글자 이하로 입력하여 주십시오.');
+    return;
+  }
+
   $.ajax({
     url: '/week/writeTask',
     type: 'POST',
@@ -559,6 +566,5 @@ function newdraw() {
   $('th').remove('.swich');
   $('td').remove('.swich');
   $('tr').remove('.swich');
-  getToday();
   getWeek();
 }

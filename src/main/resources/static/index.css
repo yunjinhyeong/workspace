@@ -14,12 +14,10 @@ li {
 
 .main > li {
     position: relative;
-    width: 300px;
     box-sizing: border-box;
-    line-height: 30px;
     text-align: center;
     background: #fafafa;
-    margin: 4px 0;
+    margin: 7px 0;
     display: block;
 }
 
@@ -41,7 +39,6 @@ li {
 .sub {
     display: none;
     position: absolute;
-    top: 30px;
     left: 0;
     z-index: 1;
     width: 100%;
@@ -49,7 +46,6 @@ li {
 }
 
 .main {
-    width: fit-content;
     font-size: small;
     cursor: pointer;
 }

@@ -1,6 +1,7 @@
 package kr.co.zzimcar.domain.task;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.zzimcar.domain.CheckBowl;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +13,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class TaskReqDto {
+public class TaskReqDto extends CheckBowl {
 
   @NotNull(message = "memberPid(회원 번호)를 입력해 주세요")
   @ApiModelProperty(value = "회원 번호")
