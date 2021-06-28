@@ -34,7 +34,6 @@ public class MemberController {
   @PostMapping("/submitRoleDepartmentPid")
   @ResponseBody
   public MemberResDto submitRoleDepartmentPid(MemberDto memberDto) {
-    System.out.println("memberDto"+memberDto);
     return memberService.insertMember(memberDto);
   }
 

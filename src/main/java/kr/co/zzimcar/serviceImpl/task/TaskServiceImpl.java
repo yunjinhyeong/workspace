@@ -47,7 +47,6 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
-    System.out.println(taskReqDto);
     CheckStatePriority<TaskReqDto> checkClass = new CheckStatePriority<>();
     TaskReqDto checkBowl = new TaskReqDto();
     checkBowl.setPriority(taskReqDto.getPriority());
@@ -70,7 +69,6 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> updateOne(TaskUpdateReqDto taskUpdateReqDto) {
-    System.out.println(taskUpdateReqDto);
     CheckStatePriority<TaskUpdateReqDto> checkClass = new CheckStatePriority<>();
     TaskUpdateReqDto checkBowl = new TaskUpdateReqDto();
     checkBowl.setPriority(taskUpdateReqDto.getPriority());
