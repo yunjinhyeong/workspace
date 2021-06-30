@@ -67,11 +67,11 @@ $('.jump_month_plus').click(function () {
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() + 1);
-  let test = get_date_str(selectedDate);
+  let sampledate = get_date_str(selectedDate);
 
-  year = test.substring(0, 4);
-  month = test.substring(5, 7);
-  document.getElementById('focus_date').value = test;
+  year = sampledate.substring(0, 4);
+  month = sampledate.substring(5, 7);
+  document.getElementById('focus_date').value = sampledate;
 
   $.ajax({
     url: '/week/weekly',
@@ -96,11 +96,11 @@ $('.jump_month_minus').click(function () {
   let value = $('#focus_date').val();
   let selectedDate = new Date(value);
   selectedDate.setMonth(selectedDate.getMonth() - 1);
-  let test = get_date_str(selectedDate);
+  let sampledate = get_date_str(selectedDate);
 
-  year = test.substring(0, 4);
-  month = test.substring(5, 7);
-  document.getElementById('focus_date').value = test;
+  year = sampledate.substring(0, 4);
+  month = sampledate.substring(5, 7);
+  document.getElementById('focus_date').value = sampledate;
 
   $.ajax({
     url: '/week/weekly',
@@ -426,7 +426,7 @@ $('[name=submitRoleDepartmentPid]').click(function () {
       pid: Number($('[name=insertInputMemberPid]').val()),
       name: $('[name=insertInputName]').val(),
       role: $('[name=insertInputRole]').val(),
-      departmentPid: $('[name=insertInputDepartMentPid]').val()
+      departmentPid: $('[name=insertInputDepartmentPid]').val()
     },
     success: function (rs) {
       if (rs.success) {
