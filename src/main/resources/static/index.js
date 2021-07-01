@@ -9,37 +9,9 @@ function getToday() {
   bir.value = today;
 }
 
-function get_date_str(date) {
-
-  let sYear = date.getFullYear();
-  let sMonth = date.getMonth() + 1;
-
-  sMonth = sMonth > 9 ? sMonth : '0' + sMonth;
-  return sYear + '-' + sMonth;
-}
-
 window.onload = () => {
 
   const tab_switchers = document.querySelectorAll('[data-switcher]');
-
-  console.log(
-    '%c%s',
-    'color: #22A8A5; font-size: 5px;',
-    `
-███╗░░██╗░█████╗░████████╗██╗░░░██╗██████╗░███████╗  ███╗░░░███╗░█████╗░██████╗░██╗██╗░░░░░██╗████████╗██╗░░░██╗
-████╗░██║██╔══██╗╚══██╔══╝██║░░░██║██╔══██╗██╔════╝  ████╗░████║██╔══██╗██╔══██╗██║██║░░░░░██║╚══██╔══╝╚██╗░██╔╝
-██╔██╗██║███████║░░░██║░░░██║░░░██║██████╔╝█████╗░░  ██╔████╔██║██║░░██║██████╦╝██║██║░░░░░██║░░░██║░░░░╚████╔╝░
-██║╚████║██╔══██║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░  ██║╚██╔╝██║██║░░██║██╔══██╗██║██║░░░░░██║░░░██║░░░░░╚██╔╝░░
-██║░╚███║██║░░██║░░░██║░░░╚██████╔╝██║░░██║███████╗  ██║░╚═╝░██║╚█████╔╝██████╦╝██║███████╗██║░░░██║░░░░░░██║░░░
-╚═╝░░╚══╝╚═╝░░╚═╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝  ╚═╝░░░░░╚═╝░╚════╝░╚═════╝░╚═╝╚══════╝╚═╝░░░╚═╝░░░░░░╚═╝░░░
-
-░██╗░░░░░░░██╗░█████╗░██████╗░██╗░░██╗░██████╗██████╗░░█████╗░░█████╗░███████╗
-░██║░░██╗░░██║██╔══██╗██╔══██╗██║░██╔╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝
-░╚██╗████╗██╔╝██║░░██║██████╔╝█████═╝░╚█████╗░██████╔╝███████║██║░░╚═╝█████╗░░
-░░████╔═████║░██║░░██║██╔══██╗██╔═██╗░░╚═══██╗██╔═══╝░██╔══██║██║░░██╗██╔══╝░░
-░░╚██╔╝░╚██╔╝░╚█████╔╝██║░░██║██║░╚██╗██████╔╝██║░░░░░██║░░██║╚█████╔╝███████╗
-░░░╚═╝░░░╚═╝░░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚══════╝`
-  );
 
   for (let i = 0; i < tab_switchers.length; i++) {
 
@@ -58,20 +30,21 @@ window.onload = () => {
   getWeek();
 }
 
-$('.jump_month_plus').click(function () {
-
+var removeTableSwitch = function () {
   $('th').remove('.swich');
   $('td').remove('.swich');
   $('tr').remove('.swich');
+}
 
-  let value = $('#focus_date').val();
-  let selectedDate = new Date(value);
-  selectedDate.setMonth(selectedDate.getMonth() + 1);
-  let sampledate = get_date_str(selectedDate);
+var moveMonth = function () {
+  removeTableSwitch();
 
-  year = sampledate.substring(0, 4);
-  month = sampledate.substring(5, 7);
-  document.getElementById('focus_date').value = sampledate;
+  let selectedDate = new Date($('#focus_date').val());
+  selectedDate.setMonth(selectedDate.getMonth() + $(this).data('value'));
+
+  year = selectedDate.getFullYear();
+  month = ((selectedDate.getMonth() + 1) > 9) ? selectedDate.getMonth() + 1 : '0' + (selectedDate.getMonth() + 1);
+  $('#focus_date').val(year + '-' + month);
 
   $.ajax({
     url: '/week/weekly',
@@ -85,36 +58,10 @@ $('.jump_month_plus').click(function () {
       drawWeekly(rs.weekcount, rs.items);
     }
   });
-});
+}
 
-$('.jump_month_minus').click(function () {
-
-  $('th').remove('.swich');
-  $('td').remove('.swich');
-  $('tr').remove('.swich');
-
-  let value = $('#focus_date').val();
-  let selectedDate = new Date(value);
-  selectedDate.setMonth(selectedDate.getMonth() - 1);
-  let sampledate = get_date_str(selectedDate);
-
-  year = sampledate.substring(0, 4);
-  month = sampledate.substring(5, 7);
-  document.getElementById('focus_date').value = sampledate;
-
-  $.ajax({
-    url: '/week/weekly',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      year: year,
-      month: month
-    },
-    success: function (rs) {
-      drawWeekly(rs.weekcount, rs.items);
-    }
-  });
-});
+$('.jump_month_minus').click(moveMonth);
+$('.jump_month_plus').click(moveMonth);
 
 function getWeek() {
 
@@ -328,7 +275,7 @@ $('tbody#task_body').on('click', 'input[name=viewTask]', function (e) {
 $('tbody#task_body').on('click', '.task-data', function () {
 
   if ($.cookie('name') == undefined) {
-    alert('로그인을 안했잖아');
+    alert('로그인을 하십시오');
   }
 });
 
@@ -346,6 +293,16 @@ $('button[name=\'updateTaskPage\']').on('click', function (e) {
   let dueAt = $('[name=viewDueAt]').val();
   let state = $('[name=viewState]').val();
   let priority = $('[name=viewPriority]').val();
+
+  if (startAt > dueAt) {
+    alert('시작일이 종료일보다 큽니다.');
+    return;
+  }
+
+  if (title.length >= 30) {
+    alert('제목은 30글자 이하로 입력하여 주십시오.');
+    return;
+  }
 
   $.ajax({
     url: '/week/updateTask',

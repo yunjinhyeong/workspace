@@ -3,6 +3,7 @@ package kr.co.zzimcar.config;
 import com.google.common.collect.ImmutableList;
 import kr.co.zzimcar.exception.ApiAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+@Log
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -27,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    log.info("security config..................");
     http.csrf().disable()
       .headers().frameOptions().disable()
       .addHeaderWriter(new StaticHeadersWriter("X-Frame-Options", "ALLOW-FROM http://newfront.benepia.co.kr, ALLOW-FROM http://*.ezwel.com"))
