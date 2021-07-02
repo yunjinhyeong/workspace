@@ -4,6 +4,8 @@ import kr.co.zzimcar.domain.ResponseDto;
 import kr.co.zzimcar.domain.member.*;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public interface MemberService {
@@ -21,4 +23,6 @@ public interface MemberService {
   ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto);
 
   void testjoinmember(TestMember member);
+
+  void testloginmember(TestLoginMember testLoginMember, HttpSession session);
 }

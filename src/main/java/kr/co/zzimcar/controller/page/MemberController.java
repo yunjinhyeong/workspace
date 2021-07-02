@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.Map;
 
@@ -16,12 +18,12 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @PostMapping("/login")
-  @ResponseBody
-  public MemberInfoResDto login(MemberLoginReqDto memberLoginDto) {
-    TokenResultResDto tokenResult = memberService.makeToken(new TokenReqData("apitest", "access_token"));
-    return memberService.login(tokenResult.getToken(), memberLoginDto);
-  }
+//  @PostMapping("/login")
+//  @ResponseBody
+//  public MemberInfoResDto login(MemberLoginReqDto memberLoginDto) {
+//    TokenResultResDto tokenResult = memberService.makeToken(new TokenReqData("apitest", "access_token"));
+//    return memberService.login(tokenResult.getToken(), memberLoginDto);
+//  }
 
   @PostMapping("/isPid")
   @ResponseBody
@@ -44,14 +46,12 @@ public class MemberController {
 
   @GetMapping("/join")
   public String join(){
-    System.out.println("///////////////////////////");
     return "join";
   }
 
   @Transactional
   @PostMapping("/join")
   public String joinPost(@ModelAttribute("member") TestMember member) {
-    System.out.println("11111111111111");
 //    String encryptPw = pwEncoder.encode(member.getUpw());
 //
 //    member.setUpw(encryptPw);
@@ -59,6 +59,27 @@ public class MemberController {
 //    repo.save(member);
     memberService.testjoinmember(member);
     return "joinResult";
+  }
+
+  @GetMapping("/login")
+  public String login() {
+    return "login";
+  }
+
+  @PostMapping("/login")
+  public String login(TestLoginMember testLoginMember, HttpSession session) {
+    memberService.testloginmember(testLoginMember, session);
+    return "login";
+  }
+
+  @GetMapping("/accessDenied")
+  public void accessDenied() {
+
+  }
+
+  @GetMapping("/logout")
+  public void logout() {
+
   }
 
 }

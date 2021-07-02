@@ -6,10 +6,13 @@ import kr.co.zzimcar.domain.member.*;
 import kr.co.zzimcar.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,12 +87,32 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public void testjoinmember(TestMember member) {
-    System.out.println("22222222222222");
     String encrypthPw = pwEncoder.encode(member.getPw());
-    System.out.println("33333333333");
     member.setPw(encrypthPw);
-    System.out.println("44444444444");
     memberDao.testjoinmember(member);
+  }
+
+  @Override
+  public void testloginmember(TestLoginMember testLoginMember, HttpSession session) {
+
+    String apw = memberDao.getapw(testLoginMember.getId());
+    TestMember testMember;
+    System.out.println(testLoginMember.getId());
+    System.out.println("//////// 여기까지");
+    System.out.println(apw);
+    System.out.println(pwEncoder.encode(testLoginMember.getPw()));
+
+    if(pwEncoder.matches(testLoginMember.getPw() ,apw)) {
+      System.out.println("//////// 일치");
+      testMember = memberDao.testlogin(testLoginMember);
+    } else {
+      System.out.println("//////// 불일치");
+      throw new BadCredentialsException(testLoginMember.getId());
+    }
+    System.out.println(testMember);
+    System.out.println("//////// 돌아갈곳");
+    session.setAttribute("userPid", testMember.getPid());
+    System.out.println(session.getAttribute("userPid"));
   }
 
 }
