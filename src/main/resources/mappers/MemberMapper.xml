@@ -29,4 +29,12 @@
     m.pid = #{pid}
   </select>
 
+  <insert id="testjoinmember" parameterType="TestMember">
+    INSERT workspace.testmember (
+        department_pid, name, role, pw
+    ) VALUES (
+        #{departmentPid}, #{name}, #{role}, #{pw}
+    )
+  </insert>
+
 </mapper>

@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+  <title>Thymeleaf3</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <p>
+    <label>UID</label>
+    <input type="text" name="pid"	th:value="${member.pid}" readonly />
+  </p>
+  <p>
+    <label>UPW</label>
+    <input type="text" name="pw" th:value="${member.pw}" readonly />
+  </p>
+  <p>
+    <label>UNAME</label>
+    <input type="text" name="name" th:value="${member.name}" readonly />
+  </p>
+
+</body>
+</html>

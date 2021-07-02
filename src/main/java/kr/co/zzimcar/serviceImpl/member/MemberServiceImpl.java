@@ -6,6 +6,7 @@ import kr.co.zzimcar.domain.member.*;
 import kr.co.zzimcar.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -15,6 +16,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
+  private final PasswordEncoder pwEncoder;
 
   private final MemberDao memberDao;
 
@@ -77,6 +80,16 @@ public class MemberServiceImpl implements MemberService {
   public ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto) {
     memberDao.create(new MemberDto(memberReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
+  }
+
+  @Override
+  public void testjoinmember(TestMember member) {
+    System.out.println("22222222222222");
+    String encrypthPw = pwEncoder.encode(member.getPw());
+    System.out.println("33333333333");
+    member.setPw(encrypthPw);
+    System.out.println("44444444444");
+    memberDao.testjoinmember(member);
   }
 
 }

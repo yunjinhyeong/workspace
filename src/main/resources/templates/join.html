@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+  <title>Thymeleaf3</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <form method="post">
+    <p>
+      <label>UNAME</label>
+      <input type="text" name="name" placeholder="홍길동" />
+    </p>
+    <p>
+      <label>UPW</label>
+      <input type="password" name="pw" placeholder="password" />
+    </p>
+    <select name="departmentPid" th:value="경영지원">
+      <option value="1">경영지원</option>
+      <option value="2">개발팀</option>
+    </select>
+    <select name="role" th:value="연구원">
+      <option value="CEO">CEO</option>
+      <option value="CTO">CTO</option>
+      <option value="실장">실장</option>
+      <option value="책임">책임</option>
+      <option value="팀장">팀장</option>
+      <option value="과장">과장</option>
+      <option value="선임">선임</option>
+      <option value="연구원">연구원</option>
+      <option value="매니저">매니저</option>
+    </select>
+
+    <button type="submit" class="btn">JOIN</button>
+  </form>
+</body>
+</html>

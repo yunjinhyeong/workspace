@@ -20,4 +20,5 @@ public interface MemberService {
 
   ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto);
 
+  void testjoinmember(TestMember member);
 }

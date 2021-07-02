@@ -4,11 +4,9 @@ import kr.co.zzimcar.domain.member.*;
 import kr.co.zzimcar.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 
 @Controller
@@ -42,6 +40,25 @@ public class MemberController {
   public MemberInfoDevResDto loginUseDev(String token) {
     TokenResultResDto tokenResult = memberService.makeToken(new TokenReqData("apitest", "access_token"));
     return memberService.loginUseDev(tokenResult.getToken(), token);
+  }
+
+  @GetMapping("/join")
+  public String join(){
+    System.out.println("///////////////////////////");
+    return "join";
+  }
+
+  @Transactional
+  @PostMapping("/join")
+  public String joinPost(@ModelAttribute("member") TestMember member) {
+    System.out.println("11111111111111");
+//    String encryptPw = pwEncoder.encode(member.getUpw());
+//
+//    member.setUpw(encryptPw);
+//
+//    repo.save(member);
+    memberService.testjoinmember(member);
+    return "joinResult";
   }
 
 }

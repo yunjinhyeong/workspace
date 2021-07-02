@@ -38,6 +38,7 @@ public class TaskServiceImpl implements TaskService {
     weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
     weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
 
+    System.out.println(weekInfoDto);
     return weekInfoDto;
   }
 
