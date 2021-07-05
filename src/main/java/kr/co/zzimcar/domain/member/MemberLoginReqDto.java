@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class MemberLoginReqDto {
 
+  private String id;
   private String password;
-  private String username;
+
 }

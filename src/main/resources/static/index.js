@@ -352,53 +352,54 @@ function selectBgColor(state) {
   if (state == '완료') return '#ccffdc';
 }
 
-if ($.cookie('name') == undefined) {
-  $('#loginBox').show();
-  $('#logoutBox').hide();
-  $('[name=writeTask]').hide();
-}
+// if ($.cookie('name') == undefined) {
+//   $('#loginBox').show();
+//   $('#logoutBox').hide();
+//   $('[name=writeTask]').hide();
+// }
 
 function isWho() {
-  if ($.cookie('name') != undefined) {
-    $('#loginBox').hide();
-    $('#logoutBox').show();
-    $('[name=writeTask]').show();
-    $('span[name=\'name_area\']').text($.cookie('name'));
-    $('input[name=\'memberPid\']').val(Number($.cookie('member_pid')));
-  }
+  // if ($.cookie('name') != undefined) {
+  //   $('#loginBox').hide();
+  //   $('#logoutBox').show();
+  //   $('[name=writeTask]').show();
+  //   $('span[name=\'name_area\']').text($.cookie('name'));
+  //   $('input[name=\'memberPid\']').val(Number($.cookie('member_pid')));
+  // }
 }
 
 $('[name=logout]').click(function () {
-  document.cookie = 'name=; Max-Age=-1;';
-  document.cookie = 'member_pid=; Max-Age=-1;';
-  location.reload();
+  sessionStorage.removeItem("member");
+  // document.cookie = 'name=; Max-Age=-1;';
+  // document.cookie = 'member_pid=; Max-Age=-1;';
+  // location.reload();
 });
 
-$('[name=submitRoleDepartmentPid]').click(function () {
-  $.ajax({
-    url: '/member/submitRoleDepartmentPid',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      pid: Number($('[name=insertInputMemberPid]').val()),
-      name: $('[name=insertInputName]').val(),
-      role: $('[name=insertInputRole]').val(),
-      departmentPid: $('[name=insertInputDepartmentPid]').val()
-    },
-    success: function (rs) {
-      if (rs.success) {
-        alert('성공! 다시 로그인 하십시오');
-        $('#insertInput').modal('hide');
-      }
-      if (!rs.success) {
-        alert('실패!');
-      }
-    }
-  });
-});
+// $('[name=submitRoleDepartmentPid]').click(function () {
+//   $.ajax({
+//     url: '/member/submitRoleDepartmentPid',
+//     type: 'POST',
+//     dataType: 'json',
+//     data: {
+//       pid: Number($('[name=insertInputMemberPid]').val()),
+//       name: $('[name=insertInputName]').val(),
+//       role: $('[name=insertInputRole]').val(),
+//       departmentPid: $('[name=insertInputDepartmentPid]').val()
+//     },
+//     success: function (rs) {
+//       if (rs.success) {
+//         alert('성공! 다시 로그인 하십시오');
+//         $('#insertInput').modal('hide');
+//       }
+//       if (!rs.success) {
+//         alert('실패!');
+//       }
+//     }
+//   });
+// });
 
 $('[name=login]').click(function () {
-  let username = $('[name=name]').val();
+  let id = $('[name=id]').val();
   let password = $('[name=pw]').val();
 
   $.ajax({
@@ -406,41 +407,83 @@ $('[name=login]').click(function () {
     type: 'POST',
     dataType: 'json',
     data: {
-      username: username,
+      id: id,
       password: password
     },
     success: function (rs) {
       if (rs.success) {
-        loginSuccess(rs.data.member.pid, rs.data.accessToken, rs.data.member);
+        // loginSuccess(rs.data.member.pid, rs.data.accessToken, rs.data.member);
+        alert('성공하였습니다.');
+        console.log(rs);
+        // $.cookie('member_pid', rs.data.pid, {expires: 1});
+        // $.cookie('name', rs.data.name, {expires: 1});
+        // isWho(rs.data.pid);
       }
       if (!rs.success) {
-        alert('아이디와 페스워드가 틀렸습니다.');
+        alert('아이디 또는 페스워드가 틀렸습니다.');
+        console.log(rs);
       }
     }
   });
 });
 
-function loginSuccess(pid, token, member) {
+
+
+
+
+$('[name=joinMemberSubmit]').click(function () {
+  let id = $('[name=joinId]').val();
+  let name = $('[name=joinName]').val();
+  let password = $('[name=joinPw]').val();
+  let departmentPid = $('[name=joinDepartmentPid]').val();
+  let role = $('[name=joinRole]').val();
 
   $.ajax({
-    url: '/member/isPid',
+    url: '/member/join',
     type: 'POST',
     dataType: 'json',
     data: {
-      pid: pid
+      id: id,
+      name: name,
+      password: password,
+      departmentPid: departmentPid,
+      role: role
     },
     success: function (rs) {
-      if (!rs.isPidDup) {
-        $('#insertInput').modal('show');
-        $('[name=insertInputMemberPid]').val(member.pid);
-        $('[name=insertInputName]').val(member.name);
+      if (rs.success) {
+        // loginSuccess(rs.data.member.pid, rs.data.accessToken, rs.data.member);
+        alert('성공');
+        console.log(rs);
       }
-      if (rs.isPidDup) {
-        loginUseDev(token);
+      if (!rs.success) {
+        alert('실패');
+        console.log(rs);
       }
     }
   });
-}
+});
+
+// function loginSuccess(pid, token, member) {
+//
+//   $.ajax({
+//     url: '/member/isPid',
+//     type: 'POST',
+//     dataType: 'json',
+//     data: {
+//       pid: pid
+//     },
+//     success: function (rs) {
+//       if (!rs.isPidDup) {
+//         $('#insertInput').modal('show');
+//         $('[name=insertInputMemberPid]').val(member.pid);
+//         $('[name=insertInputName]').val(member.name);
+//       }
+//       if (rs.isPidDup) {
+//         loginUseDev(token);
+//       }
+//     }
+//   });
+// }
 
 function loginUseDev(token) {
   $.ajax({

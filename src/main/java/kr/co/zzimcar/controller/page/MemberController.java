@@ -49,16 +49,10 @@ public class MemberController {
     return "join";
   }
 
-  @Transactional
   @PostMapping("/join")
-  public String joinPost(@ModelAttribute("member") TestMember member) {
-//    String encryptPw = pwEncoder.encode(member.getUpw());
-//
-//    member.setUpw(encryptPw);
-//
-//    repo.save(member);
-    memberService.testjoinmember(member);
-    return "joinResult";
+  @ResponseBody
+  public MemberJoinResDto join(MemberDto memberDto) {
+    return memberService.join(memberDto);
   }
 
   @GetMapping("/login")
@@ -67,9 +61,10 @@ public class MemberController {
   }
 
   @PostMapping("/login")
-  public String login(TestLoginMember testLoginMember, HttpSession session) {
-    memberService.testloginmember(testLoginMember, session);
-    return "login";
+  @ResponseBody
+  public MemberResDto login(MemberLoginReqDto memberLoginReqDto) {
+    System.out.println("///swich01");
+    return memberService.loginMember(memberLoginReqDto);
   }
 
   @GetMapping("/accessDenied")

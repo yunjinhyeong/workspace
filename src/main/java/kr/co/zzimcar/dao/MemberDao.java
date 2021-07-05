@@ -1,8 +1,8 @@
 package kr.co.zzimcar.dao;
 
+import kr.co.zzimcar.domain.member.MemberDataResDto;
 import kr.co.zzimcar.domain.member.MemberDto;
-import kr.co.zzimcar.domain.member.TestLoginMember;
-import kr.co.zzimcar.domain.member.TestMember;
+import kr.co.zzimcar.domain.member.MemberLoginReqDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +14,7 @@ public interface MemberDao {
 
   int countByPid(int pid);
 
-  void testjoinmember(TestMember member);
+  String getPassword(String id);
 
-  String getapw(String id);
-
-  TestMember testlogin(TestLoginMember testLoginMember);
+  MemberDataResDto login(MemberLoginReqDto memberLoginReqDto);
 }

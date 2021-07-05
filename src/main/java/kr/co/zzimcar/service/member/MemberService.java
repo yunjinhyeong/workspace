@@ -14,15 +14,20 @@ public interface MemberService {
 
   TokenResultResDto makeToken(TokenReqData tokenData);
 
-  MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto);
+//  MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto);
+
+
 
   Map<String, Boolean> countByPid(int pid);
 
   MemberInfoDevResDto loginUseDev(String xClientToken, String xMemberToken);
 
   ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto);
+  ResponseEntity<ResponseDto<MemberDataResDto>> login(MemberLoginReqDto memberLoginReqDto);
 
-  void testjoinmember(TestMember member);
+  MemberResDto loginMember(MemberLoginReqDto memberLoginReqDto);
 
-  void testloginmember(TestLoginMember testLoginMember, HttpSession session);
+  MemberJoinResDto join(MemberDto memberDto);
+
+//  void testloginmember(TestLoginMember testLoginMember, HttpSession session);
 }

@@ -13,14 +13,17 @@ public class MemberDto {
 
   private int pid;
   private int departmentPid;
+  private String id;
   private String name;
   private String role;
+  private String password;
 
   public MemberDto(MemberReqDto memberReqDto) {
-    this.pid = memberReqDto.getPid();
-    this.name = memberReqDto.getName();
     this.departmentPid = memberReqDto.getDepartmentPid();
+    this.id = memberReqDto.getId();
+    this.name = memberReqDto.getName();
     this.role = memberReqDto.getRole();
+    this.password = memberReqDto.getPassword();
   }
 
 }

@@ -3,20 +3,20 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.zzimcar.dao.MemberDao">
 
-  <select id="login" parameterType="MemberReqDto" resultType="MemberDto">
+  <select id="login" parameterType="MemberLoginReqDto" resultType="MemberDataResDto">
     select
-    m.pid, m.name, m.department_pid, m.role
+    m.pid, m.department_pid, m.id, m.name, m.role, m.password
     from
-    workspace.member m
+    workspace.testmember m
     where
-    m.name = #{name} and m.pw = #{pw}
+    m.id = #{id}
   </select>
 
   <insert id="create" parameterType="MemberReqDto">
-    INSERT workspace.member (
-    department_pid, pid, name, role
+    INSERT workspace.testmember (
+    department_pid, id, name, role, password
     ) VALUES (
-    #{departmentPid}, #{pid}, #{name}, #{role}
+    #{departmentPid}, #{id}, #{name}, #{role}, #{password}
     )
   </insert>
 
@@ -37,9 +37,9 @@
     )
   </insert>
 
-  <select id="getapw" parameterType="String" resultType="String">
+  <select id="getPassword" parameterType="String" resultType="String">
     select
-      pw
+      password
     from
       workspace.testmember tm
     where

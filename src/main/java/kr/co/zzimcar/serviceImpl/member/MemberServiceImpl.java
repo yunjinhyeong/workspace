@@ -3,7 +3,9 @@ package kr.co.zzimcar.serviceImpl.member;
 import kr.co.zzimcar.dao.MemberDao;
 import kr.co.zzimcar.domain.ResponseDto;
 import kr.co.zzimcar.domain.member.*;
+import kr.co.zzimcar.exception.ApiException;
 import kr.co.zzimcar.service.member.MemberService;
+import kr.co.zzimcar.util.CheckJoinMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,10 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import static kr.co.zzimcar.enumeration.ResponseCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ public class MemberServiceImpl implements MemberService {
   private final PasswordEncoder pwEncoder;
 
   private final MemberDao memberDao;
+
+  private final HttpSession session;
 
   @Override
   public MemberResDto insertMember(MemberDto memberDto) {
@@ -46,17 +52,17 @@ public class MemberServiceImpl implements MemberService {
       .block();
   }
 
-  @Override
-  public MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto) {
-    return WebClient.create("https://int-api.dev.zzimcar.co.kr")
-      .post()
-      .uri("/member/login")
-      .header("xClientToken", token)
-      .bodyValue(memberLoginDto)
-      .retrieve()
-      .bodyToMono(MemberInfoResDto.class)
-      .block();
-  }
+//  @Override
+//  public MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto) {
+//    return WebClient.create("https://int-api.dev.zzimcar.co.kr")
+//      .post()
+//      .uri("/member/login")
+//      .header("xClientToken", token)
+//      .bodyValue(memberLoginDto)
+//      .retrieve()
+//      .bodyToMono(MemberInfoResDto.class)
+//      .block();
+//  }
 
   @Override
   public Map<String, Boolean> countByPid(int pid) {
@@ -81,38 +87,74 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto) {
+    CheckJoinMember checkJoinMember = new CheckJoinMember();
+    checkJoinMember.check(memberReqDto);
+    String encrypthPw = pwEncoder.encode(memberReqDto.getPassword());
+    memberReqDto.setPassword(encrypthPw);
     memberDao.create(new MemberDto(memberReqDto));
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
 
   @Override
-  public void testjoinmember(TestMember member) {
-    String encrypthPw = pwEncoder.encode(member.getPw());
-    member.setPw(encrypthPw);
-    memberDao.testjoinmember(member);
+  public ResponseEntity<ResponseDto<MemberDataResDto>> login(MemberLoginReqDto memberLoginReqDto) {
+    String password = Optional.ofNullable(memberDao.getPassword(memberLoginReqDto.getId())).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
+    if(!pwEncoder.matches(memberLoginReqDto.getPassword() ,password)) throw new ApiException(MEMBER_LOGIN_FAIL);
+
+//    MemberDataResDto memberDataResDto = new MemberDataResDto();
+
+//    memberDataResDto
+//    memberResDto.setData(memberDao.login(memberLoginReqDto));
+//    System.out.println(memberResDto);
+
+//      MemberDto memberDto = memberDao.login(memberLoginReqDto);
+//      session.setAttribute("memberDto", memberDto);
+
+    ResponseDto<MemberDataResDto> responseDto = new ResponseDto<>(true);
+    MemberDataResDto memberDataResDto = memberDao.login(memberLoginReqDto);
+    responseDto.setData(memberDataResDto);
+
+    session.setAttribute("member", memberDataResDto.getPid());
+    System.out.println("///////////" + session.getAttribute("member"));
+
+    return ResponseEntity.ok(responseDto);
   }
 
   @Override
-  public void testloginmember(TestLoginMember testLoginMember, HttpSession session) {
+  public MemberResDto loginMember(MemberLoginReqDto memberLoginReqDto) {
+    System.out.println("///swich02");
+    System.out.println(memberLoginReqDto);
 
-    String apw = memberDao.getapw(testLoginMember.getId());
-    TestMember testMember;
-    System.out.println(testLoginMember.getId());
-    System.out.println("//////// 여기까지");
-    System.out.println(apw);
-    System.out.println(pwEncoder.encode(testLoginMember.getPw()));
-
-    if(pwEncoder.matches(testLoginMember.getPw() ,apw)) {
-      System.out.println("//////// 일치");
-      testMember = memberDao.testlogin(testLoginMember);
-    } else {
-      System.out.println("//////// 불일치");
-      throw new BadCredentialsException(testLoginMember.getId());
-    }
-    System.out.println(testMember);
-    System.out.println("//////// 돌아갈곳");
-    session.setAttribute("userPid", testMember.getPid());
-    System.out.println(session.getAttribute("userPid"));
+    return WebClient.create("http://localhost:8888")
+      .post()
+      .uri("/memberAPI/login")
+      .bodyValue(memberLoginReqDto)
+      .retrieve()
+      .bodyToMono(MemberResDto.class)
+      .block();
   }
+
+  @Override
+  public MemberJoinResDto join(MemberDto memberDto) {
+    return WebClient.create("http://localhost:8888")
+      .post()
+      .uri("/memberAPI/create")
+      .bodyValue(memberDto)
+      .retrieve()
+      .bodyToMono(MemberJoinResDto.class)
+      .block();
+  }
+  //  @Override
+//  public void testloginmember(TestLoginMember testLoginMember, HttpSession session) {
+//
+//    String apw = memberDao.getapw(testLoginMember.getId());
+//    TestMember testMember;
+//
+//    if(pwEncoder.matches(testLoginMember.getPw() ,apw)) {
+//      testMember = memberDao.testlogin(testLoginMember);
+//    } else {
+//      throw new BadCredentialsException(testLoginMember.getId());
+//    }
+//    session.setAttribute("userPid", testMember.getPid());
+//  }
 
 }

@@ -13,6 +13,9 @@ public enum ResponseCode {
 
   MEMBER_NOT_EXIST("MEMBER_10000", "등록된 회원이 아닙니다."),
   MEMBER_LOGIN_FAIL("MEMBER_10001", "입력정보가 틀렸습니다."),
+  MEMBER_JOIN_NAME_FAIL("MEMBER_10002", "죄송합니다. 가입하실수없습니다."),
+  MEMBER_JOIN_ROLE_FAIL("MEMBER_10003", "존재하지 않는 직책입니다."),
+  MEMBER_JOIN_DEPARTMENTPID_FAIL("MEMBER_10003", "존재하지 않는 부서입니다."),
 
   TASK_PRIORITY_SAVE_FAILED("TASK_10000", "업무 우선순위는 HIGHEST, HIGH, LOW, LOWEST 로만 저장됩니다."),
   TASK_STATE_SAVE_FAILED("TASK_10001", "업무 상태는 대기중, 진행중, 지연, 완료 로만 저장됩니다."),
