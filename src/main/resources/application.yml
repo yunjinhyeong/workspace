@@ -51,8 +51,8 @@ logging:
           descriptor:
             sql:
               BasicBinder: trace
-      srpingframework:
-        web: error
+      springframework:
+        web: debug
         security: debug
 ---
 spring:
