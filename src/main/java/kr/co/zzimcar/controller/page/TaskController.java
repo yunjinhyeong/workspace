@@ -17,6 +17,7 @@ public class TaskController {
   @PostMapping("/weekly")
   @ResponseBody
   public WeekInfoDto drawTask(int year, int month) {
+    System.out.println("///////"+year+"//////"+month);
     return taskService.generateMonthlyTaskMap(year, month);
   }
 

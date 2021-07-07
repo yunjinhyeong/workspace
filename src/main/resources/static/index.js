@@ -2,32 +2,40 @@ let year;
 let month;
 
 function getToday() {
-
+  console.log('getToday1');
   let today = new Date();
   today = today.toISOString().slice(0, 7);
   let bir = document.getElementById('focus_date');
   bir.value = today;
+  console.log('getToday2');
 }
 
 window.onload = () => {
-
-  const tab_switchers = document.querySelectorAll('[data-switcher]');
-
-  for (let i = 0; i < tab_switchers.length; i++) {
-
-    const tab_switcher = tab_switchers[i];
-    const page_id = tab_switcher.dataset.tab;
-
-    tab_switcher.addEventListener('click', () => {
-      document.querySelector('.tabs .tab.is-active').classList.remove('is-active');
-      tab_switcher.parentNode.classList.add('is-active');
-      SwitchPage(page_id);
-    });
-  }
-
+  // console.log('window1 다');
+  // const tab_switchers = document.querySelectorAll('[data-switcher]');
+  // console.log('window2 다');
+  // for (let i = 0; i < tab_switchers.length; i++) {
+  //   console.log('window3 다');
+  //   const tab_switcher = tab_switchers[i];
+  //   const page_id = tab_switcher.dataset.tab;
+  //   console.log('window4 다');
+  //   tab_switcher.addEventListener('click', () => {
+  //     console.log('window5 다');
+  //     document.querySelector('.tabs .tab.is-active').classList.remove('is-active');
+  //     console.log('window6 다');
+  //     tab_switcher.parentNode.classList.add('is-active');
+  //     console.log('window7 다');
+  //     SwitchPage(page_id);
+  //     console.log('window8 다');
+  //   });
+  // }
+  console.log('window9 다');
   isWho();
+  console.log('window10 다');
   getToday();
+  console.log('window11 다');
   getWeek();
+  console.log('window12 다');
 }
 
 var removeTableSwitch = function () {
@@ -37,6 +45,7 @@ var removeTableSwitch = function () {
 }
 
 var moveMonth = function () {
+  console.log('moveMonth 다');
   removeTableSwitch();
 
   let selectedDate = new Date($('#focus_date').val());
@@ -64,12 +73,20 @@ $('.jump_month_minus').click(moveMonth);
 $('.jump_month_plus').click(moveMonth);
 
 function getWeek() {
-
+  console.log('getWeek1');
   let value = $('#focus_date').val();
+  console.log('getWeek2');
   year = value.substring(0, 4);
+  console.log('getWeek3');
   month = value.substring(5, 7);
+  console.log('getWeek4');
+  console.log(year);
+  console.log(month);
 
-  $.ajax({
+  jQuery.ajax({
+    beforeSend:function (xhr) {
+      xhr.setRequestHeader(obj._csrf.headerName, obj._csrf.token);
+    },
     url: '/week/weekly',
     type: 'POST',
     dataType: 'json',
@@ -78,6 +95,7 @@ function getWeek() {
       month: month
     },
     success: function (rs) {
+      console.log(rs);
       drawWeekly(rs.weekcount, rs.items);
     }
   });

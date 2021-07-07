@@ -9,16 +9,15 @@ import lombok.*;
 @RequiredArgsConstructor
 public class MemberDto {
 
-  private int pid;
-  private int departmentPid;
   private String id;
+  private int departmentPid;
   private String name;
   private String role;
   private String password;
 
   public MemberDto(MemberReqDto memberReqDto) {
-    this.departmentPid = memberReqDto.getDepartmentPid();
     this.id = memberReqDto.getId();
+    this.departmentPid = memberReqDto.getDepartmentPid();
     this.name = memberReqDto.getName();
     this.role = memberReqDto.getRole();
     this.password = memberReqDto.getPassword();

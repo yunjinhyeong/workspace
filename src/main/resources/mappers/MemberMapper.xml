@@ -5,7 +5,7 @@
 
   <select id="login" parameterType="MemberLoginReqDto" resultType="MemberDataResDto">
     select
-    m.pid, m.department_pid, m.id, m.name, m.role, m.password
+    m.id, m.department_pid, m.name, m.role, m.password
     from
     workspace.testmember m
     where
@@ -14,11 +14,20 @@
 
   <insert id="create" parameterType="MemberReqDto">
     INSERT workspace.testmember (
-    department_pid, id, name, role, password
+    id, department_pid, name, role, password
     ) VALUES (
-    #{departmentPid}, #{id}, #{name}, #{role}, #{password}
+    #{id}, #{departmentPid}, #{name}, #{role}, #{password}
     )
   </insert>
+
+  <select id="findById" parameterType="String" resultType="MemberDto">
+    select
+      m.id, m.department_pid, m.name, m.role, m.password
+    from
+      workspace.testmember m
+    where
+      m.id = #{id}
+  </select>
 
   <select id="countByPid" parameterType="int" resultType="int">
     select

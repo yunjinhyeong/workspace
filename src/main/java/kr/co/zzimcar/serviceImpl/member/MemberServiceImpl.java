@@ -85,13 +85,18 @@ public class MemberServiceImpl implements MemberService {
       .block();
   }
 
+
   @Override
   public ResponseEntity<ResponseDto<Void>> create(MemberReqDto memberReqDto) {
+    System.out.println("///////////");
     CheckJoinMember checkJoinMember = new CheckJoinMember();
     checkJoinMember.check(memberReqDto);
     String encrypthPw = pwEncoder.encode(memberReqDto.getPassword());
+    System.out.println("///////// 33333333");
     memberReqDto.setPassword(encrypthPw);
-    memberDao.create(new MemberDto(memberReqDto));
+    System.out.println("///////// 1111111");
+    memberDao.create(memberReqDto);
+    System.out.println("///////// 2222222");
     return ResponseEntity.ok(new ResponseDto<>(true));
   }
 
@@ -99,23 +104,9 @@ public class MemberServiceImpl implements MemberService {
   public ResponseEntity<ResponseDto<MemberDataResDto>> login(MemberLoginReqDto memberLoginReqDto) {
     String password = Optional.ofNullable(memberDao.getPassword(memberLoginReqDto.getId())).orElseThrow(() -> new ApiException(MEMBER_NOT_EXIST));
     if(!pwEncoder.matches(memberLoginReqDto.getPassword() ,password)) throw new ApiException(MEMBER_LOGIN_FAIL);
-
-//    MemberDataResDto memberDataResDto = new MemberDataResDto();
-
-//    memberDataResDto
-//    memberResDto.setData(memberDao.login(memberLoginReqDto));
-//    System.out.println(memberResDto);
-
-//      MemberDto memberDto = memberDao.login(memberLoginReqDto);
-//      session.setAttribute("memberDto", memberDto);
-
     ResponseDto<MemberDataResDto> responseDto = new ResponseDto<>(true);
     MemberDataResDto memberDataResDto = memberDao.login(memberLoginReqDto);
     responseDto.setData(memberDataResDto);
-
-//    session.setAttribute("member", memberDataResDto.getPid());
-//    System.out.println("///////////" + session.getAttribute("member"));
-
     return ResponseEntity.ok(responseDto);
   }
 
@@ -134,11 +125,11 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public MemberJoinResDto join(MemberDto memberDto) {
+  public MemberJoinResDto join(MemberReqDto memberReqDto) {
     return WebClient.create("http://localhost:8888")
       .post()
       .uri("/memberAPI/create")
-      .bodyValue(memberDto)
+      .bodyValue(memberReqDto)
       .retrieve()
       .bodyToMono(MemberJoinResDto.class)
       .block();

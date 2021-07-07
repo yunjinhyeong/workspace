@@ -30,6 +30,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
+    System.out.println("/11111111111"+year+"////////"+month);
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
     monthlyTaskMap.calcWeeks();
     monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));

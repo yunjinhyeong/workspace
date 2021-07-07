@@ -27,7 +27,7 @@ public interface MemberService {
 
   MemberResDto loginMember(MemberLoginReqDto memberLoginReqDto);
 
-  MemberJoinResDto join(MemberDto memberDto);
+  MemberJoinResDto join(MemberReqDto memberReqDto);
 
 //  void testloginmember(TestLoginMember testLoginMember, HttpSession session);
 }

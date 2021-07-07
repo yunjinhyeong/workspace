@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ResponseCode {
-  SQL_INTERGRITY_CONSTRAINT_VIOLATION_EXCEPTION("SQL_10000", "없는 회원이라서 등록할 수 없습니다."),
+  SQL_INTERGRITY_CONSTRAINT_VIOLATION_EXCEPTION("SQL_10000", "회원 ID가 중복됩니다."),
 
   RETRIEVEONE_FAIL("COMM_10000", "하나 가져오기 데이터가 존재하지 않습니다."),
   NOT_EXIST("COMM_10001", "데이터가 존재하지 않습니다."),

@@ -5,17 +5,18 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<h1>joinResult</h1>
   <p>
     <label>UID</label>
-    <input type="text" name="pid"	th:value="${member.id}" readonly />
+    <input type="text" name="pid"	th:value="${member.uid}" readonly />
   </p>
   <p>
     <label>UPW</label>
-    <input type="text" name="pw" th:value="${member.pw}" readonly />
+    <input type="text" name="pw" th:value="${member.upw}" readonly />
   </p>
   <p>
     <label>UNAME</label>
-    <input type="text" name="name" th:value="${member.name}" readonly />
+    <input type="text" name="name" th:value="${member.uname}" readonly />
   </p>
 
 </body>

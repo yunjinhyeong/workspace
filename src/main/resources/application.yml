@@ -68,6 +68,8 @@ spring:
     show-sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  session:
+    store-type: none
 ---
 mybatis:
   config-location: classpath:mybatis-configuration.xml

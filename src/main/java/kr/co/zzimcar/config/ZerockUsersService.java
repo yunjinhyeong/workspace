@@ -1,6 +1,5 @@
 package kr.co.zzimcar.config;
 
-
 import kr.co.zzimcar.persistence.MemberRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Log
-public class UsersService implements UserDetailsService {
+public class ZerockUsersService implements UserDetailsService {
 
 	@Autowired
 	MemberRepository repo;
@@ -22,7 +21,7 @@ public class UsersService implements UserDetailsService {
 		return  
 			repo.findById(username)
 			.filter(m -> m != null)
-			.map(m -> new SecurityUser(m)).get();
+			.map(m -> new ZerockSecurityUser(m)).get();
 		
 	}
 

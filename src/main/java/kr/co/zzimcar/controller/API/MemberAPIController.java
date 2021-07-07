@@ -31,7 +31,7 @@ public class MemberAPIController {
 
   @PostMapping("/login")
   @ApiOperation("맴버 로그인 API")
-  public ResponseEntity<ResponseDto<MemberDataResDto>> create(@RequestBody @ApiParam(value = "회원가입할 정보", required = true) MemberLoginReqDto memberLoginReqDto) {
+  public ResponseEntity<ResponseDto<MemberDataResDto>> login(@RequestBody @ApiParam(value = "로그인할 정보", required = true) MemberLoginReqDto memberLoginReqDto) {
     return memberService.login(memberLoginReqDto);
   }
 }
