@@ -46,11 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.exceptionHandling().accessDeniedPage("/accessDenied");
     http.logout().logoutUrl("/logout").invalidateHttpSession(true);
 
-    http.csrf().disable()
-      .headers().frameOptions().disable()
-      .addHeaderWriter(new StaticHeadersWriter("X-Frame-Options", "ALLOW-FROM http://newfront.benepia.co.kr, ALLOW-FROM http://*.ezwel.com"))
-      .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and().exceptionHandling().accessDeniedHandler(new ApiAccessDeniedHandler()).authenticationEntryPoint(new ApiAuthenticationEntryPoint());
+//    http.csrf().disable()
+//      .headers().frameOptions().disable()
+//      .addHeaderWriter(new StaticHeadersWriter("X-Frame-Options", "ALLOW-FROM http://newfront.benepia.co.kr, ALLOW-FROM http://*.ezwel.com"))
+//      .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//      .and().exceptionHandling().accessDeniedHandler(new ApiAccessDeniedHandler()).authenticationEntryPoint(new ApiAuthenticationEntryPoint());
   }
 
   @Bean

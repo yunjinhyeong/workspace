@@ -3,6 +3,7 @@
   <div th:fragment="header">
 
     <div class="jumbotron  mb-0">
+      <div>[[${#authentication.principal}]]</div>
       <div id="loginBox" class="text-right form-group form-group-lg">
         <span class="text-center">Naturemobility Workspace</span>
         <input type="text" name="id" class="input-lg" style="height: 45px;" placeholder="관리자 아이디 입력">

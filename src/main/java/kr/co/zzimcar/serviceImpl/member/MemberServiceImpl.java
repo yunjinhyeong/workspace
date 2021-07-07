@@ -113,8 +113,8 @@ public class MemberServiceImpl implements MemberService {
     MemberDataResDto memberDataResDto = memberDao.login(memberLoginReqDto);
     responseDto.setData(memberDataResDto);
 
-    session.setAttribute("member", memberDataResDto.getPid());
-    System.out.println("///////////" + session.getAttribute("member"));
+//    session.setAttribute("member", memberDataResDto.getPid());
+//    System.out.println("///////////" + session.getAttribute("member"));
 
     return ResponseEntity.ok(responseDto);
   }

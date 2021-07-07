@@ -1,13 +1,11 @@
 package kr.co.zzimcar.domain.member;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor
 public class MemberDto {
 
