@@ -10,7 +10,8 @@ function getToday() {
   console.log('getToday2');
 }
 
-window.onload = () => {
+$(document).ready(function (e) {
+
   // console.log('window1 다');
   // const tab_switchers = document.querySelectorAll('[data-switcher]');
   // console.log('window2 다');
@@ -29,6 +30,7 @@ window.onload = () => {
   //     console.log('window8 다');
   //   });
   // }
+
   console.log('window9 다');
   isWho();
   console.log('window10 다');
@@ -36,7 +38,7 @@ window.onload = () => {
   console.log('window11 다');
   getWeek();
   console.log('window12 다');
-}
+})
 
 var removeTableSwitch = function () {
   $('th').remove('.swich');
@@ -82,11 +84,8 @@ function getWeek() {
   console.log('getWeek4');
   console.log(year);
   console.log(month);
-
-  jQuery.ajax({
-    beforeSend:function (xhr) {
-      xhr.setRequestHeader(obj._csrf.headerName, obj._csrf.token);
-    },
+  console.log(csrf);
+  $.ajax({
     url: '/week/weekly',
     type: 'POST',
     dataType: 'json',
@@ -94,12 +93,23 @@ function getWeek() {
       year: year,
       month: month
     },
+    beforeSend:function (xhr) {
+      xhr.setRequestHeader(csrf.headerName, csrf.token);
+    },
     success: function (rs) {
       console.log(rs);
       drawWeekly(rs.weekcount, rs.items);
     }
   });
 }
+
+jQuery.ajax({
+  beforeSend :function(){
+
+  }
+})
+
+
 
 function drawWeekly(count, list) {
 
