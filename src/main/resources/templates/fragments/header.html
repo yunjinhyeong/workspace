@@ -3,23 +3,23 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
   <div th:fragment="header">
 
-    <div class="jumbotron  mb-0">
-
-      <div id="loginBox" class="text-right form-group form-group-lg">
-        <span class="text-center">Naturemobility Workspace</span>
-        <input type="text" name="id" class="input-lg" style="height: 45px;" placeholder="관리자 아이디 입력">
-        <input type="password" name="pw" class="input-lg" style="height: 45px;" placeholder="관리자 비밀번호 입력">
-        <input type="button" name="login" class="btn btn-primary btn-lg" value="관리자 로그인">
-        <input name="joinMember" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#joinMember" data-whatever="@mdo" value="회원가입">
-      </div>
-
-      <div id="logoutBox" class="text-right">
-        <span class="text-center">Naturemobility Workspace</span>
-        <span name="name_area" style="align-self: center; font-size: 20px;"></span>
-        <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">
-        <input name="logout" type="button" value="로그아웃" class="btn btn-primary btn-lg">
-      </div>
+    <div th:with="member=${#authentication.principal.member}">
+      <input th:value="${member.id}">
+      <input th:value="${member.password}">
+      <input th:value="${member.name}">
+      <input th:value="${member.departmentPid}">
+      <input th:value="${member.roles}">
     </div>
+
+    <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">
+
+    <form method="post" action="/logout">
+      <h2>CUSTOM LOGOUT PAGE</h2>
+      <input type="hidden" th:name="${_csrf.parameterName}"
+             th:value="${_csrf.token}" />
+      <button type="submit" class="btn">LogOut</button>
+    </form>
 
   </div>
 </html>
+

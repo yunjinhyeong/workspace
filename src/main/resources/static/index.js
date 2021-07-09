@@ -65,6 +65,9 @@ var moveMonth = function () {
       year: year,
       month: month
     },
+    beforeSend:function (xhr) {
+      xhr.setRequestHeader(csrf.headerName, csrf.token);
+    },
     success: function (rs) {
       drawWeekly(rs.weekcount, rs.items);
     }
@@ -545,8 +548,8 @@ function getDueAt() {
 }
 
 $('[name=writeTaskSubmit]').click(function () {
-  let memberPid = Number($.cookie('member_pid'));
-  let title = $('[name=title]').val();
+  console.log('버튼클릭 일단 들어옴');
+
   let content = $('[name=content]').val();
   let startAt = $('[name=startAt]').val();
   let dueAt = $('[name=dueAt]').val();
@@ -558,23 +561,20 @@ $('[name=writeTaskSubmit]').click(function () {
     return;
   }
 
-  if (title.length >= 30) {
-    alert('제목은 30글자 이하로 입력하여 주십시오.');
-    return;
-  }
-
   $.ajax({
     url: '/week/writeTask',
     type: 'POST',
     dataType: 'json',
     data: {
-      memberPid: memberPid,
-      title: title,
+      memberId: id,
       content: content,
       startAt: startAt,
       dueAt: dueAt,
       state: state,
       priority: priority
+    },
+    beforeSend:function (xhr) {
+      xhr.setRequestHeader(csrf.headerName, csrf.token);
     },
     success: function (rs) {
       if (!rs.success) {

@@ -16,7 +16,7 @@ public interface MemberService {
 
 //  MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto);
 
-
+  Map<String, Boolean> getCountById(String id);
 
   Map<String, Boolean> countByPid(int pid);
 

@@ -18,11 +18,6 @@ public class TaskUpdateReqDto extends CheckBowl {
   @ApiModelProperty(value = "업무글 번호")
   private int pid;
 
-  @NotNull(message = "title(업무제목)를 입력해 주세요")
-  @ApiModelProperty(value = "업무제목")
-  @Size(min = 1, max = 30, message = "title(업무제목)은 1에서 30글자 사이입니다.")
-  private String title;
-
   @NotNull(message = "content(업무내용)를 입력해 주세요")
   @ApiModelProperty(value = "업무내용")
   private String content;

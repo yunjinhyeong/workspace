@@ -20,11 +20,11 @@
     )
   </insert>
 
-  <select id="findById" parameterType="String" resultType="MemberDto">
+  <select id="findById" parameterType="String" resultType="Memberr">
     select
-      m.id, m.department_pid, m.name, m.role, m.password
+      m.uid, m.regdate, m.uname, m.updatedate, m.upw
     from
-      workspace.testmember m
+      workspace.tbl_members m
     where
       m.id = #{id}
   </select>
@@ -62,6 +62,10 @@
       workspace.testmember tm
     where
       tm.id = #{id}
+  </select>
+
+  <select id="getCountById" resultType="int">
+    SELECT COUNT(*) FROM workspace.members WHERE id = #{id}
   </select>
 
 </mapper>

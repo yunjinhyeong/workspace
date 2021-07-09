@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 public class TaskDto {
 
   private int pid;
-  private int memberPid;
-  private String title;
+  private String memberId;
   private String content;
   private String state;
   private String priority;
@@ -30,8 +29,7 @@ public class TaskDto {
   private MemberDto member;
 
   public TaskDto(TaskReqDto taskReqDto) {
-    this.memberPid = taskReqDto.getMemberPid();
-    this.title = taskReqDto.getTitle();
+    this.memberId = taskReqDto.getMemberId();
     this.content = taskReqDto.getContent();
     this.state = taskReqDto.getState();
     this.priority = taskReqDto.getPriority();
@@ -41,7 +39,6 @@ public class TaskDto {
 
   public TaskDto(TaskUpdateReqDto taskUpdateReqDto) {
     this.pid = taskUpdateReqDto.getPid();
-    this.title = taskUpdateReqDto.getTitle();
     this.content = taskUpdateReqDto.getContent();
     this.state = taskUpdateReqDto.getState();
     this.priority = taskUpdateReqDto.getPriority();

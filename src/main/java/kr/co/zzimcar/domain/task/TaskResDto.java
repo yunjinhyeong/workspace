@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 public class TaskResDto {
 
   private int pid;
-  private int memberPid;
-  private String title;
+  private String memberId;
   private String content;
   private String state;
   private String priority;
@@ -26,8 +25,7 @@ public class TaskResDto {
 
   public TaskResDto(TaskDto taskDto) {
     this.pid = taskDto.getPid();
-    this.memberPid = taskDto.getMemberPid();
-    this.title = taskDto.getTitle();
+    this.memberId = taskDto.getMemberId();
     this.content = taskDto.getContent();
     this.state = taskDto.getState();
     this.priority = taskDto.getPriority();

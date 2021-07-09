@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.Map;
 
 @Log
@@ -33,7 +34,7 @@ public class MemberController {
 
   @GetMapping("/joinn")
   public void joinn(){
-
+    System.out.println("joinn 안임");
   }
 
   @Transactional
@@ -42,15 +43,21 @@ public class MemberController {
 
     log.info("MEMBER: " + member);
 
-    String encryptPw = pwEncoder.encode(member.getUpw());
+    String encryptPw = pwEncoder.encode(member.getPassword());
 
     log.info("en: " + encryptPw);
 
-    member.setUpw(encryptPw);
+    member.setPassword(encryptPw);
 
     repo.save(member);
 
-    return "/member/joinResult";
+    return "redirect:/login";
+  }
+
+  @GetMapping(value = "/joinIdDupChk")
+  @ResponseBody
+  public Map<String, Boolean> ajaxJoinIdDupChk(String id) {
+    return memberService.getCountById(id);
   }
 
   /////////////////////////////////////////////////

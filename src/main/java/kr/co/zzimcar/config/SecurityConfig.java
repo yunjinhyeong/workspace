@@ -1,6 +1,8 @@
 package kr.co.zzimcar.config;
 
 import com.google.common.collect.ImmutableList;
+
+
 import kr.co.zzimcar.exception.ApiAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -9,6 +11,8 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,8 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     log.info("security config..............");
     http.authorizeRequests().antMatchers("/guest/**").permitAll();
     http.authorizeRequests().antMatchers("/week/**").permitAll();
-    http.authorizeRequests().antMatchers("/").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/task/**").permitAll();
+    http.authorizeRequests().antMatchers("/").hasAnyRole("CEO","CTO","실장","본부장","책임","팀장","과장","선임","연구원","매니저");
     http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
+    http.authorizeRequests()
+      .antMatchers(HttpMethod.OPTIONS,"/oauth/token").permitAll();
 
     http.formLogin().loginPage("/login");
     http.exceptionHandling().accessDeniedPage("/accessDenied");
@@ -87,15 +94,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-//  @Override
-//  public void configure(WebSecurity web) {
-//    String[] swaggerPath = new String[]{"/v2/api-docs", "/swagger-resources/**",
-//      "/", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/csrf", "/favicon.ico"};
-//
-//    web.ignoring().antMatchers(swaggerPath)
-//      .antMatchers("/exception/**", "/kakao/login", "/kakao/code", "/license/return", "/test/**", "/nice-id", "/nice-id/**", "/billgate/pay",
-//        "/billgate/pay-return", "/billgate/test", "/batch/active-user");
-//  }
+
+  @Override
+  public void configure(WebSecurity web) {
+    String[] swaggerPath = new String[]{"/v2/api-docs", "/swagger-resources/**",
+      "/", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/csrf", "/favicon.ico"};
+
+    web.ignoring()
+      .antMatchers("/exception/**", "/kakao/login", "/kakao/code", "/license/return", "/test/**", "/nice-id", "/nice-id/**", "/billgate/pay",
+        "/billgate/pay-return", "/billgate/test", "/batch/active-user","/task/**","/memberAPI/**");
+  }
 //
 //  @Bean
 //  public CorsConfigurationSource corsConfigurationSource() {

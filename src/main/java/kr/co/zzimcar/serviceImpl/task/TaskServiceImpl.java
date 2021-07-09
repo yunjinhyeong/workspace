@@ -30,15 +30,22 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
-    System.out.println("/11111111111"+year+"////////"+month);
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
     monthlyTaskMap.calcWeeks();
-    monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
-    monthlyTaskMap.generateWeekTaskList();
-    WeekInfoDto weekInfoDto = new WeekInfoDto();
-    weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
-    weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
+    System.out.println("3333333333");
 
+
+
+    monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
+    System.out.println("44444444444");
+    monthlyTaskMap.generateWeekTaskList();
+    System.out.println("55555555555");
+    WeekInfoDto weekInfoDto = new WeekInfoDto();
+    System.out.println("66666666666");
+    weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
+    System.out.println("77777777777");
+    weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
+    System.out.println("/2222222"+weekInfoDto+"////////");
     return weekInfoDto;
   }
 
@@ -48,6 +55,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
+    System.out.println("create 들어옴");
     CheckStatePriority<TaskReqDto> checkClass = new CheckStatePriority<>();
     TaskReqDto checkBowl = new TaskReqDto();
     checkBowl.setPriority(taskReqDto.getPriority());

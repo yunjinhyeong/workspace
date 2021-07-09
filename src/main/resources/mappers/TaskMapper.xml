@@ -5,9 +5,9 @@
 
   <insert id="create" parameterType="TaskDto">
     INSERT workspace.task (
-    member_pid, title, content, state, priority, start_at, due_at
+    member_id, content, state, priority, start_at, due_at
     ) VALUES (
-    #{memberPid}, #{title}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
+    #{memberId}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
     )
   </insert>
 

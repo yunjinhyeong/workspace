@@ -52,7 +52,16 @@ public class MemberServiceImpl implements MemberService {
       .block();
   }
 
-//  @Override
+  @Override
+  public Map<String, Boolean> getCountById(String id) {
+    int count = memberDao.getCountById(id);
+    Map<String, Boolean> map = new HashMap<>();
+    if (count == 0) {map.put("isIdDup", false);}
+    else {map.put("isIdDup", true);}
+    return map;
+  }
+
+  //  @Override
 //  public MemberInfoResDto login(String token, MemberLoginReqDto memberLoginDto) {
 //    return WebClient.create("https://int-api.dev.zzimcar.co.kr")
 //      .post()

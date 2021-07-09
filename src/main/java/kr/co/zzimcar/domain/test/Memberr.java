@@ -14,17 +14,20 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_members")
-@EqualsAndHashCode(of = "uid")
+@Table(name = "members")
+@EqualsAndHashCode(of = "id")
 @ToString
 public class Memberr {
 
   @Id
-  private String uid;
+  private String id;
 
-  private String upw;
+  @Column(length = 10)
+  private int departmentPid;
 
-  private String uname;
+  private String password;
+
+  private String name;
 
   @CreationTimestamp
   private Timestamp regdate;

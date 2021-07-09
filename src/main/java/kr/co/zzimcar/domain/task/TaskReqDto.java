@@ -15,14 +15,9 @@ import java.sql.Date;
 @ToString
 public class TaskReqDto extends CheckBowl {
 
-  @NotNull(message = "memberPid(회원 번호)를 입력해 주세요")
-  @ApiModelProperty(value = "회원 번호")
-  private int memberPid;
-
-  @NotNull(message = "title(업무제목)를 입력해 주세요")
-  @ApiModelProperty(value = "업무제목")
-  @Size(min = 1, max = 30, message = "title(업무제목)은 1에서 30글자 사이입니다.")
-  private String title;
+  @NotNull(message = "memberId(회원 아이디)를 입력해 주세요")
+  @ApiModelProperty(value = "회원 아이디")
+  private String memberId;
 
   @NotNull(message = "content(업무내용)를 입력해 주세요")
   @ApiModelProperty(value = "업무내용")

@@ -17,7 +17,7 @@ public enum ResponseCode {
   MEMBER_JOIN_ROLE_FAIL("MEMBER_10003", "존재하지 않는 직책입니다."),
   MEMBER_JOIN_DEPARTMENTPID_FAIL("MEMBER_10003", "존재하지 않는 부서입니다."),
 
-  TASK_PRIORITY_SAVE_FAILED("TASK_10000", "업무 우선순위는 HIGHEST, HIGH, LOW, LOWEST 로만 저장됩니다."),
+  TASK_PRIORITY_SAVE_FAILED("TASK_10000", "업무 우선순위는 HIGHEST, HIGH, MEDIUM, LOW, LOWEST 로만 저장됩니다."),
   TASK_STATE_SAVE_FAILED("TASK_10001", "업무 상태는 대기중, 진행중, 지연, 완료 로만 저장됩니다."),
   TASK_DATE_SAVE_FAILED("TASK_10002", "startAt은 dueAt보다 클수없습니다."),
 

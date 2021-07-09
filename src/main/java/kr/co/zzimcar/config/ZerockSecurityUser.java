@@ -19,7 +19,7 @@ public class ZerockSecurityUser extends User {
 
 	public ZerockSecurityUser(Memberr member) {
 
-		super(member.getUid(), member.getUpw(), makeGrantedAuthority(member.getRoles()));
+		super(member.getId(), member.getPassword(), makeGrantedAuthority(member.getRoles()));
 
 		this.member = member;
 
@@ -30,7 +30,7 @@ public class ZerockSecurityUser extends User {
 
 		List<GrantedAuthority> list = new ArrayList<>();
 
-		roles.forEach(role -> list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRoleName())));
+		roles.forEach(role -> list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole())));
 
 		return list;
 	}

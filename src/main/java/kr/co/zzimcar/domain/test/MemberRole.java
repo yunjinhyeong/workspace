@@ -10,15 +10,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_member_roles")
-@EqualsAndHashCode(of = "fno")
+@Table(name = "roles")
+@EqualsAndHashCode(of = "pid")
 @ToString
 public class MemberRole {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long fno;
+  private Long pid;
   
-  private String roleName;
+  private String role;
     
 }

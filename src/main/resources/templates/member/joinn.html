@@ -4,29 +4,83 @@
 <head>
   <title>Thymeleaf3</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 </head>
 <body>
-<form method="post">
+<form method="post" onsubmit="return submitCheck();">
   <p>
-    <label>UID</label>
-    <input type="text" name="uid" value="newbie" />
+    <label>아이디</label>
+    <input type="text" name="id" placeholder="아이디를 입력하세요" required/>
+    <span id="msgIdDup"></span>
   </p>
   <p>
-    <label>UPW</label>
-    <input type="password" name="upw" value="newbie" />
+    <label>패스워드</label>
+    <input type="password" name="password" placeholder="비밀번호를 입력하세요" required/>
   </p>
   <p>
-    <label>UNAME</label>
-    <input type="text" name="uname" value="홍길동" />
-  </p>
-  <p>
-    <input type="checkbox" name="roles[0].roleName" value="BASIC" checked >BASIC
-    <input type="checkbox"name="roles[1].roleName" value="MANAGER" checked>MANAGER
-    <input type="checkbox" name="roles[2].roleName" value="ADMIN" checked>ADMIN
+    <label>이름</label>
+    <input type="text" name="name" placeholder="이름을 입력하세요" required/>
   </p>
 
+  <select name="departmentPid" th:value="경영지원">
+    <option value="1">경영지원</option>
+    <option value="2">개발팀</option>
+  </select>
+  <select name="roles[0].role" th:value="연구원">
+    <option value="CEO">CEO</option>
+    <option value="CTO">CTO</option>
+    <option value="실장">실장</option>
+    <option value="본부장">본부장</option>
+    <option value="책임">책임</option>
+    <option value="팀장">팀장</option>
+    <option value="과장">과장</option>
+    <option value="선임">선임</option>
+    <option value="연구원">연구원</option>
+    <option value="매니저">매니저</option>
+  </select>
+
   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-  <button type="submit" class="btn">JOIN</button>
+  <button type="submit" name="joinBtn" class="btn">JOIN</button>
 </form>
+<script th:inline="javascript">
+  let isID=false;
+
+  $('input[name="id"]').keyup(function () {
+    let id = $(this).val();
+
+    if (id.length <= 2) {
+      return;
+    }
+
+    $.ajax({
+      url: '/member/joinIdDupChk',
+      data: { id: id },
+      method: 'GET',
+      dataType :'json',
+      success: function (response) {
+        console.log(typeof response);
+        console.log(response);
+
+        if (response.isIdDup) {
+          $('span#msgIdDup').html('이미 사용중인 아이디 입니다.').css('color', 'red');
+          isID=false;
+        } else {
+          $('span#msgIdDup').html('사용 가능한 아이디 입니다.').css('color', 'green');
+          isID=true;
+        }
+      }
+    });
+  });
+
+  function submitCheck(){
+    console.log(isID);
+    if (isID==false) {
+      alert("아이디가 중복됩니다.");
+      return false;
+    }
+    alert('회원가입이 성공하였습니다.');
+  };
+
+</script>
 </body>
 </html>

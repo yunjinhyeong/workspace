@@ -1,5 +1,5 @@
 package kr.co.zzimcar.enumeration;
 
 public enum Priority {
-  HIGHEST, HIGH, LOW, LOWEST
+  HIGHEST, HIGH, MEDIUM, LOW, LOWEST
 }
