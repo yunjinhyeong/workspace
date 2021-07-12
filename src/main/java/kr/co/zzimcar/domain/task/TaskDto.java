@@ -17,6 +17,7 @@ public class TaskDto {
 
   private int pid;
   private String memberId;
+  private String title;
   private String content;
   private String state;
   private String priority;
@@ -30,6 +31,7 @@ public class TaskDto {
 
   public TaskDto(TaskReqDto taskReqDto) {
     this.memberId = taskReqDto.getMemberId();
+    this.title = taskReqDto.getTitle();
     this.content = taskReqDto.getContent();
     this.state = taskReqDto.getState();
     this.priority = taskReqDto.getPriority();
@@ -40,6 +42,7 @@ public class TaskDto {
   public TaskDto(TaskUpdateReqDto taskUpdateReqDto) {
     this.pid = taskUpdateReqDto.getPid();
     this.content = taskUpdateReqDto.getContent();
+    this.title = taskUpdateReqDto.getTitle();
     this.state = taskUpdateReqDto.getState();
     this.priority = taskUpdateReqDto.getPriority();
     this.startAt = taskUpdateReqDto.getStartAt();

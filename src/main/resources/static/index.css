@@ -25,15 +25,15 @@ li {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border: none;
+    width: 100%;
+    border-radius: 30px;
+    cursor: pointer;
 }
 
 .main > li a:hover, .sub li:hover {
     background: #ebebeb;
     color: #fff;
-}
-
-.main > li a:hover {
-    cursor: pointer;
 }
 
 .sub {
@@ -47,7 +47,6 @@ li {
 
 .main {
     font-size: small;
-    cursor: pointer;
 }
 
 .main-body {

@@ -20,7 +20,7 @@ public class Test {
 //    }
 
 
-    System.out.println(getWeekInMonths(2021,9));
+    System.out.println(getWeekInMonths(2021,7));
 
 
 

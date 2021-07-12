@@ -36,15 +36,15 @@ public class MonthlyTaskMap {
   }
 
   public void calcWeeks() {
-    Calendar cal = Calendar.getInstance();
+//    Calendar cal = Calendar.getInstance();
+//
+//    int result = getCurrentWeekOfMonth(year, month, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+    List<LocalDate> dateList = getWeekInMonths(year, month);
+    this.weekstartduepoint = dateList;
+    if (dateList.size() == 8) this.weeksCnt = 4;
+    if (dateList.size() == 10) this.weeksCnt = 5;
 
-    int result = getCurrentWeekOfMonth(year, month, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-    if (result == 1 || result == 4) {
-      this.weeksCnt = 4;
-    } else {
-      this.weeksCnt = 5;
-    }
   }
 
   public void generateWeekTaskList() {
@@ -57,8 +57,8 @@ public class MonthlyTaskMap {
     this.departmentList = new ArrayList<>();
     this.taskMap = new HashMap<>();
 
-    weekstartduepoint = getWeekInMonths(year, month);
-    this.weekstartduepoint = weekstartduepoint;
+//    weekstartduepoint = getWeekInMonths(year, month);
+//    this.weekstartduepoint = weekstartduepoint;
 
 //    List<LocalDate> dateconvert = new ArrayList<>();
 //    SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
@@ -83,15 +83,15 @@ public class MonthlyTaskMap {
           ((tasks.get(t).getDueAt().isAfter(weekstartduepoint.get(i)) || tasks.get(t).getDueAt().isEqual(weekstartduepoint.get(i))) && (tasks.get(t).getDueAt().isBefore(weekstartduepoint.get(i + 1)) || tasks.get(t).getDueAt().isEqual(weekstartduepoint.get(i + 1)))) ||
           ((tasks.get(t).getStartAt().isBefore(weekstartduepoint.get(i)) || tasks.get(t).getStartAt().isEqual(weekstartduepoint.get(i))) && (tasks.get(t).getDueAt().isAfter(weekstartduepoint.get(i + 1)) || tasks.get(t).getDueAt().isEqual(weekstartduepoint.get(i + 1))))) {
           if (i == 0)
-            weekly1.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState()));
+            weekly1.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
           if (i == 2)
-            weekly2.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState()));
+            weekly2.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
           if (i == 4)
-            weekly3.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState()));
+            weekly3.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
           if (i == 6)
-            weekly4.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState()));
+            weekly4.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
           if (i == 8)
-            weekly5.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState()));
+            weekly5.add(new Task(tasks.get(t).getStartAt(), tasks.get(t).getDueAt(), tasks.get(t).getContent(), tasks.get(t).getPid(), tasks.get(t).getState(), tasks.get(t).getTitle()));
         }
       }
       if (!tasks.get(t).getMemberId().equals(tasks.get(t + 1).getMemberId())) {
@@ -117,15 +117,15 @@ public class MonthlyTaskMap {
             ((tasks.get(size - 1).getDueAt().isAfter(weekstartduepoint.get(i)) || tasks.get(size - 1).getDueAt().isEqual(weekstartduepoint.get(i))) && (tasks.get(size - 1).getDueAt().isBefore(weekstartduepoint.get(i + 1)) || tasks.get(size - 1).getDueAt().isEqual(weekstartduepoint.get(i + 1)))) ||
             ((tasks.get(size - 1).getStartAt().isBefore(weekstartduepoint.get(i)) || tasks.get(size - 1).getStartAt().isEqual(weekstartduepoint.get(i))) && (tasks.get(size - 1).getDueAt().isAfter(weekstartduepoint.get(i + 1)) || tasks.get(size - 1).getDueAt().isEqual(weekstartduepoint.get(i + 1))))) {
             if (i == 0)
-              weekly1.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState()));
+              weekly1.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState(), tasks.get(size - 1).getTitle()));
             if (i == 2)
-              weekly2.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState()));
+              weekly2.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState(), tasks.get(size - 1).getTitle()));
             if (i == 4)
-              weekly3.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState()));
+              weekly3.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState(), tasks.get(size - 1).getTitle()));
             if (i == 6)
-              weekly4.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState()));
+              weekly4.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState(), tasks.get(size - 1).getTitle()));
             if (i == 8)
-              weekly5.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState()));
+              weekly5.add(new Task(tasks.get(size - 1).getStartAt(), tasks.get(size - 1).getDueAt(), tasks.get(size - 1).getContent(), tasks.get(size - 1).getPid(), tasks.get(size - 1).getState(), tasks.get(size - 1).getTitle()));
           }
         }
         tasksList.add(new MemberTask(tasks.get(size - 1).getName(), tasks.get(size - 1).getMemberId(), weekly1, weekly2, weekly3, weekly4, weekly5));
@@ -173,6 +173,7 @@ public class MonthlyTaskMap {
   public List<LocalDate> getWeekInMonths(int year, int month) {
 
     List<LocalDate> result = new ArrayList<>();
+
     Calendar cal = Calendar.getInstance();
 
     cal.set(Calendar.YEAR, year);
@@ -181,53 +182,42 @@ public class MonthlyTaskMap {
     for (int week = 1; week < cal.getMaximum(Calendar.WEEK_OF_MONTH); week++) {
       cal.set(Calendar.WEEK_OF_MONTH, week);
 
-      cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+      cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
       int startDay = cal.get(Calendar.DAY_OF_MONTH);
 
       cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-      int endDay = cal.get(Calendar.DAY_OF_MONTH);
+      int endDay = cal.get(Calendar.DAY_OF_MONTH)+1;
 
       if (week == 1 && startDay >= 7) {
         startDay = 1;
       }
 
-      if (week == cal.getMaximum(Calendar.WEEK_OF_MONTH) - 1 && endDay <= 7) {
+      if (week == cal.getMaximum(Calendar.WEEK_OF_MONTH) - 1) {
         cal.set(Calendar.MONTH, month - 1);
         endDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
       }
 
-//      String monthR = Integer.toString(month);
-//      String startDayR = Integer.toString(startDay);
-//      String endDayR = Integer.toString(endDay);
-//
-//      if (month < 10) monthR = "0" + monthR;
-//      if (startDay < 10) startDayR = "0" + startDayR;
-//      if (endDay < 10) endDayR = "0" + endDayR;
-
       result.add(LocalDate.of(year,month,startDay));
       result.add(LocalDate.of(year,month,endDay));
 
+      if (month == 2 && week == 4 && endDay>=28) {
+        return result;
+      }
     }
+
     return result;
   }
 
   public static int subWeekNumberIsFirstDayAfterThursday(int year, int month, int day) {
 
     Calendar calendar = Calendar.getInstance(Locale.KOREA);
-
     calendar.set(year, month - 1, day);
     calendar.set(Calendar.DAY_OF_MONTH, 1);
     calendar.setFirstDayOfWeek(Calendar.MONDAY);
 
     int weekOfDay = calendar.get(Calendar.DAY_OF_WEEK);
 
-    if ((weekOfDay >= Calendar.MONDAY) && (weekOfDay <= Calendar.THURSDAY)) {
-      return 0;
-    } else if (day == 1 && (weekOfDay < Calendar.MONDAY || weekOfDay > Calendar.TUESDAY)) {
-      return -1;
-    } else {
-      return 1;
-    }
+    return 1;
   }
 
   public static int addMonthIsLastDayBeforeThursday(int year, int month, int day) {

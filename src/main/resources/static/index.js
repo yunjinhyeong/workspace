@@ -130,11 +130,8 @@ function drawWeekly(count, list, weekstartduepoint) {
       weeklyTasks.memberTasks[0]['weekly' + i].forEach(task => {
         var bgColor = selectBgColor(task.state);
         weekly += `
-                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.content}</div>
-                    <ul class="sub">
-                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}" value="상세보기">  
-                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">                    
-                    </ul>    
+                  <li>                  
+                    <input class="task-data" name="viewTask" style="background-color: ${bgColor};" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_id="${weeklyTasks.memberTasks[0].memberId}" value="${task.title}">                      
                   </li>                
                 `;
       });
@@ -144,16 +141,14 @@ function drawWeekly(count, list, weekstartduepoint) {
     row += `
       <tr class="swich">
         <td scope="row" rowspan="${weeklyTasks.memberTasks.length}" class="align-middle text-center" style="width: 100px">${weeklyTasks.departmentName}</td>
-        <td class="align-middle" style="width: 100px">
+          <td class="align-middle" style="width: 100px">
             <ul class="main" style="margin:auto;">
-              <li style="background-color:#fff;" class="task-data"><div class="member_name">${weeklyTasks.memberTasks[0].name}</div>
-                <ul class="sub">
-                  <input name="writeTask" type="button" class="btn" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">                      
-                </ul>
+              <li style="background-color:#fff;">
+                <div>${weeklyTasks.memberTasks[0].name}</div>                
               </li>
             </ul>
+            ${weekly}
           </td>
-          ${weekly}
       </tr>
     `;
 
@@ -165,11 +160,8 @@ function drawWeekly(count, list, weekstartduepoint) {
         weeklyTasks.memberTasks[idx]['weekly' + i].forEach(task => {
           var bgColor = selectBgColor(task.state);
           weekly += `
-                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.content}</div>
-                    <ul class="sub">                   
-                      <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}" value="상세보기">
-                      <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">                                            
-                    </ul>    
+                  <li>                    
+                    <input class="task-data" name="viewTask" style="background-color: ${bgColor};" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_id="${weeklyTasks.memberTasks[idx].memberId}" value="${task.title}">                       
                   </li>
                 `;
         });
@@ -298,12 +290,12 @@ $('tbody#task_body').on('click', 'input[name=viewTask]', function (e) {
   });
 });
 
-$('tbody#task_body').on('click', '.task-data', function () {
-
-  if ($.cookie('name') == undefined) {
-    alert('로그인을 하십시오');
-  }
-});
+// $('tbody#task_body').on('click', '.task-data', function () {
+//
+//   if ($.cookie('name') == undefined) {
+//     alert('로그인을 하십시오');
+//   }
+// });
 
 $('button[name=\'updateTaskPage\']').on('click', function (e) {
 
@@ -532,8 +524,12 @@ function loginUseDev(token) {
   });
 }
 
-document.getElementById('startAt').value = new Date().toISOString().substring(0, 10);
+document.getElementById('startAt').value = getStartAt();
 document.getElementById('dueAt').value = getDueAt();
+
+function getStartAt() {
+  return new Date().toISOString().substring(0, 10);
+}
 
 function getDueAt() {
   let writeDueAt = new Date();
@@ -545,6 +541,7 @@ function getDueAt() {
 $('[name=writeTaskSubmit]').click(function () {
   console.log('버튼클릭 일단 들어옴');
 
+  let title = $('[name=title]').val();
   let content = $('[name=content]').val();
   let startAt = $('[name=startAt]').val();
   let dueAt = $('[name=dueAt]').val();
@@ -562,6 +559,7 @@ $('[name=writeTaskSubmit]').click(function () {
     dataType: 'json',
     data: {
       memberId: id,
+      title: title,
       content: content,
       startAt: startAt,
       dueAt: dueAt,
@@ -578,12 +576,23 @@ $('[name=writeTaskSubmit]').click(function () {
       }
       if (rs.success) {
         alert('업무등록성공!!');
-        $('#writeTaskModal').modal('hide');
+        $('#writeTaskModal').modal("hide");
+        resetData();
         newdraw();
       }
     }
   });
 });
+
+function resetData() {
+  $(".modal-body input[type=text]").val("");
+  document.getElementById('startAt').value = getStartAt();
+  document.getElementById('dueAt').value = getDueAt();
+  $(".modal-body textarea").val("");
+  $('.modal-body select[name=state]').val("대기중");
+  $('.modal-body select[name=priority]').val("HIGHEST");
+
+}
 
 function newdraw() {
   $('th').remove('.swich');

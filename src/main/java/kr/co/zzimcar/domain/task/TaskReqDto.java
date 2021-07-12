@@ -19,6 +19,10 @@ public class TaskReqDto extends CheckBowl {
   @ApiModelProperty(value = "회원 아이디")
   private String memberId;
 
+  @NotNull(message = "title(업무제목)를 입력해 주세요")
+  @ApiModelProperty(value = "업무제목")
+  private String title;
+
   @NotNull(message = "content(업무내용)를 입력해 주세요")
   @ApiModelProperty(value = "업무내용")
   private String content;

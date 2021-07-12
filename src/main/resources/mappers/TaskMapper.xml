@@ -5,9 +5,9 @@
 
   <insert id="create" parameterType="TaskDto">
     INSERT workspace.task (
-    member_id, content, state, priority, start_at, due_at
+    member_id, title, content, state, priority, start_at, due_at
     ) VALUES (
-    #{memberId}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
+    #{memberId}, #{title}, #{content}, #{state}, #{priority}, #{startAt}, #{dueAt}
     )
   </insert>
 
@@ -46,7 +46,7 @@
 
   <select id="taskTestRetrieve" resultType="TaskFormDto" parameterType="int">
     <![CDATA[
-      select t.pid, t.member_id, d.name as department, m.name, t.start_at, t.due_at, t.content, t.state
+      select t.pid, t.member_id, d.name as department, m.name, t.start_at, t.due_at, t.content, t.state, t.title
       from workspace.task t left join workspace.members m on t.member_id = m.id
         left join workspace.department d on m.department_pid = d.pid
       where
