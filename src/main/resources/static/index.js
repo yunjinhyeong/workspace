@@ -69,7 +69,7 @@ var moveMonth = function () {
       xhr.setRequestHeader(csrf.headerName, csrf.token);
     },
     success: function (rs) {
-      drawWeekly(rs.weekcount, rs.items);
+      drawWeekly(rs.weekcount, rs.items, rs.weekstartduepoint);
     }
   });
 }
@@ -101,25 +101,20 @@ function getWeek() {
     },
     success: function (rs) {
       console.log(rs);
-      drawWeekly(rs.weekcount, rs.items);
+      drawWeekly(rs.weekcount, rs.items, rs.weekstartduepoint);
     }
   });
 }
 
-jQuery.ajax({
-  beforeSend :function(){
-
-  }
-})
-
-
-
-function drawWeekly(count, list) {
+function drawWeekly(count, list, weekstartduepoint) {
 
   let str = '';
-  for (let num = 1; num <= count; num++) {
+  for (let num = 0, weekDateCnt = 0; num < count; num++, weekDateCnt=weekDateCnt+2) {
     str += `
-      <th class="align-middle swich">${num}주차</th>
+      <th class="align-middle swich">
+        ${num+1}주차<br/>
+        ${weekstartduepoint[weekDateCnt]} ~ ${weekstartduepoint[weekDateCnt+1]}                
+      </th>
 			`;
   }
   $('#weekly').append(str);
@@ -135,7 +130,7 @@ function drawWeekly(count, list) {
       weeklyTasks.memberTasks[0]['weekly' + i].forEach(task => {
         var bgColor = selectBgColor(task.state);
         weekly += `
-                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.title}</div>
+                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">${task.content}</div>
                     <ul class="sub">
                       <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}" value="상세보기">  
                       <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[0].memberPid}">                    
@@ -170,7 +165,7 @@ function drawWeekly(count, list) {
         weeklyTasks.memberTasks[idx]['weekly' + i].forEach(task => {
           var bgColor = selectBgColor(task.state);
           weekly += `
-                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.title}</div>
+                  <li><div class="task-data" style="background-color: ${bgColor}; border-radius: 30px;" data-pid="${task.pid}" data-content="${task.content}" data-start_at="${task.startAt}" data-name="${task.name}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">${task.content}</div>
                     <ul class="sub">                   
                       <input name="viewTask" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}" value="상세보기">
                       <input name="deleteTask" type="button" class="btn" value="삭제하기" data-pid="${task.pid}" data-member_pid="${weeklyTasks.memberTasks[idx].memberPid}">                                            

@@ -32,25 +32,31 @@ public class TaskServiceImpl implements TaskService {
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
     monthlyTaskMap.calcWeeks();
-    System.out.println("3333333333");
 
 
 
     monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
-    System.out.println("44444444444");
+//    monthlyTaskMap.setMemberInfo(retrieveMember());
+
     monthlyTaskMap.generateWeekTaskList();
-    System.out.println("55555555555");
+
     WeekInfoDto weekInfoDto = new WeekInfoDto();
-    System.out.println("66666666666");
+
     weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
-    System.out.println("77777777777");
+
+    weekInfoDto.setWeekstartduepoint(monthlyTaskMap.getWeekstartduepoint());
+
     weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
-    System.out.println("/2222222"+weekInfoDto+"////////");
+
     return weekInfoDto;
   }
 
   private List<TaskFormDto> retrieveMonthlyTasks(int year, int month) {
     return taskDao.taskTestRetrieve(year, month);
+  }
+
+  private List<MemberInfoDto> retrieveMember() {
+    return taskDao.retrieveMember();
   }
 
   @Override

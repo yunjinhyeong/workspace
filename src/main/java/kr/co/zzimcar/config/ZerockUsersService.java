@@ -1,5 +1,6 @@
 package kr.co.zzimcar.config;
 
+import kr.co.zzimcar.dao.MemberDao;
 import kr.co.zzimcar.persistence.MemberRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Log
@@ -17,8 +20,7 @@ public class ZerockUsersService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("//////////////// 로그인시 11111111");
-		return  
+		return
 			repo.findById(username)
 			.filter(m -> m != null)
 			.map(m -> new ZerockSecurityUser(m)).get();

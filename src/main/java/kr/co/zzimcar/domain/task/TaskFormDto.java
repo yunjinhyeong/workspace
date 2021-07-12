@@ -10,13 +10,12 @@ import java.time.LocalDate;
 public class TaskFormDto {
 
   private int pid;
-  private int memberPid;
+  private String memberId;
   private String department;
   private String name;
   private LocalDate startAt;
   private LocalDate dueAt;
   private String content;
-  private String title;
   private String state;
 
 }

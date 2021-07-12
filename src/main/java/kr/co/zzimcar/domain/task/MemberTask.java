@@ -11,17 +11,17 @@ import java.util.List;
 public class MemberTask {
 
   private String name;
-  private int memberPid;
+  private String memberId;
   private List<Task> weekly1;
   private List<Task> weekly2;
   private List<Task> weekly3;
   private List<Task> weekly4;
   private List<Task> weekly5;
 
-  public MemberTask(String name, int memberPid,
+  public MemberTask(String name, String memberId,
                     List<Task> weekly1, List<Task> weekly2, List<Task> weekly3, List<Task> weekly4, List<Task> weekly5) {
     this.name = name;
-    this.memberPid = memberPid;
+    this.memberId = memberId;
     this.weekly1 = weekly1;
     this.weekly2 = weekly2;
     this.weekly3 = weekly3;

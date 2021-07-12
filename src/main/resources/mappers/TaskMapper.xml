@@ -46,8 +46,8 @@
 
   <select id="taskTestRetrieve" resultType="TaskFormDto" parameterType="int">
     <![CDATA[
-      select t.pid, t.member_pid, d.name as department, m.name, t.start_at, t.due_at, t.content, t.state, t.title
-      from workspace.task t left join workspace.member m on t.member_pid = m.pid
+      select t.pid, t.member_id, d.name as department, m.name, t.start_at, t.due_at, t.content, t.state
+      from workspace.task t left join workspace.members m on t.member_id = m.id
         left join workspace.department d on m.department_pid = d.pid
       where
         (((year(start_at)=#{year} and month(start_at)=#{month})
@@ -57,8 +57,14 @@
                 and (concat(year(due_at), LPAD(MONTH(due_at), 2, '0')) >= concat(#{year}, LPAD(#{month}, 2, '0')))
               ))
         and t.deleted_at IS NULL
-      order by m.department_pid desc, m.pid asc, FIELD(t.priority, 'HIGHEST', 'HIGH', 'LOW', 'LOWEST') ASC;
+      order by m.department_pid desc, m.id asc, FIELD(t.priority, 'HIGHEST', 'HIGH', 'MIDIUM', 'LOW', 'LOWEST') ASC;
     ]]>
+  </select>
+
+  <select id="retrieveMember" resultType="MemberInfoDto">
+    select d.name department, m.name name, m.id
+    from workspace.members m LEFT OUTER JOIN workspace.department d
+    ON m.department_pid = d.pid order by department desc, name asc;
   </select>
 
 </mapper>
