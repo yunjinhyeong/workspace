@@ -22,9 +22,9 @@
 
   <select id="findById" parameterType="String" resultType="Memberr">
     select
-      m.id, m.department_pid, m.name, m.password, m.regdate, m.updatedate
+      m.id, m.department_pid, m.password, m.name, m.role
     from
-      workspace.members m
+      workspace.member m
     where
       m.id = #{id}
   </select>

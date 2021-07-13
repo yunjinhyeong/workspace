@@ -130,7 +130,7 @@ function drawWeekly(count, list, weekstartduepoint) {
       weeklyTasks.memberTasks[0]['weekly' + i].forEach(task => {
         var bgColor = selectBgColor(task.state);
         weekly += `
-                  <li>                  
+                  <li>
                     <input class="task-data" name="viewTask" style="background-color: ${bgColor};" type="button" class="btn" data-toggle="modal" data-target="#viewTaskModal" data-whatever="@mdo" data-pid="${task.pid}" data-member_id="${weeklyTasks.memberTasks[0].memberId}" value="${task.title}">                      
                   </li>                
                 `;
@@ -172,10 +172,8 @@ function drawWeekly(count, list, weekstartduepoint) {
         <tr class="swich">
           <td class="align-middle text-center">
             <ul class="main" style="margin:auto;">
-              <li style="background-color:#fff;" class="task-data"><div class="member_name">${weeklyTasks.memberTasks[idx].name}</div>
-                <ul class="sub">
-                  <input name="writeTask" type="button" class="btn" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">
-                </ul>
+              <li style="background-color:#fff;" class="task-data">
+                <div class="member_name">${weeklyTasks.memberTasks[idx].name}</div>            
               </li>
             </ul>
           </td>
