@@ -19,19 +19,13 @@
   <div th:replace="/weekly"></div>
   <div th:replace="/writeTask"></div>
   <div th:replace="/viewTask"></div>
-  <div th:replace="/insertInput"></div>
-  <div th:replace="/joinMember"></div>
 </div>
 
 <div th:replace="fragments/footer"></div>
 <script th:inline="javascript">
   var id =[[${#authentication.principal} eq 'anonymousUser'? null :${#authentication.principal.member.id}]] ;
-  console.log(id);
   var csrf = JSON.parse('[[${_csrf}]]');
-  console.log(csrf);
-
 </script>
 <script th:inline="javascript" type="text/javascript" th:src="@{/index.js}"></script>
-
 </body>
 </html>

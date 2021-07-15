@@ -1,26 +1,39 @@
 package kr.co.zzimcar.domain.member;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@Entity
+@Table(name = "member")
 @EqualsAndHashCode(of = "id")
-@RequiredArgsConstructor
+@ToString
 public class MemberDto {
 
+  @Id
   private String id;
+
+  @Column(length = 10)
   private int departmentPid;
-  private String name;
-  private String role;
+
   private String password;
 
-  public MemberDto(MemberReqDto memberReqDto) {
-    this.id = memberReqDto.getId();
-    this.departmentPid = memberReqDto.getDepartmentPid();
-    this.name = memberReqDto.getName();
-    this.role = memberReqDto.getRole();
-    this.password = memberReqDto.getPassword();
-  }
+  private String name;
+
+  @CreationTimestamp
+  private Timestamp regdate;
+
+  @UpdateTimestamp
+  private Timestamp updatedate;
+
+  @OneToMany(cascade= CascadeType.ALL, fetch= FetchType.EAGER)
+  @JoinColumn(name = "member")
+  private List<MemberRole> roles;
 
 }

@@ -11,4 +11,8 @@ public class CommonUtil {
 
   private final static Logger log = LogManager.getLogger(CommonUtil.class);
 
+
+  public static void check(){
+
+  }
 }

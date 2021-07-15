@@ -30,38 +30,27 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public WeekInfoDto generateMonthlyTaskMap(int year, int month) {
+    /// 기본 세팅
     MonthlyTaskMap monthlyTaskMap = new MonthlyTaskMap(year, month);
-    monthlyTaskMap.calcWeeks();
 
-
-
+    ///db 데이터 세팅
     monthlyTaskMap.setTasks(retrieveMonthlyTasks(year, month));
-//    monthlyTaskMap.setMemberInfo(retrieveMember());
+
 
     monthlyTaskMap.generateWeekTaskList();
-
     WeekInfoDto weekInfoDto = new WeekInfoDto();
-
     weekInfoDto.setWeekcount(monthlyTaskMap.getWeeksCnt());
-
     weekInfoDto.setWeekstartduepoint(monthlyTaskMap.getWeekstartduepoint());
-
     weekInfoDto.setItems(monthlyTaskMap.getTaskMap());
-
     return weekInfoDto;
   }
 
   private List<TaskFormDto> retrieveMonthlyTasks(int year, int month) {
-    return taskDao.taskTestRetrieve(year, month);
-  }
-
-  private List<MemberInfoDto> retrieveMember() {
-    return taskDao.retrieveMember();
+    return taskDao.taskRetrieve(year, month);
   }
 
   @Override
   public ResponseEntity<ResponseDto<Void>> create(TaskReqDto taskReqDto) {
-    System.out.println("create 들어옴");
     CheckStatePriority<TaskReqDto> checkClass = new CheckStatePriority<>();
     TaskReqDto checkBowl = new TaskReqDto();
     checkBowl.setPriority(taskReqDto.getPriority());

@@ -58,9 +58,6 @@
       method: 'GET',
       dataType :'json',
       success: function (response) {
-        console.log(typeof response);
-        console.log(response);
-
         if (response.isIdDup) {
           $('span#msgIdDup').html('이미 사용중인 아이디 입니다.').css('color', 'red');
           isID=false;
@@ -73,7 +70,6 @@
   });
 
   function submitCheck(){
-    console.log(isID);
     if (isID==false) {
       alert("아이디가 중복됩니다.");
       return false;

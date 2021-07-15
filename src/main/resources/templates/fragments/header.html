@@ -14,7 +14,6 @@
     <input name="writeTask" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#writeTaskModal" data-whatever="@mdo" value="업무등록하기">
 
     <form method="post" action="/logout">
-      <h2>CUSTOM LOGOUT PAGE</h2>
       <input type="hidden" th:name="${_csrf.parameterName}"
              th:value="${_csrf.token}" />
       <button type="submit" class="btn">LogOut</button>

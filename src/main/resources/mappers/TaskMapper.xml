@@ -21,15 +21,6 @@
     AND deleted_at IS NULL
   </select>
 
-  <select id="totalCnt" resultType="int">
-    SELECT
-    count(*)
-    FROM
-    workspace.task t
-    WHERE
-    deleted_at IS NULL
-  </select>
-
   <update id="updateOne" parameterType="taskReqDto">
     UPDATE workspace.task t SET
     t.title = #{title}, t.content = #{content}, t.priority = #{priority}, t.state = #{state}, t.start_at = #{startAt}, t.due_at = #{dueAt}
@@ -44,10 +35,10 @@
     t.pid = #{pid} AND t.deleted_at IS NULL
   </delete>
 
-  <select id="taskTestRetrieve" resultType="TaskFormDto" parameterType="int">
+  <select id="taskRetrieve" resultType="TaskFormDto" parameterType="int">
     <![CDATA[
       select t.pid, t.member_id, d.name as department, m.name, t.start_at, t.due_at, t.content, t.state, t.title
-      from workspace.task t left join workspace.members m on t.member_id = m.id
+      from workspace.task t left join workspace.member m on t.member_id = m.id
         left join workspace.department d on m.department_pid = d.pid
       where
         (((year(start_at)=#{year} and month(start_at)=#{month})
@@ -57,14 +48,8 @@
                 and (concat(year(due_at), LPAD(MONTH(due_at), 2, '0')) >= concat(#{year}, LPAD(#{month}, 2, '0')))
               ))
         and t.deleted_at IS NULL
-      order by m.department_pid desc, m.id asc, FIELD(t.priority, 'HIGHEST', 'HIGH', 'MIDIUM', 'LOW', 'LOWEST') ASC;
+      order by m.department_pid ASC, m.id ASC, FIELD(t.priority, 'HIGHEST', 'HIGH', 'MIDIUM', 'LOW', 'LOWEST') ASC;
     ]]>
-  </select>
-
-  <select id="retrieveMember" resultType="MemberInfoDto">
-    select d.name department, m.name name, m.id
-    from workspace.members m LEFT OUTER JOIN workspace.department d
-    ON m.department_pid = d.pid order by department desc, name asc;
   </select>
 
 </mapper>

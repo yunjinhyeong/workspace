@@ -2,42 +2,15 @@ let year;
 let month;
 
 function getToday() {
-  console.log('getToday1');
   let today = new Date();
   today = today.toISOString().slice(0, 7);
   let bir = document.getElementById('focus_date');
   bir.value = today;
-  console.log('getToday2');
 }
 
-$(document).ready(function (e) {
-
-  // console.log('window1 다');
-  // const tab_switchers = document.querySelectorAll('[data-switcher]');
-  // console.log('window2 다');
-  // for (let i = 0; i < tab_switchers.length; i++) {
-  //   console.log('window3 다');
-  //   const tab_switcher = tab_switchers[i];
-  //   const page_id = tab_switcher.dataset.tab;
-  //   console.log('window4 다');
-  //   tab_switcher.addEventListener('click', () => {
-  //     console.log('window5 다');
-  //     document.querySelector('.tabs .tab.is-active').classList.remove('is-active');
-  //     console.log('window6 다');
-  //     tab_switcher.parentNode.classList.add('is-active');
-  //     console.log('window7 다');
-  //     SwitchPage(page_id);
-  //     console.log('window8 다');
-  //   });
-  // }
-
-  console.log('window9 다');
-  isWho();
-  console.log('window10 다');
+$(document).ready(function () {
   getToday();
-  console.log('window11 다');
   getWeek();
-  console.log('window12 다');
 })
 
 var removeTableSwitch = function () {
@@ -47,7 +20,6 @@ var removeTableSwitch = function () {
 }
 
 var moveMonth = function () {
-  console.log('moveMonth 다');
   removeTableSwitch();
 
   let selectedDate = new Date($('#focus_date').val());
@@ -78,16 +50,9 @@ $('.jump_month_minus').click(moveMonth);
 $('.jump_month_plus').click(moveMonth);
 
 function getWeek() {
-  console.log('getWeek1');
   let value = $('#focus_date').val();
-  console.log('getWeek2');
   year = value.substring(0, 4);
-  console.log('getWeek3');
   month = value.substring(5, 7);
-  console.log('getWeek4');
-  console.log(year);
-  console.log(month);
-  console.log(csrf);
   $.ajax({
     url: '/week/weekly',
     type: 'POST',
@@ -100,7 +65,6 @@ function getWeek() {
       xhr.setRequestHeader(csrf.headerName, csrf.token);
     },
     success: function (rs) {
-      console.log(rs);
       drawWeekly(rs.weekcount, rs.items, rs.weekstartduepoint);
     }
   });
@@ -182,6 +146,12 @@ function drawWeekly(count, list, weekstartduepoint) {
       `;
     }
   });
+  if (row=='') {
+    row += `<tr class="swich">
+              <td rowspan="${count+2}">등록된 업무가 없습니다.</td>
+            </tr>`
+  }
+  console.log(row);
   $('#task_body').append(row);
 }
 
@@ -288,13 +258,6 @@ $('tbody#task_body').on('click', 'input[name=viewTask]', function (e) {
   });
 });
 
-// $('tbody#task_body').on('click', '.task-data', function () {
-//
-//   if ($.cookie('name') == undefined) {
-//     alert('로그인을 하십시오');
-//   }
-// });
-
 $('button[name=\'updateTaskPage\']').on('click', function (e) {
 
   if ($.cookie('member_pid_temporary') != $.cookie('member_pid')) {
@@ -368,52 +331,6 @@ function selectBgColor(state) {
   if (state == '완료') return '#ccffdc';
 }
 
-// if ($.cookie('name') == undefined) {
-//   $('#loginBox').show();
-//   $('#logoutBox').hide();
-//   $('[name=writeTask]').hide();
-// }
-
-function isWho() {
-  // if ($.cookie('name') != undefined) {
-  //   $('#loginBox').hide();
-  //   $('#logoutBox').show();
-  //   $('[name=writeTask]').show();
-  //   $('span[name=\'name_area\']').text($.cookie('name'));
-  //   $('input[name=\'memberPid\']').val(Number($.cookie('member_pid')));
-  // }
-}
-
-$('[name=logout]').click(function () {
-  sessionStorage.removeItem("member");
-  // document.cookie = 'name=; Max-Age=-1;';
-  // document.cookie = 'member_pid=; Max-Age=-1;';
-  // location.reload();
-});
-
-// $('[name=submitRoleDepartmentPid]').click(function () {
-//   $.ajax({
-//     url: '/member/submitRoleDepartmentPid',
-//     type: 'POST',
-//     dataType: 'json',
-//     data: {
-//       pid: Number($('[name=insertInputMemberPid]').val()),
-//       name: $('[name=insertInputName]').val(),
-//       role: $('[name=insertInputRole]').val(),
-//       departmentPid: $('[name=insertInputDepartmentPid]').val()
-//     },
-//     success: function (rs) {
-//       if (rs.success) {
-//         alert('성공! 다시 로그인 하십시오');
-//         $('#insertInput').modal('hide');
-//       }
-//       if (!rs.success) {
-//         alert('실패!');
-//       }
-//     }
-//   });
-// });
-
 $('[name=login]').click(function () {
   let id = $('[name=id]').val();
   let password = $('[name=pw]').val();
@@ -428,24 +345,14 @@ $('[name=login]').click(function () {
     },
     success: function (rs) {
       if (rs.success) {
-        // loginSuccess(rs.data.member.pid, rs.data.accessToken, rs.data.member);
         alert('성공하였습니다.');
-        console.log(rs);
-        // $.cookie('member_pid', rs.data.pid, {expires: 1});
-        // $.cookie('name', rs.data.name, {expires: 1});
-        // isWho(rs.data.pid);
       }
       if (!rs.success) {
         alert('아이디 또는 페스워드가 틀렸습니다.');
-        console.log(rs);
       }
     }
   });
 });
-
-
-
-
 
 $('[name=joinMemberSubmit]').click(function () {
   let id = $('[name=joinId]').val();
@@ -467,60 +374,14 @@ $('[name=joinMemberSubmit]').click(function () {
     },
     success: function (rs) {
       if (rs.success) {
-        // loginSuccess(rs.data.member.pid, rs.data.accessToken, rs.data.member);
         alert('성공');
-        console.log(rs);
       }
       if (!rs.success) {
         alert('실패');
-        console.log(rs);
       }
     }
   });
 });
-
-// function loginSuccess(pid, token, member) {
-//
-//   $.ajax({
-//     url: '/member/isPid',
-//     type: 'POST',
-//     dataType: 'json',
-//     data: {
-//       pid: pid
-//     },
-//     success: function (rs) {
-//       if (!rs.isPidDup) {
-//         $('#insertInput').modal('show');
-//         $('[name=insertInputMemberPid]').val(member.pid);
-//         $('[name=insertInputName]').val(member.name);
-//       }
-//       if (rs.isPidDup) {
-//         loginUseDev(token);
-//       }
-//     }
-//   });
-// }
-
-function loginUseDev(token) {
-  $.ajax({
-    url: '/member/loginUseDev',
-    type: 'GET',
-    dataType: 'json',
-    data: {
-      token: token
-    },
-    success: function (rs) {
-      if (!rs.success) {
-        alert('로그인 실패!');
-      }
-      if (rs.success) {
-        $.cookie('member_pid', rs.data.pid, {expires: 1});
-        $.cookie('name', rs.data.name, {expires: 1});
-        isWho(rs.data.pid);
-      }
-    }
-  });
-}
 
 document.getElementById('startAt').value = getStartAt();
 document.getElementById('dueAt').value = getDueAt();
@@ -537,8 +398,6 @@ function getDueAt() {
 }
 
 $('[name=writeTaskSubmit]').click(function () {
-  console.log('버튼클릭 일단 들어옴');
-
   let title = $('[name=title]').val();
   let content = $('[name=content]').val();
   let startAt = $('[name=startAt]').val();

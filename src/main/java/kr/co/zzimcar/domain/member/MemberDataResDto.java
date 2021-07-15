@@ -17,7 +17,6 @@ public class MemberDataResDto {
     this.id = memberDto.getId();
     this.departmentPid = memberDto.getDepartmentPid();
     this.name = memberDto.getName();
-    this.role = memberDto.getRole();
   }
 
 }

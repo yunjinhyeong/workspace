@@ -1,6 +1,5 @@
 package kr.co.zzimcar.dao;
 
-import kr.co.zzimcar.domain.task.MemberInfoDto;
 import kr.co.zzimcar.domain.task.TaskFormDto;
 import kr.co.zzimcar.domain.task.TaskDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,8 +19,7 @@ public interface TaskDao {
 
   void deleteOne(int pid);
 
-  List<TaskFormDto> taskTestRetrieve(int year, int month);
+  List<TaskFormDto> taskRetrieve(int year, int month);
 
-  List<MemberInfoDto> retrieveMember();
 
 }

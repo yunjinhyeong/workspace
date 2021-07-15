@@ -1,7 +1,5 @@
 package kr.co.zzimcar.controller.page;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -48,14 +46,12 @@ public class HomeController {
 
   @RequestMapping("/sampletest")
   public void forSampleTest() {
-    System.out.println("//////// sampleTest");
     log.info("manager");
 
   }
 
   @RequestMapping("/admin")
   public void forAdmin() {
-    System.out.println("////// admin");
     log.info("admin");
 
   }

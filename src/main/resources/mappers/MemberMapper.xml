@@ -20,32 +20,6 @@
     )
   </insert>
 
-  <select id="findById" parameterType="String" resultType="Memberr">
-    select
-      m.id, m.department_pid, m.password, m.name, m.role
-    from
-      workspace.member m
-    where
-      m.id = #{id}
-  </select>
-
-  <select id="countByPid" parameterType="int" resultType="int">
-    select
-    count(*)
-    from
-    workspace.member m
-    where
-    m.pid = #{pid}
-  </select>
-
-  <insert id="testjoinmember" parameterType="TestMember">
-    INSERT workspace.testmember (
-        department_pid, id, name, role, pw
-    ) VALUES (
-        #{departmentPid}, #{id}, #{name}, #{role}, #{pw}
-    )
-  </insert>
-
   <select id="getPassword" parameterType="String" resultType="String">
     select
       password
@@ -55,17 +29,13 @@
       tm.id = #{id}
   </select>
 
-  <select id="testlogin" parameterType="TestLoginMember" resultType="TestMember">
-    select
-      tm.pid, tm.department_pid, tm.id, tm.name, tm.role, tm.pw
-    from
-      workspace.testmember tm
-    where
-      tm.id = #{id}
-  </select>
-
   <select id="getCountById" resultType="int">
-    SELECT COUNT(*) FROM workspace.members WHERE id = #{id}
+    SELECT
+      COUNT(*)
+    FROM
+      workspace.member
+    WHERE
+      id = #{id}
   </select>
 
 </mapper>

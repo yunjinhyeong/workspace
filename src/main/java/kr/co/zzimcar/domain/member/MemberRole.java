@@ -1,4 +1,4 @@
-package kr.co.zzimcar.domain.test;
+package kr.co.zzimcar.domain.member;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
