@@ -85,6 +85,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-redis')
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.4.3'
+
+    // https://mvnrepository.com/artifact/com.jcraft/jsch
+    implementation group: 'com.jcraft', name: 'jsch', version: '0.1.54'
+
 }
 
 test {
