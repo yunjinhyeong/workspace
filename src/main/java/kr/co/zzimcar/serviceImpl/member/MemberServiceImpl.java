@@ -1,5 +1,6 @@
 package kr.co.zzimcar.serviceImpl.member;
 
+import kr.co.zzimcar.atest.Account;
 import kr.co.zzimcar.dao.MemberDao;
 import kr.co.zzimcar.domain.ResponseDto;
 import kr.co.zzimcar.domain.member.*;
@@ -77,4 +78,5 @@ public class MemberServiceImpl implements MemberService {
       .bodyToMono(MemberJoinResDto.class)
       .block();
   }
+
 }

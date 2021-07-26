@@ -44,11 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.formLogin().loginPage("/login");
     http.exceptionHandling().accessDeniedPage("/accessDenied");
     http.logout().logoutUrl("/logout").invalidateHttpSession(true);
-    http.rememberMe()
-        .key("zerock")
-        .userDetailsService(usersService)
-        .tokenRepository(getJDBCRepository())
-      .tokenValiditySeconds(60 * 60 * 24);
+//    http.rememberMe()
+//        .key("zerock")
+//        .userDetailsService(usersService)
+//        .tokenRepository(getJDBCRepository())
+//      .tokenValiditySeconds(60 * 60 * 24);
   }
   private PersistentTokenRepository getJDBCRepository() {
     JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();

@@ -38,4 +38,43 @@
       id = #{id}
   </select>
 
+
+
+
+
+
+
+
+
+
+  <select id="findById"  parameterType="String" resultType="Account">
+    SELECT * FROM workspace.user_info
+    WHERE ID= #{id}
+  </select>
+
+  <select id="readAuthorites"  parameterType="String" resultType="String">
+    SELECT AUTHORITY_NAME
+    FROM workspace.authority WHERE USERNAME=#{userName}
+  </select>
+
+  <insert id="insertUser" parameterType="Account">
+    INSERT workspace.user_info
+		VALUES (
+    #{id},
+    #{password},
+    #{isAccountNonExpired},
+    #{isAccountNonLocked},
+    #{isCredentialsNonExpired},
+    #{isEnabled}
+    )
+  </insert>
+
+  <insert id="insertUserAuthority" parameterType="Authority">
+    INSERT INTO workspace.authority
+    VALUES (
+      #{userName},
+      #{authorityName}
+      )
+  </insert>
+
 </mapper>
