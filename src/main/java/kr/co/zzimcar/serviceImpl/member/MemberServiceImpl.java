@@ -1,6 +1,5 @@
 package kr.co.zzimcar.serviceImpl.member;
 
-import kr.co.zzimcar.atest.Account;
 import kr.co.zzimcar.dao.MemberDao;
 import kr.co.zzimcar.domain.ResponseDto;
 import kr.co.zzimcar.domain.member.*;
@@ -13,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -58,14 +59,22 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public MemberResDto loginMember(MemberLoginReqDto memberLoginReqDto) {
-    return WebClient.create("http://localhost:8888")
+  public MemberResDto loginMember(MemberLoginReqDto memberLoginReqDto, HttpServletRequest request) {
+    MemberResDto memberResDto = WebClient.create("http://localhost:8888")
       .post()
       .uri("/memberAPI/login")
       .bodyValue(memberLoginReqDto)
       .retrieve()
       .bodyToMono(MemberResDto.class)
       .block();
+
+    HttpSession session = request.getSession();
+
+    if (memberResDto.getData() != null) {
+      session.setAttribute("id", memberResDto.getData().getId());
+    }
+
+    return memberResDto;
   }
 
   @Override
@@ -78,5 +87,4 @@ public class MemberServiceImpl implements MemberService {
       .bodyToMono(MemberJoinResDto.class)
       .block();
   }
-
 }

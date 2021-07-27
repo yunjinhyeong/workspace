@@ -22,10 +22,10 @@
 </div>
 
 <div th:replace="fragments/footer"></div>
-<script th:inline="javascript">
+<!--<script th:inline="javascript">
   var id =[[${#authentication.principal} eq 'anonymousUser'? null :${#authentication.principal.member.id}]] ;
   var csrf = JSON.parse('[[${_csrf}]]');
-</script>
+</script>-->
 <script th:inline="javascript" type="text/javascript" th:src="@{/index.js}"></script>
 </body>
 </html>

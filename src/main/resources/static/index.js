@@ -37,9 +37,9 @@ var moveMonth = function () {
       year: year,
       month: month
     },
-    beforeSend:function (xhr) {
+    /*beforeSend:function (xhr) {
       xhr.setRequestHeader(csrf.headerName, csrf.token);
-    },
+    },*/
     success: function (rs) {
       drawWeekly(rs.weekcount, rs.items, rs.weekstartduepoint);
     }
@@ -61,9 +61,9 @@ function getWeek() {
       year: year,
       month: month
     },
-    beforeSend:function (xhr) {
+    /*beforeSend:function (xhr) {
       xhr.setRequestHeader(csrf.headerName, csrf.token);
-    },
+    },*/
     success: function (rs) {
       drawWeekly(rs.weekcount, rs.items, rs.weekstartduepoint);
     }
@@ -331,28 +331,28 @@ function selectBgColor(state) {
   if (state == '완료') return '#ccffdc';
 }
 
-$('[name=login]').click(function () {
-  let id = $('[name=id]').val();
-  let password = $('[name=pw]').val();
-
-  $.ajax({
-    url: '/member/login',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      id: id,
-      password: password
-    },
-    success: function (rs) {
-      if (rs.success) {
-        alert('성공하였습니다.');
-      }
-      if (!rs.success) {
-        alert('아이디 또는 페스워드가 틀렸습니다.');
-      }
-    }
-  });
-});
+// $('[name=login]').click(function () {
+//   let id = $('[name=id]').val();
+//   let password = $('[name=pw]').val();
+//
+//   $.ajax({
+//     url: '/member/login',
+//     type: 'POST',
+//     dataType: 'json',
+//     data: {
+//       id: id,
+//       password: password
+//     },
+//     success: function (rs) {
+//       if (rs.success) {
+//         alert('성공하였습니다.');
+//       }
+//       if (!rs.success) {
+//         alert('아이디 또는 페스워드가 틀렸습니다.');
+//       }
+//     }
+//   });
+// });
 
 $('[name=joinMemberSubmit]').click(function () {
   let id = $('[name=joinId]').val();
@@ -423,9 +423,9 @@ $('[name=writeTaskSubmit]').click(function () {
       state: state,
       priority: priority
     },
-    beforeSend:function (xhr) {
+    /*beforeSend:function (xhr) {
       xhr.setRequestHeader(csrf.headerName, csrf.token);
-    },
+    },*/
     success: function (rs) {
       if (!rs.success) {
         alert(rs.msg);

@@ -11,7 +11,6 @@ public class MemberDataResDto {
   private String id;
   private int departmentPid;
   private String name;
-  private String role;
 
   public MemberDataResDto(MemberDto memberDto) {
     this.id = memberDto.getId();

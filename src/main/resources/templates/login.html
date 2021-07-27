@@ -5,24 +5,23 @@
 <head>
   <title>Hello Spring Security</title>
   <meta charset="utf-8" />
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+          integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+          crossorigin="anonymous"></script>
+  <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      crossorigin="anonymous"></script>
 </head>
 <body>
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous">
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-      crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
-<script
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-    crossorigin="anonymous"></script>
-
 <div class="panel panel-default">
   <div class="panel-body">
 
@@ -38,7 +37,7 @@
     </div>
 
 
-    <form method="post">
+    <form>
       <p>
         <label for="username">Username</label> <input type="text"
                                                       id="username" name="username" value="user88" />
@@ -53,12 +52,37 @@
                                                      id="remember-me" name="remember-me" />
       </p>
 
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-      <button type="submit" class="btn">Log in</button>
+      <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+      <button type="button" name="login" class="btn">Log in</button>
       <a href="/member/join" role="button" class="btn btn-primary">회원가입</a>
     </form>
 
   </div>
 </div>
+<script th:inline="javascript">
+  $('[name=login]').click(function () {
+    let id = $('[name=username]').val();
+    let password = $('[name=password]').val();
+
+    $.ajax({
+      url: '/member/login',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        id: id,
+        password: password
+      },
+      success: function (rs) {
+        if (rs.success) {
+          alert('성공하였습니다.');
+          location.href="/";
+        }
+        if (!rs.success) {
+          alert('아이디 또는 페스워드가 틀렸습니다.');
+        }
+      }
+    });
+  });
+</script>
 </body>
 </html>

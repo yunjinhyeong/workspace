@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Map;
 
@@ -53,9 +54,9 @@ public class MemberController {
 
   @PostMapping("/login")
   @ResponseBody
-  public MemberResDto login(MemberLoginReqDto memberLoginReqDto) {
-    System.out.println("///swich01");
-    return memberService.loginMember(memberLoginReqDto);
+  public MemberResDto login(MemberLoginReqDto memberLoginReqDto, HttpServletRequest request) {
+
+    return memberService.loginMember(memberLoginReqDto, request);
   }
 
   @GetMapping("/accessDenied")

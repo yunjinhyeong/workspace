@@ -27,39 +27,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   DataSource dataSource;
 
-  @Autowired
-  UsersService usersService;
+//  @Autowired
+//  UsersService usersService;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     log.info("security config..............");
-    http.authorizeRequests().antMatchers("/guest/**").permitAll();
-    http.authorizeRequests().antMatchers("/week/**").permitAll();
-    http.authorizeRequests().antMatchers("/task/**").permitAll();
-    http.authorizeRequests().antMatchers("/").hasAnyRole("CEO","CTO","실장","본부장","책임","팀장","과장","선임","연구원","매니저");
-    http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
-    http.authorizeRequests()
-      .antMatchers(HttpMethod.OPTIONS,"/oauth/token").permitAll();
 
-    http.formLogin().loginPage("/login");
-    http.exceptionHandling().accessDeniedPage("/accessDenied");
-    http.logout().logoutUrl("/logout").invalidateHttpSession(true);
+    http.csrf().disable();
+
+//    http.authorizeRequests().antMatchers("/guest/**").permitAll();
+//    http.authorizeRequests().antMatchers("/week/**").permitAll();
+//    http.authorizeRequests().antMatchers("/task/**").permitAll();
+//    http.authorizeRequests().antMatchers("/").hasAnyRole("CEO","CTO","실장","본부장","책임","팀장","과장","선임","연구원","매니저");
+//    http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
+//    http.authorizeRequests()
+//      .antMatchers(HttpMethod.OPTIONS,"/oauth/token").permitAll();
+//
+//    http.formLogin().loginPage("/login");
+//    http.exceptionHandling().accessDeniedPage("/accessDenied");
+//    http.logout().logoutUrl("/logout").invalidateHttpSession(true);
+
 //    http.rememberMe()
 //        .key("zerock")
 //        .userDetailsService(usersService)
 //        .tokenRepository(getJDBCRepository())
 //      .tokenValiditySeconds(60 * 60 * 24);
   }
-  private PersistentTokenRepository getJDBCRepository() {
-    JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
-    repo.setDataSource(dataSource);
-    return repo;
-  }
-
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    log.info("build Auth global........");
-    auth.userDetailsService(usersService).passwordEncoder(passwordEncoder());
-  }
+//  private PersistentTokenRepository getJDBCRepository() {
+//    JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
+//    repo.setDataSource(dataSource);
+//    return repo;
+//  }
+//
+//  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//    log.info("build Auth global........");
+//    auth.userDetailsService(usersService).passwordEncoder(passwordEncoder());
+//  }
 
 
   @Bean

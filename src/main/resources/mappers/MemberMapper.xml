@@ -5,9 +5,9 @@
 
   <select id="login" parameterType="MemberLoginReqDto" resultType="MemberDataResDto">
     select
-    m.id, m.department_pid, m.name, m.role, m.password
+    m.id, m.department_pid, m.name, m.password
     from
-    workspace.testmember m
+    workspace.member m
     where
     m.id = #{id}
   </select>
@@ -24,7 +24,7 @@
     select
       password
     from
-      workspace.testmember tm
+      workspace.member tm
     where
       tm.id = #{id}
   </select>
@@ -38,43 +38,5 @@
       id = #{id}
   </select>
 
-
-
-
-
-
-
-
-
-
-  <select id="findById"  parameterType="String" resultType="Account">
-    SELECT * FROM workspace.user_info
-    WHERE ID= #{id}
-  </select>
-
-  <select id="readAuthorites"  parameterType="String" resultType="String">
-    SELECT AUTHORITY_NAME
-    FROM workspace.authority WHERE USERNAME=#{userName}
-  </select>
-
-  <insert id="insertUser" parameterType="Account">
-    INSERT workspace.user_info
-		VALUES (
-    #{id},
-    #{password},
-    #{isAccountNonExpired},
-    #{isAccountNonLocked},
-    #{isCredentialsNonExpired},
-    #{isEnabled}
-    )
-  </insert>
-
-  <insert id="insertUserAuthority" parameterType="Authority">
-    INSERT INTO workspace.authority
-    VALUES (
-      #{userName},
-      #{authorityName}
-      )
-  </insert>
 
 </mapper>
